@@ -1,9 +1,5 @@
 <!-- Important Notes: while running the code on a local host or internal server there are no errors, Currently some methods are not accepted because of some encryption -->
-<html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <title>Portfolio - Patchol</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap">
   <style>
     * {
