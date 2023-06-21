@@ -157,6 +157,7 @@
 
 
     .app {
+      margin-top: -100px;
       background-color: var(--theme-bg-color);
       max-width: 1250px;
       max-height: 860px;
