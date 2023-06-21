@@ -1162,7 +1162,7 @@
                   team-based environments. With ample free time available, I'm eager to explore and master new
                   programming languages.
                 </div>
-                <a target="_blank" href="https://example.com/work-in-progress"><button class="content-button">Show
+                <a target="_blank" href="https://drive.google.com/file/d/1v5AKQbmrSW2lbF-qxyDP-BN9oiStiLwQ/view?usp=sharing"><button class="content-button">Show
                     Resume</button></a>
               </div>
               <svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" fill="currentColor" class="bi bi-code" viewBox="0 0 16 16"> <path d="M5.854 4.854a.5.5 0 1 0-.708-.708l-3.5 3.5a.5.5 0 0 0 0 .708l3.5 3.5a.5.5 0 0 0 .708-.708L2.707 8l3.147-3.146zm4.292 0a.5.5 0 0 1 .708-.708l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8l-3.147-3.146z"/> </svg>
