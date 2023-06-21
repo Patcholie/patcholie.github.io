@@ -6,11 +6,11 @@
   <title>Portfolio - Patchol</title>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap">
   <style>
-
     * {
       outline: none;
       box-sizing: border-box;
     }
+
     :root {
       --theme-bg-color: rgba(16 18 27 / 40%);
       --border-color: rgba(113 119 144 / 25%);
@@ -44,14 +44,14 @@
       --text_gradient: linear-gradient(to right, rgb(10, 10, 10), #131313);
       --large_cursor_color: black;
       --small_cursor_color: rgb(32, 32, 32);
-      
+
     }
 
     html {
       box-sizing: border-box;
       -webkit-font-smoothing: antialiased;
     }
-    
+
     body {
       cursor: none;
       font-family: var(--body-font);
@@ -68,6 +68,7 @@
       overflow-x: hidden;
       overflow-y: hidden;
     }
+
     .cursor {
       width: var(--size);
       height: var(--size);
@@ -78,19 +79,19 @@
       pointer-events: none;
       z-index: 100;
     }
-    
+
     .cursor--large {
       --size: 40px;
       border: 1px solid var(--large_cursor_color);
-;
+      ;
     }
-    
+
     .cursor--small {
       --size: 10px;
       background: var(--small_cursor_color);
       transform: translate(-50%, -50%);
     }
-    
+
     @media screen and (max-width: 480px) {
       body {
         padding: 0.8em;
@@ -636,7 +637,7 @@
     }
 
     .content-button {
-      cursor:none;
+      cursor: none;
       background-color: #1f1f1f;
       border: none;
       padding: 8px 26px;
@@ -1300,13 +1301,13 @@
 
               </div>
             </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
-        <div class="overlay-app"></div>
       </div>
+    </div>
+    </div>
+    <div class="overlay-app"></div>
+    </div>
     </div>
     </div>
     </div>
@@ -1330,7 +1331,7 @@
   </html>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
   <script>
-    
+
     const { gsap } = window;
     const cursorOuter = document.querySelector(".cursor--large");
     const cursorInner = document.querySelector(".cursor--small");
@@ -1339,18 +1340,18 @@
       x: -100,
       y: -100,
     };
-    
+
     // Just in case you need to scroll
     let scrollHeight = 0;
-    window.addEventListener('scroll', function(e) {
+    window.addEventListener('scroll', function (e) {
       scrollHeight = window.scrollY
     })
-    
+
     let cursorOuterOriginalState = {
       width: cursorOuter.getBoundingClientRect().width,
       height: cursorOuter.getBoundingClientRect().height,
     };
-    
+
     document.body.addEventListener("pointermove", updateCursorPosition);
     document.body.addEventListener("pointerdown", () => {
       gsap.to(cursorInner, 0.15, {
@@ -1362,18 +1363,18 @@
         scale: 1,
       });
     });
-    
+
     function updateCursorPosition(e) {
       mouse.x = e.pageX;
       mouse.y = e.pageY;
     }
-    
+
     function updateCursor() {
       gsap.set(cursorInner, {
         x: mouse.x,
         y: mouse.y,
       });
-    
+
       if (!isStuck) {
         gsap.to(cursorOuter, {
           duration: 0.15,
@@ -1381,12 +1382,12 @@
           y: mouse.y - cursorOuterOriginalState.height / 2,
         });
       }
-    
+
       requestAnimationFrame(updateCursor);
     }
-    
+
     updateCursor();
-    
+
     function handleMouseEnter(e) {
       isStuck = true;
       const targetBox = e.currentTarget.getBoundingClientRect();
@@ -1399,7 +1400,7 @@
         backgroundColor: "rgba(255, 255, 255, 0.1)",
       });
     }
-    
+
     function handleMouseLeave(e) {
       isStuck = false;
       gsap.to(cursorOuter, 0.2, {
