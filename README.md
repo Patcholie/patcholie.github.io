@@ -1142,7 +1142,6 @@
                 </svg>
                 Github
               </a>
-              </a>
               <a target="_blank" href="https://www.instagram.com/_avivshaked_/">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                   class="bi bi-instagram" viewBox="0 0 16 16">
@@ -1177,8 +1176,7 @@
                 <a target="_blank" href="https://example.com/work-in-progress"><button class="content-button">Show
                     Resume</button></a>
               </div>
-              <img class="content-wrapper-img"
-                src="https://img.uxwing.com/wp-content/themes/uxwing/download/web-app-development/code-icon.png" alt="">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-code" viewBox="0 0 16 16"> <path d="M5.854 4.854a.5.5 0 1 0-.708-.708l-3.5 3.5a.5.5 0 0 0 0 .708l3.5 3.5a.5.5 0 0 0 .708-.708L2.707 8l3.147-3.146zm4.292 0a.5.5 0 0 1 .708-.708l3.5 3.5a.5.5 0 0 1 0 .708l-3.5 3.5a.5.5 0 0 1-.708-.708L13.293 8l-3.147-3.146z"/> </svg>
             </div>
             <div id="what" class="content-section">
               <div class="content-section-title">Subjects I am well-versed in</div>
@@ -1274,10 +1272,8 @@
               <div class="apps-card">
                 <div id="home" class="content-wrapp-header">
                   <div class="content-wrapper-context">
-                    <class="img-content">
                       <img src="https://avatars.githubusercontent.com/u/116463487?v=4"
                         style="max-width: 48px; border-radius: 2px; margin-right: 10px;">
-                      </svg>
                       Patchol ( Aviv Shaked )
                       </h3>
                       <div class="content-tt">I'm Aviv Shaked, a 16-year-old from Israel, and I'm excitedly on the
