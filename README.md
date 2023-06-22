@@ -208,6 +208,7 @@
 
     .header-menu a.is-active,
     .header-menu a:hover {
+      cursor: none;
       color: var(--theme-color);
       border-bottom: 2px solid var(--theme-color);
     }
@@ -441,6 +442,7 @@
     }
 
     .side-menu a:hover {
+      cursor: none;
       background-color: var(--hover-menu-bg);
     }
 
@@ -699,14 +701,17 @@
     }
 
     .content-section ul li:hover {
+      cursor: none;
       background-color: var(--theme-bg-color);
     }
 
     .content-section ul li:hover:first-child {
+      cursor: none;
       border-radius: 13px 13px 0 0;
     }
 
     .content-section ul li:hover:last-child {
+      cursor: none;
       border-radius: 0 0 13px 13px;
     }
 
@@ -777,6 +782,7 @@
     }
 
     .status-button:not(.open):hover {
+      cursor: none;
       color: #fff;
       border-color: #fff;
     }
@@ -838,6 +844,7 @@
     }
 
     .dropdown.is-active ul li:hover {
+      cursor: none;
       background-color: var(--dropdown-hover);
     }
 
