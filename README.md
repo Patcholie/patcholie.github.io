@@ -1,4 +1,3 @@
-<!-- Important Notes: while running the code on a local host or internal server there are no errors, Currently some methods are not accepted because of some encryption -->
 <head>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto+Mono&display=swap">
   <style>
@@ -1067,7 +1066,7 @@
               d="M448.773 235.551A135.893 135.893 0 00451 211c0-74.443-60.557-135-135-135-47.52 0-91.567 25.313-115.766 65.537-32.666-10.59-66.182-6.049-93.794 12.979-27.612 19.013-44.092 49.116-45.425 82.031C24.716 253.788 0 290.497 0 331c0 7.031 1.703 13.887 3.006 20.537l.015.015C12.719 400.492 56.034 436 106 436h300c57.891 0 106-47.109 106-105 0-40.942-25.053-77.798-63.227-95.449z" />
           </svg>
           <img class="profile-img"
-            src="https://media.licdn.com/dms/image/D4E03AQET697eb0jtIQ/profile-displayphoto-shrink_800_800/0/1681474065656?e=1692835200&v=beta&t=qXTMtCKD3VZD0J8ZqFVVo2eSkWAlrHczbsA0qF3dU_o"
+            src="https://media.licdn.com/dms/image/D4E03AQET697eb0jtIQ/profile-displayphoto-shrink_800_800/0/1681474065656?e=1698278400&v=beta&t=I1mEFmsh6Wm45oBSlgJtHybrENX5E7_OWj3wOzDDRlo"
             alt="">
         </div>
       </div>
