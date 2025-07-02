@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -1427,7 +1426,7 @@
             
             animate() {
                 // Smooth lerp animation
-                const lerpFactor = 0.15;
+                const lerpFactor = 0.75;
                 
                 // Small cursor follows immediately
                 this.cursorSmallPos.x = this.mouse.x;
