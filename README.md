@@ -1045,7 +1045,7 @@
                             </div>
                             <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
                                 <a href="#projects" class="btn btn-primary">View Projects</a>
-                                <a href="https://drive.google.com/file/d/1v5AKQbmrSW2lbF-qxyDP-BN9oiStiLwQ/view?usp=sharing" target="_blank" class="btn">Resume</a>
+                                <a href="https://drive.google.com/file/d/1cUoF--q94LtUQKox5eGfMYom70GJoIGc/view?usp=sharing" target="_blank" class="btn">Resume</a>
                             </div>
                         </div>
                         <div class="hero-visual">
