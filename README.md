@@ -78,7 +78,7 @@
         cursor: none;
         font-family: var(--font-primary);
         background: var(--bg-primary);
-        background-image: url('TODO_BACKGROUND_IMAGE_URL');
+        background-image: url('https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.hdwallpapers.in%2Fwater_drops_rain_glass_blur_black_background_4k_hd_black-wallpapers.html&psig=AOvVaw10rlf34HLHCGe-mziEO6kK&ust=1751560655821000&source=images&cd=vfe&opi=89978449&ved=0CBQQjRxqFwoTCKCOxIfOno4DFQAAAAAdAAAAABA_');
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -910,8 +910,7 @@
     <!-- Video Background -->
     <div class="video-bg">
         <video autoplay loop muted>
-            <!-- TODO: Replace with your video source -->
-            <source src="TODO_VIDEO_URL" type="video/mp4">
+            <source src="https://cdn.pixabay.com/video/2025/05/13/278750_large.mp4" type="video/mp4">
         </video>
     </div>
     
@@ -948,7 +947,6 @@
                     </svg>
                     <span class="notification-badge">3</span>
                 </div>
-                <!-- TODO: Replace with your profile image -->
                 <img class="profile-avatar" src="https://avatars.githubusercontent.com/u/116463487?v=4" alt="Profile">
             </div>
         </header>
@@ -1305,7 +1303,6 @@
                     <div class="card">
                         <div class="card-header">
                             <div style="width: 60px; height: 60px; border-radius: 12px; overflow: hidden; border: 2px solid var(--border-medium);">
-                                <!-- TODO: Replace with your profile image -->
                                 <img src="https://avatars.githubusercontent.com/u/116463487?v=4" style="width: 100%; height: 100%; object-fit: cover;" alt="Aviv Shaked">
                             </div>
                             <div>
