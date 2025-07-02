@@ -164,13 +164,25 @@ body {
   position: fixed;
   top: 0;
   left: 0;
-  width: 120%;
-  height: 120%;
-  background: radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.02) 0%, transparent 50%),
-              radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.015) 0%, transparent 50%);
+  width: 110vw;
+  height: 110vh;
+  overflow: hidden;
   pointer-events: none;
   z-index: -2;
   will-change: transform;
+  transition: transform 0.1s ease-out;
+}
+
+.parallax-bg video {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  min-width: 120%;
+  min-height: 120%;
+  transform: translate(-50%, -50%);
+  object-fit: cover;
+  filter: brightness(0.4) contrast(1.1);
+  pointer-events: none;
 }
 
 /* Enhanced Cursor System */
