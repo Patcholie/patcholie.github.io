@@ -32,10 +32,35 @@ function updateScrollProgress() {
 
 // Parallax Effect
 function updateParallax() {
-    const content = document.querySelector('.content');
-    const scrollTop = content.scrollTop;
+    // Mouse-Based Parallax for Video Background
     const parallaxBg = document.getElementById('parallaxBg');
-    parallaxBg.style.transform = `translateY(${scrollTop * 0.1}px)`;
+    let targetX = 0, targetY = 0;
+    let currentX = 0, currentY = 0;
+
+    document.addEventListener('mousemove', (e) => {
+        const centerX = window.innerWidth / 2;
+        const centerY = window.innerHeight / 2;
+
+        // Calculate relative position [-1, 1]
+        targetX = (e.clientX - centerX) / centerX;
+        targetY = (e.clientY - centerY) / centerY;
+    });
+
+    function animateParallaxMouse() {
+        // Smooth interpolation
+        currentX += (targetX - currentX) * 0.05;
+        currentY += (targetY - currentY) * 0.05;
+
+        // Apply subtle movement (adjust scale for intensity)
+        const maxTranslate = 10; // pixels
+        const translateX = currentX * maxTranslate;
+        const translateY = currentY * maxTranslate;
+
+        parallaxBg.style.transform = `translate(${translateX}px, ${translateY}px) scale(1.02)`;
+
+        requestAnimationFrame(animateParallaxMouse);
+    }
+    animateParallaxMouse();
 }
 
 // Enhanced Cursor System
