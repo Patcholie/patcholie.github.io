@@ -1426,7 +1426,7 @@
             
             animate() {
                 // Smooth lerp animation
-                const lerpFactor = 0.75;
+                const lerpFactor = 1.5;
                 
                 // Small cursor follows immediately
                 this.cursorSmallPos.x = this.mouse.x;
@@ -1437,7 +1437,6 @@
                 this.cursorLargePos.y += (this.mouse.y - this.cursorLargePos.y) * lerpFactor;
                 
                 // Apply transforms
-                this.cursorSmall.style.transform = `translate(${this.cursorSmallPos.x}px, ${this.cursorSmallPos.y}px) translate(-50%, -50%)`;
                 this.cursorLarge.style.transform = `translate(${this.cursorLargePos.x - 16}px, ${this.cursorLargePos.y - 16}px)`;
                 
                 requestAnimationFrame(() => this.animate());
