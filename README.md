@@ -1318,18 +1318,8 @@
       
       .list-item:hover .list-text p {
         color: var(--text-primary);
-      }
-
-      /* Floating Animation for Hero Section */
-      .floating {
-        animation: floating 6s ease-in-out infinite;
-      }
-
-      @keyframes floating {
-        0%, 100% { transform: translateY(0px); }
-        50% { transform: translateY(-10px); }
-      }
-  
+      }  
+      
       /* Responsive Design */
       @media (max-width: 1024px) {
         .sidebar {
@@ -1579,7 +1569,7 @@
                                 <a href="https://drive.google.com/file/d/1cUoF--q94LtUQKox5eGfMYom70GJoIGc/view?usp=sharing" target="_blank" class="btn magnetic-btn">Resume</a>
                             </div>
                         </div>
-                        <div class="hero-visual floating">
+                        <div class="hero-visual">
                             <div class="code-window">
                                 <div class="code-header">
                                     <div class="code-dots">
