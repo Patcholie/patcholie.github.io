@@ -5,8 +5,12 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="styles.css" />
+    <title>Aviv Shaked - Cybersecurity Developer</title>
 </head>
 <body>
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+
     <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
         <div class="loading-logo">Aviv Shaked</div>
@@ -21,7 +25,7 @@
         <div class="progress-ring">
             <svg class="progress-circle" width="60" height="60">
                 <circle cx="30" cy="30" r="25" fill="none" stroke="rgba(255,255,255,0.1)" stroke-width="2"/>
-                <circle cx="30" cy="30" r="25" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2" 
+                <circle cx="30" cy="30" r="25" fill="none" stroke="rgba(255,255,255,0.8)" stroke-width="2"
                         stroke-dasharray="157" stroke-dashoffset="157" class="progress-bar"/>
             </svg>
             <div class="progress-text" id="progressText">01</div>
@@ -30,7 +34,7 @@
 
     <!-- 3D Scene Navigator -->
     <div class="scene-navigator" id="sceneNavigator">
-        <div class="nav-hint">Navigate through space</div>
+        <div class="nav-hint">Navigate</div>
         <div class="nav-controls">
             <button class="nav-btn" data-scene="0">
                 <div class="nav-icon">🏠</div>
@@ -65,10 +69,6 @@
 
     <!-- Cinematic Background -->
     <div class="cinematic-bg" id="cinematicBg">
-        <video autoplay muted loop playsinline id="backgroundVideo">
-            <source src="sky_loop_background.mp4" type="video/mp4">
-            Your browser does not support the video tag.
-        </video>
         <div class="depth-layers">
             <div class="bg-layer layer-far"></div>
             <div class="bg-layer layer-mid"></div>
@@ -78,50 +78,50 @@
 
     <!-- 3D Camera Viewport -->
     <div class="camera-viewport" id="cameraViewport">
-        
+
         <!-- Scene 0: Hero Launch -->
-        <div class="scene scene-hero" data-scene="0">
+        <div class="scene scene-hero active" data-scene="0">
             <div class="scene-background">
                 <div class="depth-grid"></div>
                 <div class="floating-code-fragments" id="codeFragments"></div>
             </div>
-            
+
             <div class="scene-content">
                 <div class="hero-constellation">
                     <div class="hero-title-cluster">
                         <h1 class="cosmic-title">
-                            <span class="title-word" data-delay="0">Aviv</span>
-                            <span class="title-word" data-delay="200">Shaked</span>
+                            <span class="title-word">Aviv</span>
+                            <span class="title-word">Shaked</span>
                         </h1>
                         <div class="title-particles"></div>
                     </div>
-                    
+
                     <div class="hero-orbit">
                         <div class="orbit-description">
                             <p class="cosmic-text">
-                                18-year-old Cybersecurity Developer & Researcher from Haifa, Israel. 
-                                Expert in C++, network security, and low-level programming. 
+                                18-year-old Cybersecurity Developer & Researcher from Haifa, Israel.
+                                Expert in C++, network security, and low-level programming.
                                 Currently developing revolutionary covert communication systems.
                             </p>
                         </div>
-                        
+
                         <div class="stats-constellation">
-                            <div class="stat-satellite" data-orbit="1">
+                            <div class="stat-satellite">
                                 <div class="stat-glow">2nd</div>
                                 <div class="stat-label">AI4Y World</div>
                             </div>
-                            <div class="stat-satellite" data-orbit="2">
+                            <div class="stat-satellite">
                                 <div class="stat-glow">5+</div>
                                 <div class="stat-label">Major Projects</div>
                             </div>
-                            <div class="stat-satellite" data-orbit="3">
+                            <div class="stat-satellite">
                                 <div class="stat-glow">3+</div>
                                 <div class="stat-label">Years Experience</div>
                             </div>
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="floating-terminal">
                     <div class="terminal-header">
                         <div class="terminal-dots">
@@ -154,15 +154,15 @@
                 <div class="skill-nebula"></div>
                 <div class="data-streams" id="dataStreams"></div>
             </div>
-            
+
             <div class="scene-content">
                 <div class="galaxy-header">
                     <h2 class="cosmic-title smaller">Technical Expertise</h2>
                     <p class="cosmic-subtitle">Deep knowledge across multiple domains of cybersecurity and software development</p>
                 </div>
-                
+
                 <div class="skill-constellation">
-                    <div class="skill-planet primary" data-skill="security">
+                    <div class="skill-planet primary">
                         <div class="planet-surface">
                             <div class="skill-icon">🔐</div>
                             <h3>Cybersecurity & Network Security</h3>
@@ -180,7 +180,7 @@
                         <div class="planet-rings"></div>
                     </div>
 
-                    <div class="skill-planet secondary" data-skill="systems">
+                    <div class="skill-planet secondary">
                         <div class="planet-surface">
                             <div class="skill-icon">💻</div>
                             <h3>Low-Level Systems Programming</h3>
@@ -198,7 +198,7 @@
                         <div class="planet-rings"></div>
                     </div>
 
-                    <div class="skill-planet tertiary" data-skill="ai">
+                    <div class="skill-planet tertiary">
                         <div class="planet-surface">
                             <div class="skill-icon">🤖</div>
                             <h3>Full-Stack Development & AI</h3>
@@ -225,15 +225,15 @@
                 <div class="timeline-dimension"></div>
                 <div class="temporal-grid"></div>
             </div>
-            
+
             <div class="scene-content">
                 <div class="dimension-header">
                     <h2 class="cosmic-title smaller">Professional Experience</h2>
                     <p class="cosmic-subtitle">Building cutting-edge solutions and advancing cybersecurity research</p>
                 </div>
-                
+
                 <div class="timeline-constellation">
-                    <div class="timeline-node active" data-year="2023">
+                    <div class="timeline-node active">
                         <div class="node-core">
                             <div class="node-icon">🏢</div>
                             <div class="node-content">
@@ -245,7 +245,7 @@
                         <div class="node-orbit"></div>
                     </div>
 
-                    <div class="timeline-node active" data-year="2023">
+                    <div class="timeline-node active">
                         <div class="node-core">
                             <div class="node-icon">🎓</div>
                             <div class="node-content">
@@ -257,7 +257,7 @@
                         <div class="node-orbit"></div>
                     </div>
 
-                    <div class="timeline-node winner" data-year="2022">
+                    <div class="timeline-node winner">
                         <div class="node-core">
                             <div class="node-icon">🏆</div>
                             <div class="node-content">
@@ -278,15 +278,15 @@
                 <div class="project-matrix"></div>
                 <div class="code-rain" id="codeRain"></div>
             </div>
-            
+
             <div class="scene-content">
                 <div class="matrix-header">
                     <h2 class="cosmic-title smaller">Featured Projects</h2>
                     <p class="cosmic-subtitle">Innovative solutions in cybersecurity, AI, and systems programming</p>
                 </div>
-                
+
                 <div class="project-matrix-grid">
-                    <div class="project-cube featured" data-project="hitchhiker">
+                    <div class="project-cube featured">
                         <div class="cube-face front">
                             <div class="project-icon">🔐</div>
                             <h3>HitchHiker: Network Steganography Platform</h3>
@@ -304,7 +304,7 @@
                         </div>
                     </div>
 
-                    <div class="project-cube" data-project="trivia">
+                    <div class="project-cube">
                         <div class="cube-face front">
                             <div class="project-icon">⚡</div>
                             <h3>Multiplayer Trivia Game System</h3>
@@ -322,7 +322,7 @@
                         </div>
                     </div>
 
-                    <div class="project-cube highlight" data-project="analisis">
+                    <div class="project-cube highlight">
                         <div class="cube-face front">
                             <div class="project-icon">🏆</div>
                             <h3>Analisis: AI Medical Diagnosis Platform</h3>
@@ -348,7 +348,7 @@
                 <div class="personal-cosmos"></div>
                 <div class="connection-web" id="connectionWeb"></div>
             </div>
-            
+
             <div class="scene-content">
                 <div class="cosmos-center">
                     <div class="avatar-constellation">
@@ -357,28 +357,28 @@
                             <div class="avatar-rings"></div>
                         </div>
                     </div>
-                    
+
                     <div class="about-nebula">
                         <h2 class="cosmic-title smaller">Aviv Shaked</h2>
                         <h3 class="cosmic-subtitle">Cybersecurity Developer & Researcher</h3>
-                        
+
                         <div class="story-constellation">
                             <p class="cosmic-paragraph">
-                                I'm an 18-year-old cybersecurity developer and researcher from Haifa, Israel. Currently pursuing advanced studies 
+                                I'm an 18-year-old cybersecurity developer and researcher from Haifa, Israel. Currently pursuing advanced studies
                                 in cybersecurity at Magshimim Cyber Center and computer science at Bosmat Technological School.
                             </p>
                             <p class="cosmic-paragraph">
-                                My expertise lies in building secure, high-performance systems using modern C++. I've been part of the Captain Team 
-                                of Analisis, which represented Israel in the AI4Y World Competition, and I'm currently developing revolutionary 
+                                My expertise lies in building secure, high-performance systems using modern C++. I've been part of the Captain Team
+                                of Analisis, which represented Israel in the AI4Y World Competition, and I'm currently developing revolutionary
                                 covert communication systems.
                             </p>
                             <p class="cosmic-paragraph">
-                                Professional experience includes building automated tools and secure data systems at AllBikes, with expertise in 
-                                Python automation and data processing. Always eager to take on challenging projects that push the boundaries of 
+                                Professional experience includes building automated tools and secure data systems at AllBikes, with expertise in
+                                Python automation and data processing. Always eager to take on challenging projects that push the boundaries of
                                 cybersecurity and software engineering.
                             </p>
                         </div>
-                        
+
                         <div class="connection-constellation">
                             <a href="https://www.linkedin.com/in/aviv-shaked-59a4b7271/" target="_blank" class="cosmic-link">
                                 <div class="link-planet linkedin">
