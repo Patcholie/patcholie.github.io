@@ -5,21 +5,21 @@
 // Global Configuration
 const CAMERA_CONFIG = {
   // Camera movement settings
-  smoothness: 0.08, // Camera movement smoothness (lower = smoother)
-  rotationSmooth: 0.06, // Rotation smoothness
-  sceneDistance: 2000, // Distance between scenes in 3D space
+  smoothness: 0.08,
+  rotationSmooth: 0.06,
+  sceneDistance: 2000,
 
   // Scene positions in 3D space
   scenes: [
-    { x: 0, y: 0, z: 0, rotY: 0 }, // Hero
-    { x: 1500, y: -500, z: 2000, rotY: 20 }, // Skills
-    { x: -1200, y: 800, z: 4000, rotY: -15 }, // Experience
-    { x: 2000, y: -800, z: 6000, rotY: 25 }, // Projects
-    { x: 0, y: 1200, z: 8000, rotY: 0 }, // About
+    { x: 0, y: 0, z: 0, rotY: 0 },
+    { x: 1500, y: -500, z: 2000, rotY: 20 },
+    { x: -1200, y: 800, z: 4000, rotY: -15 },
+    { x: 2000, y: -800, z: 6000, rotY: 25 },
+    { x: 0, y: 1200, z: 8000, rotY: 0 },
   ],
 
   // Animation timings
-  sceneTransitionDuration: 1500, // Reduced duration for faster transitions
+  sceneTransitionDuration: 1800, // Adjusted for smoother scene overlap
   particleSpeed: 0.8,
 
   // Mobile optimizations
@@ -40,7 +40,6 @@ const prefersReducedMotion = window.matchMedia(
   "(prefers-reduced-motion: reduce)"
 ).matches;
 
-// Apply mobile optimizations
 if (isMobile) {
   Object.assign(CAMERA_CONFIG, CAMERA_CONFIG.mobile);
 }
@@ -58,7 +57,7 @@ class CinematicCamera {
 
     this.currentScene = 0;
     this.isTransitioning = false;
-    this.isScrolling = false; // Flag to prevent rapid scroll
+    this.isScrolling = false;
     this.scrollTimeout = null;
 
     this.viewport = document.getElementById("cameraViewport");
@@ -76,7 +75,7 @@ class CinematicCamera {
   init() {
     this.setupEventListeners();
     this.startAnimation();
-    this.goToScene(0, false); // Start at hero scene without animation
+    this.goToScene(0, false);
   }
 
   setupEventListeners() {
@@ -90,70 +89,47 @@ class CinematicCamera {
     }
 
     this.setupNavigationControls();
-    this.setupWheelControls(); // *** NEW: Added wheel controls
-
-    if (isMobile || isTouch) {
-      this.setupTouchControls();
-    }
-
+    this.setupWheelControls();
+    if (isMobile || isTouch) this.setupTouchControls();
     this.setupKeyboardControls();
     window.addEventListener("resize", () => this.handleResize());
   }
 
   setupNavigationControls() {
-    const navButtons = document.querySelectorAll(".nav-btn");
-    const navDots = document.querySelectorAll(".nav-dot");
-
-    navButtons.forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const sceneIndex = parseInt(btn.dataset.scene);
-        this.goToScene(sceneIndex);
-      });
-    });
-
-    navDots.forEach((dot) => {
-      dot.addEventListener("click", () => {
-        const sceneIndex = parseInt(dot.dataset.scene);
+    document.querySelectorAll(".nav-btn, .nav-dot").forEach((el) => {
+      el.addEventListener("click", () => {
+        const sceneIndex = parseInt(el.dataset.scene);
         this.goToScene(sceneIndex);
       });
     });
   }
 
-  // *** NEW: Method to handle mouse wheel scrolling for navigation
   setupWheelControls() {
     document.addEventListener(
       "wheel",
       (e) => {
         if (this.isScrolling || this.isTransitioning) return;
-
         this.isScrolling = true;
 
         if (e.deltaY > 0) {
-          // Scrolling down
-          if (this.currentScene < CAMERA_CONFIG.scenes.length - 1) {
+          if (this.currentScene < CAMERA_CONFIG.scenes.length - 1)
             this.goToScene(this.currentScene + 1);
-          }
         } else {
-          // Scrolling up
-          if (this.currentScene > 0) {
-            this.goToScene(this.currentScene - 1);
-          }
+          if (this.currentScene > 0) this.goToScene(this.currentScene - 1);
         }
 
-        // Timeout to prevent scrolling through multiple scenes at once
         setTimeout(() => {
           this.isScrolling = false;
-        }, 1000);
+        }, 1200);
       },
       { passive: true }
     );
   }
 
   setupTouchControls() {
-    let startY = 0;
-    let startX = 0;
-    let isSwiping = false;
-
+    let startY = 0,
+      startX = 0,
+      isSwiping = false;
     document.addEventListener(
       "touchstart",
       (e) => {
@@ -168,20 +144,14 @@ class CinematicCamera {
       "touchmove",
       (e) => {
         if (this.isTransitioning || isSwiping) return;
-
         const deltaY = e.touches[0].clientY - startY;
         const deltaX = e.touches[0].clientX - startX;
-
         if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 50) {
           isSwiping = true;
-          if (
-            deltaY < 0 &&
-            this.currentScene < CAMERA_CONFIG.scenes.length - 1
-          ) {
+          if (deltaY < 0 && this.currentScene < CAMERA_CONFIG.scenes.length - 1)
             this.goToScene(this.currentScene + 1);
-          } else if (deltaY > 0 && this.currentScene > 0) {
+          else if (deltaY > 0 && this.currentScene > 0)
             this.goToScene(this.currentScene - 1);
-          }
         }
       },
       { passive: true }
@@ -191,33 +161,19 @@ class CinematicCamera {
   setupKeyboardControls() {
     document.addEventListener("keydown", (e) => {
       if (this.isTransitioning) return;
-      switch (e.key) {
-        case "ArrowUp":
-        case "w":
-          e.preventDefault();
-          if (this.currentScene > 0) this.goToScene(this.currentScene - 1);
-          break;
-        case "ArrowDown":
-        case "s":
-          e.preventDefault();
-          if (this.currentScene < CAMERA_CONFIG.scenes.length - 1)
-            this.goToScene(this.currentScene + 1);
-          break;
-        case "Home":
-          e.preventDefault();
-          this.goToScene(0);
-          break;
-        case "End":
-          e.preventDefault();
-          this.goToScene(CAMERA_CONFIG.scenes.length - 1);
-          break;
-        default:
-          const num = parseInt(e.key);
-          if (!isNaN(num) && num >= 1 && num <= CAMERA_CONFIG.scenes.length) {
-            e.preventDefault();
-            this.goToScene(num - 1);
-          }
-          break;
+      let targetScene = this.currentScene;
+      if (e.key === "ArrowUp" || e.key === "w") targetScene--;
+      else if (e.key === "ArrowDown" || e.key === "s") targetScene++;
+      else if (e.key === "Home") targetScene = 0;
+      else if (e.key === "End") targetScene = CAMERA_CONFIG.scenes.length - 1;
+      else {
+        const num = parseInt(e.key);
+        if (!isNaN(num) && num >= 1 && num <= CAMERA_CONFIG.scenes.length)
+          targetScene = num - 1;
+      }
+      if (targetScene !== this.currentScene) {
+        e.preventDefault();
+        this.goToScene(targetScene);
       }
     });
   }
@@ -228,49 +184,50 @@ class CinematicCamera {
       sceneIndex >= CAMERA_CONFIG.scenes.length ||
       sceneIndex === this.currentScene ||
       this.isTransitioning
-    ) {
+    )
       return;
-    }
 
     this.isTransitioning = true;
     const prevScene = this.currentScene;
     this.currentScene = sceneIndex;
-    const targetScene = CAMERA_CONFIG.scenes[sceneIndex];
+    const targetSceneData = CAMERA_CONFIG.scenes[sceneIndex];
 
     this.updateNavigationUI();
 
     if (!animate || prefersReducedMotion) {
-      this.position = { ...targetScene };
-      this.target = { ...targetScene };
-      this.rotation.y = targetScene.rotY;
-      this.targetRotation.y = targetScene.rotY;
+      this.position = { ...targetSceneData };
+      this.target = { ...targetSceneData };
+      this.rotation.y = targetSceneData.rotY;
+      this.targetRotation.y = targetSceneData.rotY;
       this.updateSceneVisibility();
       this.isTransitioning = false;
       return;
     }
 
-    this.target = { ...targetScene };
-    this.targetRotation.y = targetScene.rotY;
+    this.target = { ...targetSceneData };
+    this.targetRotation.y = targetSceneData.rotY;
 
-    this.updateSceneVisibility(prevScene);
-    this.triggerSceneAnimations(sceneIndex);
+    const direction = sceneIndex > prevScene ? "forward" : "backward";
+    this.updateSceneVisibility(prevScene, direction);
 
     setTimeout(() => {
       this.isTransitioning = false;
+      // Clean up exiting classes after transition
+      document
+        .querySelectorAll(".scene.exiting")
+        .forEach((s) =>
+          s.classList.remove("exiting", "exiting-forward", "exiting-backward")
+        );
     }, CAMERA_CONFIG.sceneTransitionDuration);
   }
 
   updateNavigationUI() {
-    document
-      .querySelectorAll(".nav-btn")
-      .forEach((btn, index) =>
-        btn.classList.toggle("active", index === this.currentScene)
+    document.querySelectorAll(".nav-btn, .nav-dot").forEach((el, index) => {
+      el.classList.toggle(
+        "active",
+        parseInt(el.dataset.scene) === this.currentScene
       );
-    document
-      .querySelectorAll(".nav-dot")
-      .forEach((dot, index) =>
-        dot.classList.toggle("active", index === this.currentScene)
-      );
+    });
     this.updateProgressIndicator();
   }
 
@@ -286,19 +243,37 @@ class CinematicCamera {
     }
   }
 
-  updateSceneVisibility(prevScene = -1) {
-    document.querySelectorAll(".scene").forEach((scene, index) => {
+  // *** MODIFIED: Scene visibility logic for smoother transitions
+  updateSceneVisibility(prevSceneIndex = -1, direction = "forward") {
+    const scenes = document.querySelectorAll(".scene");
+    scenes.forEach((scene, index) => {
       const isActive = index === this.currentScene;
-      const wasActive = index === prevScene;
+      const wasActive = index === prevSceneIndex;
 
-      scene.classList.toggle("active", isActive);
-      scene.classList.toggle("exiting", wasActive);
-
-      if (isActive || wasActive) {
+      if (isActive) {
         scene.style.display = "flex";
+        scene.classList.add("active");
+        scene.classList.remove(
+          "exiting",
+          "exiting-forward",
+          "exiting-backward"
+        );
+      } else if (wasActive) {
+        scene.classList.remove("active");
+        scene.classList.add("exiting", `exiting-${direction}`);
       } else {
+        scene.classList.remove(
+          "active",
+          "exiting",
+          "exiting-forward",
+          "exiting-backward"
+        );
+        // Hide non-relevant scenes to improve performance
         setTimeout(() => {
-          if (!scene.classList.contains("active")) {
+          if (
+            !scene.classList.contains("active") &&
+            !scene.classList.contains("exiting")
+          ) {
             scene.style.display = "none";
           }
         }, CAMERA_CONFIG.sceneTransitionDuration);
@@ -306,23 +281,7 @@ class CinematicCamera {
     });
   }
 
-  triggerSceneAnimations(sceneIndex) {
-    const scene = document.querySelector(`.scene[data-scene="${sceneIndex}"]`);
-    if (!scene) return;
-    scene.classList.remove("scene-enter-done");
-    void scene.offsetWidth; // Trigger reflow
-    scene.classList.add("scene-enter");
-    setTimeout(() => {
-      scene.classList.add("scene-enter-done");
-      scene.classList.remove("scene-enter");
-    }, 1500); // Match animation duration
-  }
-
-  updateCamera(currentTime) {
-    this.lastTime = this.lastTime || currentTime;
-    const deltaTime = currentTime - this.lastTime;
-    this.lastTime = currentTime;
-
+  updateCamera() {
     this.position.x +=
       (this.target.x - this.position.x) * CAMERA_CONFIG.smoothness;
     this.position.y +=
@@ -354,8 +313,8 @@ class CinematicCamera {
   }
 
   startAnimation() {
-    const animate = (currentTime) => {
-      this.updateCamera(currentTime);
+    const animate = () => {
+      this.updateCamera();
       this.animationId = requestAnimationFrame(animate);
     };
     this.animationId = requestAnimationFrame(animate);
@@ -372,25 +331,17 @@ class CinematicCamera {
 }
 
 // =================================================================================
-// ENHANCED 3D PARTICLE SYSTEM
+// PARTICLE SYSTEM
 // =================================================================================
 
 class ParticleUniverse {
   constructor() {
     this.particleCount = isMobile ? 50 : 150;
-    this.shootingStarCount = isMobile ? 2 : 5;
-    this.codeFragmentCount = isMobile ? 10 : 30;
-    this.dataStreamCount = isMobile ? 5 : 15;
     this.init();
   }
-
   init() {
     this.createParticles();
-    this.createShootingStars();
-    this.createCodeFragments();
-    this.createDataStreams();
   }
-
   createParticles() {
     const layers = document.querySelectorAll(".particle-layer");
     layers.forEach((layer, layerIndex) => {
@@ -407,70 +358,10 @@ class ParticleUniverse {
       }
     });
   }
-
-  createShootingStars() {
-    const container = document.getElementById("shootingStars");
-    if (!container) return;
-    for (let i = 0; i < this.shootingStarCount; i++) {
-      const star = document.createElement("div");
-      star.className = "shooting-star";
-      star.style.left = `${100 + Math.random() * 50}vw`;
-      star.style.top = `${Math.random() * 50}vh`;
-      star.style.animationDelay = `${Math.random() * 10}s`;
-      star.style.animationDuration = `${2 + Math.random() * 3}s`;
-      container.appendChild(star);
-    }
-  }
-
-  createCodeFragments() {
-    const container = document.getElementById("codeFragments");
-    if (!container) return;
-    const snippets = [
-      "std::mutex",
-      "class HitchHiker",
-      "transmit()",
-      "secure",
-      "pthread_t",
-      "encrypt()",
-      "0x41414141",
-      "TCP_NODELAY",
-      "socket()",
-      "bind()",
-      "listen()",
-      "accept()",
-      "recv()",
-      "send()",
-      "close()",
-    ];
-    for (let i = 0; i < this.codeFragmentCount; i++) {
-      const frag = document.createElement("div");
-      frag.className = "code-fragment";
-      frag.textContent = snippets[Math.floor(Math.random() * snippets.length)];
-      frag.style.left = `${Math.random() * 100}vw`;
-      frag.style.animationDelay = `${Math.random() * 15}s`;
-      frag.style.animationDuration = `${10 + Math.random() * 10}s`;
-      frag.style.fontSize = `${0.6 + Math.random() * 0.4}rem`;
-      container.appendChild(frag);
-    }
-  }
-
-  createDataStreams() {
-    const container = document.getElementById("dataStreams");
-    if (!container) return;
-    for (let i = 0; i < this.dataStreamCount; i++) {
-      const stream = document.createElement("div");
-      stream.className = "data-stream";
-      stream.style.left = `${Math.random() * 100}vw`;
-      stream.style.animationDelay = `${Math.random() * 8}s`;
-      stream.style.animationDuration = `${6 + Math.random() * 4}s`;
-      stream.style.height = `${100 + Math.random() * 200}px`;
-      container.appendChild(stream);
-    }
-  }
 }
 
 // =================================================================================
-// INTERACTIVE ELEMENTS & EFFECTS
+// INTERACTIVE EFFECTS & SMOOTH CURSOR
 // =================================================================================
 
 class InteractiveEffects {
@@ -479,24 +370,47 @@ class InteractiveEffects {
   }
 
   init() {
-    this.setupCursor();
+    this.setupSmoothCursor();
     this.setupProjectCubeInteractions();
   }
 
-  setupCursor() {
-    const cursor = document.querySelector(".custom-cursor");
-    if (!cursor || isMobile || isTouch) return;
+  // *** NEW: Smooth, two-part cursor system
+  setupSmoothCursor() {
+    if (isMobile || isTouch) return;
 
-    document.addEventListener("mousemove", (e) => {
-      cursor.style.transform = `translate3d(${e.clientX}px, ${e.clientY}px, 0)`;
+    const dot = document.querySelector(".cursor-dot");
+    const circle = document.querySelector(".cursor-circle");
+
+    let mouseX = 0,
+      mouseY = 0;
+    let circleX = 0,
+      circleY = 0;
+
+    window.addEventListener("mousemove", (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
     });
+
+    const animateCursor = () => {
+      // Dot position is immediate
+      dot.style.transform = `translate(${mouseX}px, ${mouseY}px)`;
+
+      // Circle position is smoothed (lerped)
+      const smoothing = 0.15;
+      circleX += (mouseX - circleX) * smoothing;
+      circleY += (mouseY - circleY) * smoothing;
+      circle.style.transform = `translate(${circleX}px, ${circleY}px)`;
+
+      requestAnimationFrame(animateCursor);
+    };
+    animateCursor();
 
     const interactiveElements = document.querySelectorAll(
       "a, button, .project-cube, .skill-planet, .timeline-node, .dot"
     );
     interactiveElements.forEach((el) => {
-      el.addEventListener("mouseenter", () => cursor.classList.add("hover"));
-      el.addEventListener("mouseleave", () => cursor.classList.remove("hover"));
+      el.addEventListener("mouseenter", () => circle.classList.add("hover"));
+      el.addEventListener("mouseleave", () => circle.classList.remove("hover"));
     });
   }
 
@@ -522,30 +436,22 @@ class LoadingManager {
 
   init() {
     document.body.classList.add("loading");
-    // *** MODIFIED: Reduced artificial delay for a snappier start
     const minLoadingTime = 1500;
     const startTime = Date.now();
-
     window.addEventListener("load", () => {
       const elapsedTime = Date.now() - startTime;
       const remainingTime = Math.max(0, minLoadingTime - elapsedTime);
       setTimeout(() => this.completeLoading(), remainingTime);
     });
-
-    // Fallback if load event fails
-    setTimeout(() => this.completeLoading(), 4000);
+    setTimeout(() => this.completeLoading(), 4000); // Fallback
   }
 
   completeLoading() {
     if (this.isLoaded) return;
     this.isLoaded = true;
-
     if (this.loadingScreen) this.loadingScreen.classList.add("hidden");
     document.body.classList.remove("loading");
-
-    setTimeout(() => {
-      window.portfolioApp.initialize();
-    }, 500);
+    setTimeout(() => window.portfolioApp.initialize(), 500);
   }
 }
 
@@ -563,14 +469,10 @@ class CinematicPortfolio {
 
   initialize() {
     if (this.isInitialized) return;
-    console.log("🎬 Initializing Cinematic Portfolio Experience...");
-
     this.camera = new CinematicCamera();
     this.particleUniverse = new ParticleUniverse();
     this.interactiveEffects = new InteractiveEffects();
-
     this.isInitialized = true;
-    console.log("✨ Cinematic Portfolio Experience Ready!");
   }
 
   destroy() {
@@ -583,23 +485,9 @@ class CinematicPortfolio {
 // =================================================================================
 
 window.portfolioApp = new CinematicPortfolio();
-
-document.addEventListener("DOMContentLoaded", () => {
-  new LoadingManager();
-});
-
+document.addEventListener("DOMContentLoaded", () => new LoadingManager());
 document.addEventListener("visibilitychange", () => {
   document.body.style.animationPlayState = document.hidden
     ? "paused"
     : "running";
 });
-
-window.addEventListener("error", (e) => {
-  console.warn("⚠️ Non-critical error in portfolio:", e.error);
-});
-
-window.addEventListener("beforeunload", () => {
-  if (window.portfolioApp) window.portfolioApp.destroy();
-});
-
-console.log("🚀 Cinematic Portfolio Engine Loaded - Ready for Launch!");
