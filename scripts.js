@@ -64,11 +64,11 @@ function createParticles() {
     }
 }
 
-// Enhanced Parallax System
+// Simplified Parallax System
 function initializeParallax() {
     parallaxElements = document.querySelectorAll('.parallax-element');
     
-    // Initialize parallax elements with their properties
+    // Initialize parallax elements with simple, smooth properties
     parallaxElements.forEach((element) => {
         const speed = parseFloat(element.dataset.speed) || 0.5;
         const direction = element.dataset.direction || 'up';
@@ -78,7 +78,43 @@ function initializeParallax() {
             direction,
             originalTransform: element.style.transform || ''
         };
+        
+        // Smooth transition for non-scroll interactions only
+        element.style.transition = 'opacity 0.3s ease, transform 0.1s linear';
+        element.style.willChange = 'transform, opacity';
     });
+}
+
+// Smooth intersection observer for reveals
+function initializeAdvancedObserver() {
+    const observerOptions = {
+        threshold: [0, 0.2, 0.5, 0.8, 1],
+        rootMargin: '50px 0px 50px 0px'
+    };
+
+    const smoothObserver = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+            const element = entry.target;
+            
+            if (entry.isIntersecting) {
+                element.classList.add('reveal');
+                
+                // Smooth staggered animation for child elements
+                if (element.classList.contains('card') || element.classList.contains('list-item')) {
+                    const siblings = [...element.parentElement.children];
+                    const index = siblings.indexOf(element);
+                    element.style.transitionDelay = `${index * 0.05}s`; // Reduced delay for smoothness
+                }
+            } else if (!isMobile) {
+                element.classList.remove('reveal');
+                element.style.transitionDelay = '';
+            }
+        });
+    }, observerOptions);
+
+    // Observe all animatable elements
+    const elementsToObserve = document.querySelectorAll('.content-section, .card, .list-item');
+    elementsToObserve.forEach(el => smoothObserver.observe(el));
 }
 
 // Mouse-based parallax for desktop only
@@ -114,52 +150,81 @@ function updateMouseParallax() {
     animateMouseParallax();
 }
 
-// Enhanced Scroll-based Parallax
+// Smooth Camera-like Parallax System
 function updateScrollParallax() {
-    if (isLoading) return;
+    if (isLoading || isMobile) return;
     
     const content = document.querySelector('.content');
     const scrollTop = content ? content.scrollTop : window.pageYOffset;
     const windowHeight = window.innerHeight;
+    const documentHeight = content ? content.scrollHeight : document.documentElement.scrollHeight;
+    
+    // Global scroll progress (0 to 1) - smooth and linear
+    const globalScrollProgress = Math.min(scrollTop / (documentHeight - windowHeight), 1);
     
     parallaxElements.forEach((element) => {
         const rect = element.getBoundingClientRect();
         const elementTop = rect.top + scrollTop;
         const elementHeight = rect.height;
+        const elementCenter = elementTop + elementHeight / 2;
         
-        // Check if element is in viewport or nearby
-        if (rect.top < windowHeight + 200 && rect.bottom > -200) {
+        // Only affect elements that are in or near the viewport
+        if (rect.top < windowHeight + 100 && rect.bottom > -100) {
             const { speed, direction } = element.parallaxData;
             
-            // Calculate parallax offset based on scroll position
-            const scrollProgress = (scrollTop - elementTop + windowHeight) / (windowHeight + elementHeight);
-            const parallaxOffset = (scrollProgress - 0.5) * speed * 100;
+            // Calculate smooth element progress relative to viewport center
+            const viewportCenter = scrollTop + windowHeight / 2;
+            const distanceFromCenter = (elementCenter - viewportCenter) / windowHeight;
+            
+            // Smooth, predictable movement based on distance from viewport center
+            const moveAmount = distanceFromCenter * speed * 60; // Reduced for smoothness
             
             let transform = '';
             
             switch (direction) {
                 case 'left':
-                    transform = `translateX(${-parallaxOffset}px)`;
+                    transform = `translateX(${-moveAmount}px) translateY(${moveAmount * 0.3}px)`;
                     break;
                 case 'right':
-                    transform = `translateX(${parallaxOffset}px)`;
+                    transform = `translateX(${moveAmount}px) translateY(${moveAmount * 0.3}px)`;
                     break;
                 case 'up':
-                    transform = `translateY(${-parallaxOffset}px)`;
+                    transform = `translateY(${-moveAmount}px)`;
                     break;
                 case 'down':
-                    transform = `translateY(${parallaxOffset}px)`;
+                    transform = `translateY(${moveAmount}px)`;
                     break;
                 default:
-                    transform = `translateY(${-parallaxOffset}px)`;
+                    // Default smooth vertical movement
+                    transform = `translateY(${-moveAmount * 0.5}px)`;
             }
             
+            // Apply smooth transform
             element.style.transform = transform;
+            
+            // Smooth opacity changes for depth
+            const opacity = Math.max(0.7, 1 - Math.abs(distanceFromCenter) * 0.3);
+            element.style.opacity = opacity;
         }
     });
+    
+    // Smooth background parallax
+    updateSmoothBackgroundParallax(globalScrollProgress);
 }
 
-// Horizontal Scroll Section
+// Smooth background movement
+function updateSmoothBackgroundParallax(scrollProgress) {
+    const parallaxBg = document.getElementById('parallaxBg');
+    if (!parallaxBg || isMobile) return;
+    
+    // Very subtle, smooth movement
+    const moveY = scrollProgress * 20; // Slow, smooth movement
+    const scale = 1 + scrollProgress * 0.02; // Very subtle scaling
+    
+    parallaxBg.style.transform = `translateY(${moveY}px) scale(${scale})`;
+}
+
+// Smooth Horizontal Scroll Section
 function setupHorizontalScroll() {
     const horizontalContainer = document.getElementById('horizontalContainer');
     const horizontalSection = document.querySelector('.horizontal-scroll-section');
@@ -170,15 +235,26 @@ function setupHorizontalScroll() {
         const content = document.querySelector('.content');
         const scrollTop = content ? content.scrollTop : window.pageYOffset;
         const sectionRect = horizontalSection.getBoundingClientRect();
-        const sectionTop = sectionRect.top + scrollTop;
         
-        // Calculate when the section is in view
-        if (sectionRect.top <= 0 && sectionRect.bottom >= window.innerHeight) {
-            const progress = Math.abs(sectionRect.top) / (sectionRect.height - window.innerHeight);
+        // Only when section is in view
+        if (sectionRect.top <= window.innerHeight && sectionRect.bottom >= 0) {
+            // Smooth progress calculation
+            const progress = Math.max(0, Math.min(1, 
+                (window.innerHeight - sectionRect.top) / (window.innerHeight + sectionRect.height)
+            ));
+            
             const maxScroll = horizontalContainer.scrollWidth - horizontalContainer.clientWidth;
             const scrollValue = progress * maxScroll;
             
+            // Simple, smooth horizontal movement
             horizontalContainer.style.transform = `translateX(-${scrollValue}px)`;
+            
+            // Subtle opacity changes for items
+            const items = horizontalContainer.querySelectorAll('.horizontal-item');
+            items.forEach((item, index) => {
+                const itemProgress = Math.max(0, Math.min(1, progress - (index * 0.1)));
+                item.style.opacity = 0.6 + (itemProgress * 0.4);
+            });
         }
     }
     
@@ -401,9 +477,9 @@ function setupMobileNavigation() {
     }
 }
 
-// Enhanced Scroll Animations
+// Smooth Scroll Animations Setup
 function setupScrollAnimations() {
-    // Scroll progress indicator
+    // Scroll progress indicator with smooth glow
     function updateScrollProgress() {
         const content = document.querySelector('.content');
         const scrollProgress = document.getElementById('scrollProgress');
@@ -416,48 +492,7 @@ function setupScrollAnimations() {
         }
     }
 
-    // Intersection Observer for reveal animations
-    const observerOptions = {
-        threshold: isMobile ? 0.1 : 0.2,
-        rootMargin: isMobile ? '0px 0px -20px 0px' : '0px 0px -50px 0px'
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            const el = entry.target;
-
-            if (entry.isIntersecting) {
-                el.classList.add('reveal');
-
-                // Staggered animation for child elements
-                if (el.classList.contains('card') || el.classList.contains('list-item')) {
-                    const siblings = [...el.parentElement.children];
-                    const index = siblings.indexOf(el);
-                    el.style.transitionDelay = `${index * 0.1}s`;
-                }
-
-                const sectionTitle = el.querySelector('.section-title');
-                if (sectionTitle) {
-                    sectionTitle.classList.add('animate');
-                }
-            } else if (!isMobile) {
-                // Only reset on desktop for performance
-                el.classList.remove('reveal');
-                el.style.transitionDelay = '';
-
-                const sectionTitle = el.querySelector('.section-title');
-                if (sectionTitle) {
-                    sectionTitle.classList.remove('animate');
-                }
-            }
-        });
-    }, observerOptions);
-
-    // Observe elements
-    const elementsToObserve = document.querySelectorAll('.content-section, .card, .list-item');
-    elementsToObserve.forEach(el => observer.observe(el));
-
-    // Combined scroll listener with better performance
+    // Smooth combined scroll listener
     const content = document.querySelector('.content');
     
     const scrollHandler = () => {
@@ -476,9 +511,22 @@ function setupScrollAnimations() {
 
     if (content) {
         content.addEventListener('scroll', scrollHandler, { passive: true });
+        
+        // Smooth scroll behavior
+        content.style.scrollBehavior = 'smooth';
+        content.style.webkitOverflowScrolling = 'touch';
     } else {
         window.addEventListener('scroll', scrollHandler, { passive: true });
     }
+    
+    // Initialize the smooth observer
+    initializeAdvancedObserver();
+}
+
+// Remove mouse parallax to prevent background jumping
+function updateMouseParallax() {
+    // Disabled to prevent jumping background
+    return;
 }
 
 // Active Navigation Highlighting
@@ -633,9 +681,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupKeyboardNavigation();
     optimizePerformance();
     
-    if (!isMobile && !isTouch) {
-        updateMouseParallax();
-    }
+    // Mouse parallax removed to prevent background jumping
 });
 
 // Handle window resize
