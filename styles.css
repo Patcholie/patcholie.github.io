@@ -340,47 +340,9 @@ body {
   gap: 1rem;
 }
 
-.notification-icon {
-  position: relative;
-  width: 20px;
-  height: 20px;
-  color: var(--text-secondary);
-  cursor: none;
-  transition: all var(--transition-smooth);
-}
-.notification-icon svg {
-  animation: pulse 2s infinite;
-}
 @keyframes pulse {
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.05); }
-}
-
-.notification-icon:hover {
-  color: var(--text-primary);
-  transform: scale(1.1);
-}
-
-.notification-badge {
-  position: absolute;
-  top: -4px;
-  right: -4px;
-  width: 12px;
-  height: 12px;
-  background: var(--accent-primary);
-  color: var(--bg-primary);
-  border-radius: 50%;
-  font-size: 8px;
-  font-weight: 600;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  animation: bounce 1s infinite;
-}
-@keyframes bounce {
-  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-  40% { transform: translateY(-3px); }
-  60% { transform: translateY(-2px); }
 }
 
 .profile-avatar {
