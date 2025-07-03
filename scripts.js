@@ -32,6 +32,7 @@ const CONFIG = {
     trailSmoothing: 0.1,        // Smooth trail
   },
   
+  
   // Immersive effects
   effects: {
     particleCount: 200,
