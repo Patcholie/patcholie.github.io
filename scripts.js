@@ -374,7 +374,7 @@ class InteractiveEffects {
     this.setupProjectCubeInteractions();
   }
 
-  // *** NEW: Smooth, two-part cursor system
+  // *** Smooth, two-part cursor system
   setupSmoothCursor() {
     if (isMobile || isTouch) return;
 
