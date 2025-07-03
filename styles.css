@@ -1296,6 +1296,10 @@ body {
   body {
     padding: 0;
   }
+  body.loading {
+    overflow: hidden;
+}
+
   .card-grid {
     grid-template-columns: 1fr;
   }
