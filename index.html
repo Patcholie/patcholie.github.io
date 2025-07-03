@@ -23,23 +23,24 @@
     <!-- Animated Particles -->
     <div class="particles-container" id="particles"></div>
 
-    <!-- Parallax Background -->
+    <!-- Enhanced Parallax Background -->
     <div class="parallax-bg" id="parallaxBg">
-            <video autoplay muted loop playsinline id="backgroundVideo">
-        <source src="https://cdn.pixabay.com/video/2024/07/27/223459_large.mp4" type="video/mp4">
-        Your browser does not support the video tag.
-    </video>
-
+        <video autoplay muted loop playsinline id="backgroundVideo">
+            <source src="sky_loop_background.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="glass-overlay"></div>
+        <div class="glass-reflection"></div>
     </div>
 
-    <!-- Custom Cursor -->
-    <div class="cursor cursor--small"></div>
-    <div class="cursor cursor--large"></div>
+    <!-- Custom Cursor (Desktop Only) -->
+    <div class="cursor cursor--small desktop-only"></div>
+    <div class="cursor cursor--large desktop-only"></div>
     
     <!-- Main App -->
     <div class="app">
         <!-- Header -->
-        <header class="header">
+        <header class="header glass-panel">
             <div class="traffic-lights">
                 <div class="traffic-light red"></div>
                 <div class="traffic-light yellow"></div>
@@ -51,11 +52,18 @@
             </div>
         </header>
         
+        <!-- Mobile Navigation Toggle -->
+        <button class="mobile-nav-toggle mobile-only" id="mobileNavToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
         <!-- Main Layout -->
         <div class="main-layout">
             <!-- Sidebar -->
-            <nav class="sidebar">
-                <div class="sidebar-section">
+            <nav class="sidebar glass-panel" id="sidebar">
+                <div class="sidebar-section parallax-element" data-speed="0.5">
                     <div class="sidebar-title">Navigation</div>
                     <a href="#home" class="sidebar-item active">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -95,7 +103,7 @@
                     </a>
                 </div>
                 
-                <div class="sidebar-section">
+                <div class="sidebar-section parallax-element" data-speed="0.3">
                     <div class="sidebar-title">Connect</div>
                     <a href="https://www.linkedin.com/in/aviv-shaked-59a4b7271/" target="_blank" class="sidebar-item">
                         <svg viewBox="0 0 24 24" fill="currentColor">
@@ -121,9 +129,9 @@
             <!-- Main Content -->
             <main class="content">
                 <!-- Hero Section -->
-                <section id="home" class="content-section">
+                <section id="home" class="content-section parallax-section">
                     <div class="hero">
-                        <div class="hero-content">
+                        <div class="hero-content parallax-element" data-speed="0.8" data-direction="left">
                             <h1>Aviv Shaked</h1>
                             <p class="hero-description">
                                 18-year-old Cybersecurity Developer & Researcher from Haifa, Israel. Expert in C++, network security, 
@@ -131,26 +139,26 @@
                                 secure, high-performance applications.
                             </p>
                             <div class="hero-stats">
-                                <div class="stat-item">
-                                    <span class="stat-number" data-count="2">2nd</span>
+                                <div class="stat-item" data-count="2">
+                                    <span class="stat-number">2nd</span>
                                     <span class="stat-label">AI4Y World</span>
                                 </div>
-                                <div class="stat-item">
-                                    <span class="stat-number" data-count="5">5+</span>
+                                <div class="stat-item" data-count="5">
+                                    <span class="stat-number">5+</span>
                                     <span class="stat-label">Major Projects</span>
                                 </div>
-                                <div class="stat-item">
-                                    <span class="stat-number" data-count="3">3+</span>
+                                <div class="stat-item" data-count="3">
+                                    <span class="stat-number">3+</span>
                                     <span class="stat-label">Years Experience</span>
                                 </div>
                             </div>
-                            <div style="display: flex; gap: 1rem; flex-wrap: wrap;">
+                            <div class="hero-buttons">
                                 <a href="#projects" class="btn btn-primary magnetic-btn">View Projects</a>
                                 <a href="https://drive.google.com/file/d/1cUoF--q94LtUQKox5eGfMYom70GJoIGc/view?usp=sharing" target="_blank" class="btn magnetic-btn">Resume</a>
                             </div>
                         </div>
-                        <div class="hero-visual">
-                            <div class="code-window">
+                        <div class="hero-visual parallax-element" data-speed="0.6" data-direction="right">
+                            <div class="code-window glass-panel">
                                 <div class="code-header">
                                     <div class="code-dots">
                                         <div class="code-dot red"></div>
@@ -175,16 +183,38 @@
                     </div>
                 </section>
 
+                <!-- Horizontal Scroll Section -->
+                <section class="horizontal-scroll-section">
+                    <div class="horizontal-scroll-container" id="horizontalContainer">
+                        <div class="horizontal-item glass-panel">
+                            <h3>Innovation</h3>
+                            <p>Pushing boundaries in cybersecurity research</p>
+                        </div>
+                        <div class="horizontal-item glass-panel">
+                            <h3>Excellence</h3>
+                            <p>2nd place globally in AI4Y World Competition</p>
+                        </div>
+                        <div class="horizontal-item glass-panel">
+                            <h3>Security</h3>
+                            <p>Building undetectable communication systems</p>
+                        </div>
+                        <div class="horizontal-item glass-panel">
+                            <h3>Performance</h3>
+                            <p>High-performance C++ applications</p>
+                        </div>
+                    </div>
+                </section>
+
                 <!-- Expertise Section -->
-                <section id="expertise" class="content-section">
-                    <div class="section-header">
+                <section id="expertise" class="content-section parallax-section">
+                    <div class="section-header parallax-element" data-speed="0.4" data-direction="up">
                         <div>
                             <h2 class="section-title">Technical Expertise</h2>
                             <p class="section-subtitle">Deep knowledge across multiple domains of cybersecurity and software development</p>
                         </div>
                     </div>
                     <div class="card-grid">
-                        <div class="card">
+                        <div class="card glass-panel parallax-element" data-speed="0.6" data-direction="left">
                             <div class="card-header">
                                 <div class="card-icon">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -210,7 +240,7 @@
                             </div>
                         </div>
 
-                        <div class="card">
+                        <div class="card glass-panel parallax-element" data-speed="0.8" data-direction="up">
                             <div class="card-header">
                                 <div class="card-icon">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -235,7 +265,7 @@
                             </div>
                         </div>
 
-                        <div class="card">
+                        <div class="card glass-panel parallax-element" data-speed="0.5" data-direction="right">
                             <div class="card-header">
                                 <div class="card-icon">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -263,15 +293,15 @@
                 </section>
 
                 <!-- Experience Section -->
-                <section id="experience" class="content-section">
-                    <div class="section-header">
+                <section id="experience" class="content-section parallax-section">
+                    <div class="section-header parallax-element" data-speed="0.3" data-direction="left">
                         <div>
                             <h2 class="section-title">Professional Experience</h2>
                             <p class="section-subtitle">Building cutting-edge solutions and advancing cybersecurity research</p>
                         </div>
                     </div>
-                    <div style="display: flex; flex-direction: column; gap: 0.75rem;">
-                        <div class="list-item">
+                    <div class="experience-timeline">
+                        <div class="list-item glass-panel parallax-element" data-speed="0.7" data-direction="right">
                             <div class="list-content">
                                 <div class="list-icon">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -286,7 +316,7 @@
                             <span class="status-badge active">2023-Present</span>
                         </div>
 
-                        <div class="list-item">
+                        <div class="list-item glass-panel parallax-element" data-speed="0.5" data-direction="left">
                             <div class="list-content">
                                 <div class="list-icon">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -302,7 +332,7 @@
                             <span class="status-badge active">2023-Present</span>
                         </div>
 
-                        <div class="list-item">
+                        <div class="list-item glass-panel parallax-element" data-speed="0.8" data-direction="up">
                             <div class="list-content">
                                 <div class="list-icon">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -320,15 +350,15 @@
                 </section>
 
                 <!-- Projects Section -->
-                <section id="projects" class="content-section">
-                    <div class="section-header">
+                <section id="projects" class="content-section parallax-section">
+                    <div class="section-header parallax-element" data-speed="0.4" data-direction="up">
                         <div>
                             <h2 class="section-title">Featured Projects</h2>
                             <p class="section-subtitle">Innovative solutions in cybersecurity, AI, and systems programming</p>
                         </div>
                     </div>
                     <div class="card-grid">
-                        <div class="card">
+                        <div class="card glass-panel parallax-element" data-speed="0.6" data-direction="left">
                             <div class="card-header">
                                 <div class="card-icon">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -355,7 +385,7 @@
                             </div>
                         </div>
 
-                        <div class="card">
+                        <div class="card glass-panel parallax-element" data-speed="0.8" data-direction="right">
                             <div class="card-header">
                                 <div class="card-icon">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -380,7 +410,7 @@
                             </div>
                         </div>
 
-                        <div class="card">
+                        <div class="card glass-panel parallax-element" data-speed="0.5" data-direction="up">
                             <div class="card-header">
                                 <div class="card-icon">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -410,14 +440,14 @@
                 </section>
 
                 <!-- About Section -->
-                <section id="about" class="content-section">
-                    <div class="section-header">
+                <section id="about" class="content-section parallax-section">
+                    <div class="section-header parallax-element" data-speed="0.3" data-direction="left">
                         <div>
                             <h2 class="section-title">About Me</h2>
                             <p class="section-subtitle">Passionate about cybersecurity, innovation, and building the future</p>
                         </div>
                     </div>
-                    <div class="card">
+                    <div class="card glass-panel parallax-element" data-speed="0.6" data-direction="right">
                         <div class="card-header">
                             <div style="width: 60px; height: 60px; border-radius: 12px; overflow: hidden; border: 2px solid var(--border-medium);">
                                 <img src="https://avatars.githubusercontent.com/u/116463487?v=4" style="width: 100%; height: 100%; object-fit: cover;" alt="Aviv Shaked">
