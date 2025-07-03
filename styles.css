@@ -60,7 +60,7 @@ body {
   }
 }
 
-/* --- Orbital Cursor Styling --- */
+/* --- FIXED: Cursor back to original working version --- */
 .cursor-dot,
 .cursor-circle {
   position: fixed;
@@ -80,15 +80,17 @@ body {
 .cursor-circle {
   width: 32px;
   height: 32px;
-  border: 1px solid var(--text-tertiary);
+  border: 1px solid rgba(255, 255, 255, 0.3);
   transition: width 0.3s ease, height 0.3s ease, border-color 0.3s ease,
     background-color 0.3s ease, transform 0.05s linear;
+  backdrop-filter: blur(10px);
 }
 .cursor-circle.hover {
   width: 50px;
   height: 50px;
-  background-color: rgba(255, 255, 255, 0.1);
+  background-color: rgba(255, 255, 255, 0.05);
   border-color: var(--accent-primary);
+  backdrop-filter: blur(15px);
 }
 @media (max-width: 768px), (pointer: coarse) {
   .cursor-dot,
@@ -227,13 +229,18 @@ body {
   gap: 1rem;
 }
 .nav-btn {
-  background: var(--glass-primary);
-  border: 1px solid var(--border-subtle);
-  border-radius: 12px;
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.08) 0%,
+    rgba(255, 255, 255, 0.02) 50%,
+    rgba(255, 255, 255, 0.06) 100%
+  );
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
   padding: 1rem;
   color: var(--text-primary);
-  transition: all var(--hover-smooth);
-  backdrop-filter: blur(20px);
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+  backdrop-filter: blur(20px) saturate(180%);
   position: relative;
   overflow: hidden;
   width: 80px;
@@ -242,15 +249,43 @@ body {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transfom-style: preserve-3d;
+  transform-style: preserve-3d;
   cursor: none;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
+
+.nav-btn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+}
+
 .nav-btn:hover,
 .nav-btn.active {
-  background: var(--glass-hover);
-  border-color: var(--border-medium);
-  transform: translateX(10px) scale(1.05);
-  box-shadow: var(--shadow-soft);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.12) 0%,
+    rgba(255, 255, 255, 0.04) 50%,
+    rgba(255, 255, 255, 0.1) 100%
+  );
+  border-color: rgba(255, 255, 255, 0.25);
+  transform: translateX(12px) scale(1.08);
+  box-shadow: 
+    0 12px 40px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    0 0 20px rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(25px) saturate(200%);
 }
 .nav-icon {
   font-size: 1.2rem;
@@ -322,26 +357,8 @@ body {
     opacity: 0;
   }
 }
-.cinematic-bg {
-  position: fixed;
-  top: -10%;
-  left: -10%;
-  width: 120%;
-  height: 120%;
-  pointer-events: none;
-  z-index: -2;
-  transition: transform var(--camera-smooth);
-  background: radial-gradient(
-    ellipse at center,
-    var(--bg-secondary) 0%,
-    var(--deep-space) 50%,
-    var(--space-black) 100%
-  );
-}
 
-
-
-/* --- Animated Background & Glass --- */
+/* --- Enhanced Cinematic Background with Video --- */
 .cinematic-bg {
   position: fixed;
   top: 0;
@@ -352,13 +369,73 @@ body {
   z-index: -2;
   transition: transform var(--camera-smooth);
 }
-.bg-gradient {
+
+.bg-video {
   width: 100%;
   height: 100%;
-  background: linear-gradient(170deg, #0a0a0a 20%, #1a1a2e 50%, #111111 80%);
+  object-fit: cover;
+  opacity: 0.25;
+  z-index: -1;
+  filter: blur(1px) brightness(0.7) contrast(1.2);
+}
+
+.bg-gradient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(0, 0, 0, 0.3) 0%,
+    rgba(0, 0, 0, 0.6) 50%,
+    rgba(0, 0, 0, 0.8) 100%
+  );
+  background-size: 200% 200%;
+  animation: gradientFlow 25s ease infinite;
+  mix-blend-mode: multiply;
+}
+
+/* Fallback for when video doesn't load */
+.cinematic-bg::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    var(--bg-secondary) 0%,
+    var(--deep-space) 50%,
+    var(--space-black) 100%
+  );
+  z-index: -2;
+}
+
+@media (max-width: 768px) {
+  .bg-video {
+    opacity: 0.15;
+    filter: blur(2px) brightness(0.6);
+  }
+}
+
+.bg-gradient-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(10, 10, 10, 0.6) 0%,
+    rgba(0, 0, 0, 0.8) 50%,
+    rgba(0, 0, 0, 0.9) 100%
+  );
   background-size: 200% 200%;
   animation: gradientFlow 20s ease infinite;
 }
+
 @keyframes gradientFlow {
   0%,
   100% {
@@ -368,115 +445,364 @@ body {
     background-position: 100% 50%;
   }
 }
+
+/* --- ENHANCED: Ultra-realistic Glass Morphism System --- */
 .glass-panel {
-  background: var(--glass-primary);
-  backdrop-filter: blur(25px) saturate(150%);
-  border: 1px solid var(--border-subtle);
-  border-radius: 16px;
-  box-shadow: var(--shadow-soft);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.1) 0%,
+    rgba(255, 255, 255, 0.03) 50%,
+    rgba(255, 255, 255, 0.08) 100%
+  );
+  backdrop-filter: blur(25px) saturate(200%);
+  border: 1px solid;
+  border-image: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.3) 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.2) 100%
+  ) 1;
+  border-radius: 20px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.1);
   transition: all var(--hover-smooth);
   position: relative;
   overflow: hidden;
 }
+
 .glass-panel::before {
   content: "";
   position: absolute;
   top: 0;
-  left: 0;
+  left: -50%;
   width: 50%;
   height: 100%;
-  background: var(--glass-reflection);
-  z-index: 1;
-  animation: shimmer 8s infinite;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 100%
+  );
+  transform: skewX(-20deg);
+  animation: glassShimmer 3s ease-in-out infinite;
   pointer-events: none;
 }
-@keyframes shimmer {
-  0% {
-    transform: translateX(-100%) skewX(-30deg);
-    opacity: 0.1;
-  }
-  50% {
-    transform: translateX(300%) skewX(-30deg);
-    opacity: 0.5;
-  }
-  100% {
-    transform: translateX(-100%) skewX(-30deg);
-    opacity: 0.1;
-  }
-}
-.glass-panel:hover {
-  background: var(--glass-hover);
-  border-color: var(--border-medium);
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-medium);
+
+.glass-panel::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.4) 50%,
+    transparent 100%
+  );
+  pointer-events: none;
 }
 
-/* Camera and Scene Setup */
+@keyframes glassShimmer {
+  0% { transform: translateX(-100%) skewX(-20deg); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateX(300%) skewX(-20deg); opacity: 0; }
+}
+
+.glass-panel:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.15) 0%,
+    rgba(255, 255, 255, 0.05) 50%,
+    rgba(255, 255, 255, 0.12) 100%
+  );
+  backdrop-filter: blur(30px) saturate(250%);
+  transform: translateY(-8px) scale(1.02);
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* --- EPIC 3D SPACE TRAVEL SYSTEM --- */
 .camera-viewport {
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  perspective: 2000px;
+  perspective: 1200px;
+  perspective-origin: center center;
   transform-style: preserve-3d;
-  transition: transform var(--camera-smooth);
+  transition: perspective 0.3s ease, filter 0.2s ease;
+  will-change: transform, perspective, filter;
+  overflow: hidden;
 }
-/* --- Scene positioning via CSS variables --- */
+
+/* SCENES POSITIONED ALONG 3D SPACE CORRIDOR */
 .scene {
-  --x: 0;
-  --y: 0;
-  --z: 0;
-  --rotY: 0;
   position: absolute;
   width: 100vw;
   height: 100vh;
   transform-style: preserve-3d;
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
-  transition: var(--scene-transition);
+  transition: all 2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
   opacity: 0;
-  transform: translate3d(var(--x), var(--y), var(--z)) rotateY(var(--rotY))
-    scale(0.95);
+  visibility: hidden;
+  will-change: transform, opacity, filter;
 }
+
+/* Position each scene at different depths along the Z corridor */
+.scene[data-scene="0"] {
+  transform: translate3d(0px, 0px, 0px);     /* Home */
+}
+
+.scene[data-scene="1"] {
+  transform: translate3d(0px, 0px, -300px);     /* Skills */
+}
+
+.scene[data-scene="2"] {
+  transform: translate3d(0px, 0px, -600px);     /* Experience */
+}
+
+.scene[data-scene="3"] {
+  transform: translate3d(0px, 0px, -900px);     /* Projects */
+}
+
+.scene[data-scene="4"] {
+  transform: translate3d(0px, 0px, -1200px);     /* About */
+}
+
 .scene.active {
-  display: flex;
   opacity: 1;
-  transform: translate3d(var(--x), var(--y), var(--z)) rotateY(var(--rotY))
-    scale(1);
+  visibility: visible;
+  z-index: 100;
+  filter: none;
 }
+
 .scene.exiting {
-  opacity: 0 !important;
-  display: flex;
-  z-index: -1;
-}
-.scene.exiting-forward {
-  transform: translate3d(var(--x), var(--y), calc(var(--z) - 1500px))
-    rotateY(var(--rotY)) scale(0.7);
-}
-.scene.exiting-backward {
-  transform: translate3d(var(--x), var(--y), calc(var(--z) + 1500px))
-    rotateY(var(--rotY)) scale(1.3);
+  opacity: 0;
+  visibility: visible;
+  z-index: 50;
+  transition: opacity 1s ease-out;
 }
 
-
-/* General Glass Panel Style */
-.glass-panel {
-  background: var(--glass-primary);
-  backdrop-filter: blur(25px) saturate(150%);
-  border: 1px solid var(--border-subtle);
-  border-radius: 16px;
-  box-shadow: var(--shadow-soft);
-  transition: all var(--hover-smooth);
+/* SPACE TRAVEL TUNNEL EFFECTS */
+.space-tunnel {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  background: 
+    radial-gradient(circle at center, transparent 40%, rgba(0,0,0,0.1) 80%),
+    conic-gradient(from 0deg at center, 
+      transparent 0%, 
+      rgba(255,255,255,0.02) 25%, 
+      transparent 50%, 
+      rgba(255,255,255,0.02) 75%, 
+      transparent 100%);
+  animation: tunnelRotation 20s linear infinite;
 }
-.glass-panel:hover {
-  background: var(--glass-hover);
-  border-color: var(--border-medium);
-  transform: translateY(-5px);
-  box-shadow: var(--shadow-medium);
+
+@keyframes tunnelRotation {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
 }
 
+/* SPEED LINES for space travel effect */
+.speed-lines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 2;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.speed-line {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  transform-origin: center center;
+}
+
+/* WARP EFFECT during transitions */
+.camera-viewport.warping {
+  perspective: 800px;
+  filter: blur(1px);
+}
+
+.camera-viewport.warping .space-tunnel {
+  animation-duration: 2s;
+}
+
+.camera-viewport.warping .speed-lines {
+  opacity: 1;
+}
+
+/* Enhanced depth layers for space corridor */
+.bg-layer {
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.01) 0%,
+    transparent 70%
+  );
+  border-radius: 50%;
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
+  left: -50%;
+  top: -50%;
+}
+
+.bg-layer.layer-far {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(100, 150, 255, 0.03) 0%,
+    transparent 60%
+  );
+  transform: translateZ(-1000px) scale(3);
+}
+
+.bg-layer.layer-mid {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 100, 150, 0.02) 0%,
+    transparent 70%
+  );
+  transform: translateZ(-500px) scale(2);
+}
+
+.bg-layer.layer-near {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(150, 255, 100, 0.015) 0%,
+    transparent 80%
+  );
+  transform: translateZ(-200px) scale(1.5);
+}
+
+/* SPECTACULAR space travel animations */
+@keyframes spaceTravel {
+  0% {
+    transform: translateZ(0) scale(1);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateZ(-2000px) scale(0.1);
+    opacity: 0;
+  }
+}
+
+@keyframes speedLineTravel {
+  0% {
+    transform: translate(-50%, -50%) translateZ(0) scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) translateZ(-1000px) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Enhanced scene element animations for space travel */
+.scene.active .section-title {
+  animation: titleSpaceEntrance 2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  opacity: 0;
+  transform: translate3d(0, 0, 200px) scale(2);
+}
+
+.scene.active .section-subtitle {
+  animation: subtitleSpaceEntrance 2.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards;
+  opacity: 0;
+  transform: translate3d(0, 0, 150px) scale(1.5);
+}
+
+.scene.active .glass-panel {
+  animation: panelSpaceEntrance 2.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  opacity: 0;
+  transform: translate3d(0, 0, 100px) scale(1.2);
+}
+
+.scene.active .glass-panel:nth-child(1) { animation-delay: 0.4s; }
+.scene.active .glass-panel:nth-child(2) { animation-delay: 0.6s; }
+.scene.active .glass-panel:nth-child(3) { animation-delay: 0.8s; }
+
+@keyframes titleSpaceEntrance {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 200px) scale(2);
+  }
+  70% {
+    opacity: 0.8;
+    transform: translate3d(0, 0, -10px) scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes subtitleSpaceEntrance {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 150px) scale(1.5);
+  }
+  70% {
+    opacity: 0.8;
+    transform: translate3d(0, 0, -5px) scale(1.02);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes panelSpaceEntrance {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 100px) scale(1.2);
+  }
+  70% {
+    opacity: 0.9;
+    transform: translate3d(0, 0, -3px) scale(1.01);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+/* Scene Background Elements */
+.scene-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+}
 
 /* Content & Layout */
 .scene-content {
@@ -507,6 +833,7 @@ body {
   max-width: 600px;
   margin: 0 auto 3rem;
   line-height: 1.6;
+  text-align: center;
 }
 .section-text {
   font-size: 1.1rem;
@@ -543,20 +870,26 @@ body {
   position: absolute;
   width: 200%;
   height: 200%;
-  background-image: linear-gradient(
-      rgba(255, 255, 255, 0.05) 1px,
-      transparent 1px
-    ),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-  background-size: 50px 50px;
-  animation: gridFlow 20s linear infinite;
-  transform: translateZ(-300px);
+  top: -50%;
+  left: -50%;
+  background-image: 
+    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 80px 80px;
+  animation: gridFlow 30s linear infinite;
+  transform: translateZ(-500px);
+  opacity: 0.6;
 }
+
 @keyframes gridFlow {
+  0% {
+    transform: translateZ(-500px) translateX(0) translateY(0);
+  }
   100% {
-    transform: translateZ(-300px) translateX(-50px) translateY(-50px);
+    transform: translateZ(-500px) translateX(-80px) translateY(-80px);
   }
 }
+
 .hero-constellation {
   display: grid;
   grid-template-columns: 1fr 400px;
@@ -565,6 +898,13 @@ body {
   max-width: 1200px;
   width: 100%;
 }
+
+.hero-title-cluster {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
 .title-word {
   display: inline-block;
   opacity: 0;
@@ -583,6 +923,11 @@ body {
     transform: translateY(0);
   }
 }
+
+.hero-orbit {
+  margin-top: 2rem;
+}
+
 .scene.active .section-text {
   animation: textFloat 1s ease 1s forwards;
   opacity: 0;
@@ -597,7 +942,7 @@ body {
 .stats-constellation {
   display: flex;
   gap: 2rem;
-  justify-content: center;
+  justify-content: flex-start;
   margin-top: 2rem;
 }
 .stat-satellite {
@@ -653,6 +998,7 @@ body {
   align-items: center;
   gap: 1rem;
   border-bottom: 1px solid var(--border-subtle);
+  border-radius: 16px 16px 0 0;
 }
 .terminal-dots {
   display: flex;
@@ -685,11 +1031,46 @@ body {
 .terminal-content {
   padding: 1.5rem;
   background: var(--deep-space);
+  border-radius: 0 0 16px 16px;
 }
 .code-stream {
   font-family: var(--font-mono);
   font-size: 0.85rem;
   line-height: 1.6;
+}
+
+/* --- FIXED: Code Syntax Highlighting --- */
+.code-line {
+  margin-bottom: 0.2rem;
+}
+
+.keyword {
+  color: #569cd6;
+}
+
+.class-name {
+  color: #4ec9b0;
+}
+
+.type {
+  color: #4ec9b0;
+}
+
+.variable {
+  color: #9cdcfe;
+}
+
+.function {
+  color: #dcdcaa;
+}
+
+.comment {
+  color: #6a9955;
+  font-style: italic;
+}
+
+.punctuation {
+  color: #d4d4d4;
 }
 
 /* Other Scenes (Skills, Exp, etc.) */
@@ -703,6 +1084,8 @@ body {
 }
 .skill-planet {
   padding: 2rem;
+  position: relative;
+  z-index: 2;
 }
 .skill-icon {
   font-size: 2rem;
@@ -726,6 +1109,11 @@ body {
   line-height: 1.6;
   margin-bottom: 1.5rem;
 }
+.skill-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
 
 /* Scene 2: Experience */
 .timeline-constellation {
@@ -735,21 +1123,18 @@ body {
   max-width: 800px;
   width: 100%;
 }
-.skill-planet,
 .timeline-node {
   padding: 2rem;
+  position: relative;
+  z-index: 2;
 }
-.skill-icon,
 .node-core {
   display: flex;
   align-items: center;
   gap: 1.5rem;
 }
-
-
 .node-icon {
   font-size: 1.5rem;
-  margin-bottom: 1rem;
   width: 50px;
   height: 50px;
   background: var(--glass-secondary);
@@ -819,6 +1204,7 @@ body {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  z-index: 2;
 }
 .cube-face.back {
   transform: rotateY(180deg);
@@ -888,8 +1274,6 @@ body {
   margin-bottom: 3rem;
   position: relative;
 }
-
-
 .cosmic-avatar {
   width: 150px;
   height: 150px;
@@ -941,6 +1325,9 @@ body {
     text-align: center;
     gap: 3rem;
   }
+  .stats-constellation {
+    justify-content: center;
+  }
 }
 
 .mobile-camera-controls {
@@ -963,6 +1350,7 @@ body {
   background: rgba(255, 255, 255, 0.3);
   transition: all var(--quick-smooth);
   border: 1px solid rgba(255, 255, 255, 0.5);
+  cursor: pointer;
 }
 .nav-dot.active {
   background: var(--accent-primary);

@@ -56,7 +56,7 @@
     <div class="scene-navigator" id="sceneNavigator">
       <div class="nav-hint">Navigate</div>
       <div class="nav-controls">
-        <button class="nav-btn" data-scene="0">
+        <button class="nav-btn active" data-scene="0">
           <div class="nav-icon">🏠</div>
           <span>Home</span>
         </button>
@@ -89,12 +89,20 @@
 
     <!-- Cinematic Background -->
     <div class="cinematic-bg" id="cinematicBg">
+      <video class="bg-video" autoplay muted loop>
+        <source src="sky_loop_background.mp4" type="video/mp4">
+      </video>
+      <div class="bg-gradient-overlay"></div>
       <div class="depth-layers">
         <div class="bg-layer layer-far"></div>
         <div class="bg-layer layer-mid"></div>
         <div class="bg-layer layer-near"></div>
       </div>
     </div>
+
+    <!-- SPACE TRAVEL EFFECTS -->
+    <div class="space-tunnel"></div>
+    <div class="speed-lines" id="speedLines"></div>
 
     <!-- 3D Camera Viewport -->
     <div class="camera-viewport" id="cameraViewport">
@@ -113,55 +121,73 @@
                 <span class="title-word">Shaked</span>
               </h1>
               <div class="title-particles"></div>
+              
+              <div class="hero-orbit">
+                <div class="orbit-description">
+                  <p class="section-text">
+                    18-year-old Cybersecurity Developer & Researcher from Haifa,
+                    Israel. Expert in C++, network security, and low-level
+                    programming. Currently developing revolutionary covert
+                    communication systems.
+                  </p>
+                </div>
+
+                <div class="stats-constellation">
+                  <div class="stat-satellite">
+                    <div class="stat-glow">2nd</div>
+                    <div class="stat-label">AI4Y World</div>
+                  </div>
+                  <div class="stat-satellite">
+                    <div class="stat-glow">5+</div>
+                    <div class="stat-label">Major Projects</div>
+                  </div>
+                  <div class="stat-satellite">
+                    <div class="stat-glow">3+</div>
+                    <div class="stat-label">Years Experience</div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <div class="hero-orbit">
-              <div class="orbit-description">
-                <p class="section-text">
-                  18-year-old Cybersecurity Developer & Researcher from Haifa,
-                  Israel. Expert in C++, network security, and low-level
-                  programming. Currently developing revolutionary covert
-                  communication systems.
-                </p>
-              </div>
-
-              <div class="stats-constellation">
-                <div class="stat-satellite">
-                  <div class="stat-glow">2nd</div>
-                  <div class="stat-label">AI4Y World</div>
+            <div class="floating-terminal glass-panel">
+              <div class="terminal-header">
+                <div class="terminal-dots">
+                  <div class="dot red"></div>
+                  <div class="dot yellow"></div>
+                  <div class="dot green"></div>
                 </div>
-                <div class="stat-satellite">
-                  <div class="stat-glow">5+</div>
-                  <div class="stat-label">Major Projects</div>
-                </div>
-                <div class="stat-satellite">
-                  <div class="stat-glow">3+</div>
-                  <div class="stat-label">Years Experience</div>
-                </div>
+                <div class="terminal-title">steganography.cpp</div>
               </div>
-            </div>
-          </div>
-
-          <div class="floating-terminal glass-panel">
-            <div class="terminal-header">
-              <div class="terminal-dots">
-                <div class="dot red"></div>
-                <div class="dot yellow"></div>
-                <div class="dot green"></div>
-              </div>
-              <div class="terminal-title">steganography.cpp</div>
-            </div>
-            <div class="terminal-content">
-              <div class="code-stream">
-                <div class="code-line">// Network Steganography System</div>
-                <div class="code-line">class HitchHiker {</div>
-                <div class="code-line">private:</div>
-                <div class="code-line">std::mutex _mutex;</div>
-                <div class="code-line">PacketHandler _handler;</div>
-                <div class="code-line">public:</div>
-                <div class="code-line">void transmitCovert();</div>
-                <div class="code-line">bool isUndetectable();</div>
-                <div class="code-line">};</div>
+              <div class="terminal-content">
+                <div class="code-stream">
+                  <div class="code-line">
+                    <span class="comment">// Network Steganography System</span>
+                  </div>
+                  <div class="code-line">
+                    <span class="keyword">class</span> <span class="class-name">HitchHiker</span> <span class="punctuation">{</span>
+                  </div>
+                  <div class="code-line">
+                    <span class="keyword">private</span><span class="punctuation">:</span>
+                  </div>
+                  <div class="code-line">
+                    &nbsp;&nbsp;<span class="type">std::mutex</span> <span class="variable">_mutex</span><span class="punctuation">;</span>
+                  </div>
+                  <div class="code-line">
+                    &nbsp;&nbsp;<span class="type">PacketHandler</span> <span class="variable">_handler</span><span class="punctuation">;</span>
+                  </div>
+                  <div class="code-line">
+                    <span class="keyword">public</span><span class="punctuation">:</span>
+                  </div>
+                  <div class="code-line">
+                    &nbsp;&nbsp;<span class="type">void</span> <span class="function">transmitCovert</span><span class="punctuation">();</span>
+                  </div>
+                  <div class="code-line">
+                    &nbsp;&nbsp;<span class="type">bool</span> <span class="function">isUndetectable</span><span class="punctuation">();</span>
+                  </div>
+                  <div class="code-line">
+                    <span class="punctuation">};</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
