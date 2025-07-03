@@ -11,180 +11,162 @@
     <title>Aviv Shaked - Cybersecurity Developer</title>
   </head>
   <body>
-    <!-- Custom Cursor -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-circle"></div>
+    <!-- Fixed Smooth Cursor -->
+    <div class="cursor-system">
+      <div class="cursor-dot"></div>
+      <div class="cursor-trail"></div>
+    </div>
 
     <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
-      <div class="loading-logo">Aviv Shaked</div>
-      <div class="loading-subtitle">Entering Digital Space...</div>
-      <div class="loading-progress">
-        <div class="loading-bar"></div>
+      <div class="loading-container">
+        <div class="loading-logo">Aviv Shaked</div>
+        <div class="loading-subtitle">Initializing 3D Space...</div>
+        <div class="loading-progress">
+          <div class="loading-bar"></div>
+          <div class="loading-percentage">0%</div>
+        </div>
+      </div>
+      <div class="loading-particles"></div>
+    </div>
+
+    <!-- 3D Space Navigator -->
+    <div class="space-navigator" id="spaceNavigator">
+      <div class="nav-header">
+        <div class="nav-title">Navigation</div>
+        <div class="nav-coords" id="navCoords">X: 0, Y: 0, Z: 0</div>
+      </div>
+      <div class="nav-cube">
+        <div class="nav-controls">
+          <button class="nav-btn active" data-scene="0" data-position="front">
+            <div class="nav-icon">🏠</div>
+            <span>Home</span>
+            <div class="nav-position">Front</div>
+          </button>
+          <button class="nav-btn" data-scene="1" data-position="back">
+            <div class="nav-icon">⚡</div>
+            <span>Skills</span>
+            <div class="nav-position">Back</div>
+          </button>
+          <button class="nav-btn" data-scene="2" data-position="deeper">
+            <div class="nav-icon">🚀</div>
+            <span>Experience</span>
+            <div class="nav-position">Deeper</div>
+          </button>
+          <button class="nav-btn" data-scene="3" data-position="deep">
+            <div class="nav-icon">💎</div>
+            <span>Projects</span>
+            <div class="nav-position">Deep</div>
+          </button>
+          <button class="nav-btn" data-scene="4" data-position="deepest">
+            <div class="nav-icon">🌟</div>
+            <span>About</span>
+            <div class="nav-position">Deepest</div>
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- Camera Progress Indicator -->
-    <div class="camera-progress">
-      <div class="progress-ring">
-        <svg class="progress-circle" width="60" height="60">
-          <circle
-            cx="30"
-            cy="30"
-            r="25"
-            fill="none"
-            stroke="rgba(255,255,255,0.1)"
-            stroke-width="2"
-          />
-          <circle
-            cx="30"
-            cy="30"
-            r="25"
-            fill="none"
-            stroke="rgba(255,255,255,0.8)"
-            stroke-width="2"
-            stroke-dasharray="157"
-            stroke-dashoffset="157"
-            class="progress-bar"
-          />
-        </svg>
-        <div class="progress-text" id="progressText">01</div>
-      </div>
-    </div>
-
-    <!-- 3D Scene Navigator -->
-    <div class="scene-navigator" id="sceneNavigator">
-      <div class="nav-hint">Navigate</div>
-      <div class="nav-controls">
-        <button class="nav-btn active" data-scene="0">
-          <div class="nav-icon">🏠</div>
-          <span>Home</span>
-        </button>
-        <button class="nav-btn" data-scene="1">
-          <div class="nav-icon">⚡</div>
-          <span>Skills</span>
-        </button>
-        <button class="nav-btn" data-scene="2">
-          <div class="nav-icon">🚀</div>
-          <span>Experience</span>
-        </button>
-        <button class="nav-btn" data-scene="3">
-          <div class="nav-icon">💎</div>
-          <span>Projects</span>
-        </button>
-        <button class="nav-btn" data-scene="4">
-          <div class="nav-icon">🌟</div>
-          <span>About</span>
-        </button>
-      </div>
-    </div>
-
-    <!-- Enhanced 3D Particle System -->
+    <!-- Simplified Particle Universe -->
     <div class="particle-universe" id="particleUniverse">
-      <div class="particle-layer layer-1"></div>
-      <div class="particle-layer layer-2"></div>
-      <div class="particle-layer layer-3"></div>
-      <div class="shooting-stars" id="shootingStars"></div>
+      <div class="stellar-field"></div>
+      <div class="nebula-clouds"></div>
+      <div class="cosmic-dust"></div>
     </div>
 
-    <!-- Cinematic Background -->
-    <div class="cinematic-bg" id="cinematicBg">
-      <video class="bg-video" autoplay muted loop>
-        <source src="sky_loop_background.mp4" type="video/mp4">
-      </video>
-      <div class="bg-gradient-overlay"></div>
-      <div class="depth-layers">
-        <div class="bg-layer layer-far"></div>
-        <div class="bg-layer layer-mid"></div>
-        <div class="bg-layer layer-near"></div>
-      </div>
-    </div>
-
-    <!-- SPACE TRAVEL EFFECTS -->
-    <div class="space-tunnel"></div>
-    <div class="speed-lines" id="speedLines"></div>
-
-    <!-- 3D Camera Viewport -->
+    <!-- Enhanced 3D Camera Viewport -->
     <div class="camera-viewport" id="cameraViewport">
-      <!-- Scene 0: Hero Launch -->
-      <div class="scene scene-hero active" data-scene="0">
-        <div class="scene-background">
+      <!-- Scene 0: Home (Center) -->
+      <div class="scene scene-home active" data-scene="0">
+        <div class="scene-depth-indicator">
           <div class="depth-grid"></div>
-          <div class="floating-code-fragments" id="codeFragments"></div>
+          <div class="floating-elements" id="floatingElements"></div>
         </div>
 
         <div class="scene-content">
-          <div class="hero-constellation">
-            <div class="hero-title-cluster">
-              <h1 class="section-title">
-                <span class="title-word">Aviv</span>
-                <span class="title-word">Shaked</span>
-              </h1>
-              <div class="title-particles"></div>
-              
-              <div class="hero-orbit">
-                <div class="orbit-description">
-                  <p class="section-text">
-                    18-year-old Cybersecurity Developer & Researcher from Haifa,
-                    Israel. Expert in C++, network security, and low-level
-                    programming. Currently developing revolutionary covert
-                    communication systems.
-                  </p>
+          <div class="hero-complex">
+            <div class="main-content">
+              <div class="title-complex">
+                <h1 class="section-title">
+                  <span class="title-word" data-word="Aviv">Aviv</span>
+                  <span class="title-word" data-word="Shaked">Shaked</span>
+                </h1>
+                <div class="title-effects">
+                  <div class="title-glow"></div>
+                  <div class="title-particles"></div>
                 </div>
-
-                <div class="stats-constellation">
-                  <div class="stat-satellite">
-                    <div class="stat-glow">2nd</div>
+              </div>
+              
+              <div class="hero-description">
+                <p class="section-text">
+                  18-year-old Cybersecurity Developer & Researcher from Haifa, Israel. 
+                  Expert in C++, network security, and low-level programming. 
+                  Currently developing revolutionary covert communication systems.
+                </p>
+                
+                <div class="achievement-stats">
+                  <div class="stat-item">
+                    <div class="stat-value">2nd</div>
                     <div class="stat-label">AI4Y World</div>
                   </div>
-                  <div class="stat-satellite">
-                    <div class="stat-glow">5+</div>
+                  <div class="stat-item">
+                    <div class="stat-value">5+</div>
                     <div class="stat-label">Major Projects</div>
                   </div>
-                  <div class="stat-satellite">
-                    <div class="stat-glow">3+</div>
+                  <div class="stat-item">
+                    <div class="stat-value">3+</div>
                     <div class="stat-label">Years Experience</div>
                   </div>
                 </div>
               </div>
             </div>
 
-            <div class="floating-terminal glass-panel">
+            <div class="code-terminal glass-morphism">
               <div class="terminal-header">
-                <div class="terminal-dots">
-                  <div class="dot red"></div>
-                  <div class="dot yellow"></div>
-                  <div class="dot green"></div>
+                <div class="terminal-controls">
+                  <div class="control-dot red"></div>
+                  <div class="control-dot yellow"></div>
+                  <div class="control-dot green"></div>
                 </div>
                 <div class="terminal-title">steganography.cpp</div>
+                <div class="terminal-info">Active</div>
               </div>
-              <div class="terminal-content">
-                <div class="code-stream">
+              <div class="terminal-body">
+                <div class="code-lines">
                   <div class="code-line">
+                    <span class="line-number">1</span>
                     <span class="comment">// Network Steganography System</span>
                   </div>
                   <div class="code-line">
+                    <span class="line-number">2</span>
                     <span class="keyword">class</span> <span class="class-name">HitchHiker</span> <span class="punctuation">{</span>
                   </div>
                   <div class="code-line">
+                    <span class="line-number">3</span>
                     <span class="keyword">private</span><span class="punctuation">:</span>
                   </div>
                   <div class="code-line">
+                    <span class="line-number">4</span>
                     &nbsp;&nbsp;<span class="type">std::mutex</span> <span class="variable">_mutex</span><span class="punctuation">;</span>
                   </div>
                   <div class="code-line">
+                    <span class="line-number">5</span>
                     &nbsp;&nbsp;<span class="type">PacketHandler</span> <span class="variable">_handler</span><span class="punctuation">;</span>
                   </div>
                   <div class="code-line">
+                    <span class="line-number">6</span>
                     <span class="keyword">public</span><span class="punctuation">:</span>
                   </div>
                   <div class="code-line">
+                    <span class="line-number">7</span>
                     &nbsp;&nbsp;<span class="type">void</span> <span class="function">transmitCovert</span><span class="punctuation">();</span>
                   </div>
                   <div class="code-line">
+                    <span class="line-number">8</span>
                     &nbsp;&nbsp;<span class="type">bool</span> <span class="function">isUndetectable</span><span class="punctuation">();</span>
                   </div>
                   <div class="code-line">
+                    <span class="line-number">9</span>
                     <span class="punctuation">};</span>
                   </div>
                 </div>
@@ -194,321 +176,212 @@
         </div>
       </div>
 
-      <!-- Scene 1: Skills Galaxy -->
+      <!-- Scene 1: Skills (Right/East) -->
       <div class="scene scene-skills" data-scene="1">
-        <div class="scene-background">
-          <div class="data-streams" id="dataStreams"></div>
-        </div>
-
         <div class="scene-content">
-          <div class="galaxy-header">
-            <h2 class="section-title smaller">Technical Expertise</h2>
+          <div class="section-header">
+            <h2 class="section-title">Technical Expertise</h2>
             <p class="section-subtitle">
-              Deep knowledge across multiple domains of cybersecurity and
-              software development
+              Advanced knowledge across cybersecurity, systems programming, and AI development
             </p>
           </div>
 
-          <div class="skill-constellation">
-            <div class="skill-planet glass-panel primary">
-              <div class="planet-surface">
-                <div class="skill-icon">🔐</div>
-                <h3>Cybersecurity & Network Security</h3>
-                <div class="skill-level">Expert Level</div>
-              </div>
-              <div class="planet-atmosphere">
-                <p>
-                  Network security, penetration testing, and reverse
-                  engineering. Experience with network steganography, covert
-                  communication systems, and security research.
-                </p>
-                <div class="skill-tags">
-                  <span class="tag">C++20</span>
-                  <span class="tag">Steganography</span>
-                  <span class="tag">Network Programming</span>
-                  <span class="tag">Penetration Testing</span>
-                </div>
+          <div class="skills-grid">
+            <div class="skill-card glass-morphism primary">
+              <div class="skill-icon">🔐</div>
+              <h3>Cybersecurity & Network Security</h3>
+              <div class="skill-level">Expert Level</div>
+              <p>Network security, penetration testing, reverse engineering, and covert communication systems.</p>
+              <div class="skill-tags">
+                <span class="tag">C++20</span>
+                <span class="tag">Steganography</span>
+                <span class="tag">Network Programming</span>
+                <span class="tag">Penetration Testing</span>
               </div>
             </div>
 
-            <div class="skill-planet glass-panel secondary">
-              <div class="planet-surface">
-                <div class="skill-icon">💻</div>
-                <h3>Low-Level Systems Programming</h3>
-                <div class="skill-level">Expert Level</div>
-              </div>
-              <div class="planet-atmosphere">
-                <p>
-                  Advanced C++ development with focus on performance, memory
-                  management, and system-level programming. Expertise in
-                  multi-threading, networking, and server architecture.
-                </p>
-                <div class="skill-tags">
-                  <span class="tag">C/C++</span>
-                  <span class="tag">Assembly</span>
-                  <span class="tag">Multi-threading</span>
-                  <span class="tag">RAII</span>
-                </div>
+            <div class="skill-card glass-morphism secondary">
+              <div class="skill-icon">💻</div>
+              <h3>Low-Level Systems Programming</h3>
+              <div class="skill-level">Expert Level</div>
+              <p>Advanced C++ development with focus on performance, memory management, and system architecture.</p>
+              <div class="skill-tags">
+                <span class="tag">C/C++</span>
+                <span class="tag">Assembly</span>
+                <span class="tag">Multi-threading</span>
+                <span class="tag">RAII</span>
               </div>
             </div>
 
-            <div class="skill-planet glass-panel tertiary">
-              <div class="planet-surface">
-                <div class="skill-icon">🤖</div>
-                <h3>Full-Stack Development & AI</h3>
-                <div class="skill-level">Professional</div>
-              </div>
-              <div class="planet-atmosphere">
-                <p>
-                  Full-stack Python development including AI/ML implementations,
-                  automation tools, and web development. Experience with neural
-                  networks and data processing systems.
-                </p>
-                <div class="skill-tags">
-                  <span class="tag">Python</span>
-                  <span class="tag">AI/ML</span>
-                  <span class="tag">Web Development</span>
-                  <span class="tag">Automation</span>
-                </div>
+            <div class="skill-card glass-morphism tertiary">
+              <div class="skill-icon">🤖</div>
+              <h3>Full-Stack Development & AI</h3>
+              <div class="skill-level">Professional</div>
+              <p>Full-stack development with AI/ML implementations, automation tools, and web technologies.</p>
+              <div class="skill-tags">
+                <span class="tag">Python</span>
+                <span class="tag">AI/ML</span>
+                <span class="tag">Web Development</span>
+                <span class="tag">Automation</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Scene 2: Experience Timeline -->
+      <!-- Scene 2: Experience (Up/Above) -->
       <div class="scene scene-experience" data-scene="2">
-        <div class="scene-background">
-          <div class="temporal-grid"></div>
-        </div>
-
         <div class="scene-content">
-          <div class="dimension-header">
-            <h2 class="section-title smaller">Professional Experience</h2>
+          <div class="section-header">
+            <h2 class="section-title">Professional Experience</h2>
             <p class="section-subtitle">
-              Building cutting-edge solutions and advancing cybersecurity
-              research
+              Building cutting-edge solutions and advancing cybersecurity research
             </p>
           </div>
 
-          <div class="timeline-constellation">
-            <div class="timeline-node glass-panel active">
-              <div class="node-core">
-                <div class="node-icon">🏢</div>
-                <div class="node-content">
-                  <h4>AllBikes - Product Uploader & Tools Developer</h4>
-                  <p>
-                    Building automated tools and secure data systems with Python
-                    automation
-                  </p>
-                  <div class="time-badge current">2023-Present</div>
-                </div>
+          <div class="experience-timeline">
+            <div class="timeline-item glass-morphism current">
+              <div class="timeline-icon">🏢</div>
+              <div class="timeline-content">
+                <h4>AllBikes - Product Uploader & Tools Developer</h4>
+                <p>Building automated tools and secure data systems with Python automation</p>
+                <div class="timeline-badge current">2023-Present</div>
               </div>
             </div>
 
-            <div class="timeline-node glass-panel active">
-              <div class="node-core">
-                <div class="node-icon">🎓</div>
-                <div class="node-content">
-                  <h4>Cyber Education Center - Student & Researcher</h4>
-                  <p>
-                    Advanced cybersecurity studies and cutting-edge research
-                    projects
-                  </p>
-                  <div class="time-badge current">2023-Present</div>
-                </div>
+            <div class="timeline-item glass-morphism current">
+              <div class="timeline-icon">🎓</div>
+              <div class="timeline-content">
+                <h4>Cyber Education Center - Student & Researcher</h4>
+                <p>Advanced cybersecurity studies and cutting-edge research projects</p>
+                <div class="timeline-badge current">2023-Present</div>
               </div>
             </div>
 
-            <div class="timeline-node glass-panel winner">
-              <div class="node-core">
-                <div class="node-icon">🏆</div>
-                <div class="node-content">
-                  <h4>Analisis Team - AI4Y World Competition</h4>
-                  <p>
-                    Captain Team member, 2nd place globally in AI4Y World
-                    Competition
-                  </p>
-                  <div class="time-badge winner">2022-2023</div>
-                </div>
+            <div class="timeline-item glass-morphism winner">
+              <div class="timeline-icon">🏆</div>
+              <div class="timeline-content">
+                <h4>Analisis Team - AI4Y World Competition</h4>
+                <p>Captain Team member, 2nd place globally in AI4Y World Competition</p>
+                <div class="timeline-badge winner">2022-2023</div>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Scene 3: Projects Dimension -->
+      <!-- Scene 3: Projects (Back/Deep) -->
       <div class="scene scene-projects" data-scene="3">
-        <div class="scene-background">
-          <div class="code-rain" id="codeRain"></div>
-        </div>
-
         <div class="scene-content">
-          <div class="matrix-header">
-            <h2 class="section-title smaller">Featured Projects</h2>
+          <div class="section-header">
+            <h2 class="section-title">Featured Projects</h2>
             <p class="section-subtitle">
               Innovative solutions in cybersecurity, AI, and systems programming
             </p>
           </div>
 
-          <div class="project-matrix-grid">
-            <div class="project-cube featured">
-              <div class="cube-face front glass-panel">
+          <div class="projects-grid">
+            <div class="project-card glass-morphism featured">
+              <div class="project-header">
                 <div class="project-icon">🔐</div>
-                <h3>HitchHiker: Network Steganography Platform</h3>
                 <div class="project-status developing">In Development</div>
               </div>
-              <div class="cube-face back glass-panel">
-                <p>
-                  Revolutionary covert communication system that enables hidden
-                  data transmission without creating new network packets.
-                  Advanced C++20 implementation with multi-threading, Docker
-                  containerization, and undetectable steganography.
-                </p>
-                <div class="project-tech">
-                  <span class="tech-orb">C++20</span>
-                  <span class="tech-orb">Multi-threading</span>
-                  <span class="tech-orb">Docker</span>
-                  <span class="tech-orb">CMake</span>
-                  <span class="tech-orb">Network Security</span>
-                </div>
+              <h3>HitchHiker: Network Steganography Platform</h3>
+              <p>Revolutionary covert communication system that enables hidden data transmission without creating new network packets.</p>
+              <div class="project-tech">
+                <span class="tech-badge">C++20</span>
+                <span class="tech-badge">Multi-threading</span>
+                <span class="tech-badge">Docker</span>
+                <span class="tech-badge">Network Security</span>
               </div>
             </div>
 
-            <div class="project-cube">
-              <div class="cube-face front glass-panel">
+            <div class="project-card glass-morphism">
+              <div class="project-header">
                 <div class="project-icon">⚡</div>
-                <h3>Multiplayer Trivia Game System</h3>
                 <div class="project-status completed">Completed</div>
               </div>
-              <div class="cube-face back glass-panel">
-                <p>
-                  High-performance C++ server with Unity client. Handles 25+
-                  concurrent players with custom binary protocol, thread-safe
-                  architecture, and real-time synchronization.
-                </p>
-                <div class="project-tech">
-                  <span class="tech-orb">C++17</span>
-                  <span class="tech-orb">Unity</span>
-                  <span class="tech-orb">SQLite3</span>
-                  <span class="tech-orb">RAII</span>
-                  <span class="tech-orb">Network Programming</span>
-                </div>
+              <h3>Multiplayer Trivia Game System</h3>
+              <p>High-performance C++ server with Unity client handling 25+ concurrent players with real-time synchronization.</p>
+              <div class="project-tech">
+                <span class="tech-badge">C++17</span>
+                <span class="tech-badge">Unity</span>
+                <span class="tech-badge">SQLite3</span>
+                <span class="tech-badge">Network Programming</span>
               </div>
             </div>
 
-            <div class="project-cube highlight">
-              <div class="cube-face front glass-panel">
+            <div class="project-card glass-morphism highlight">
+              <div class="project-header">
                 <div class="project-icon">🏆</div>
-                <h3>Analisis: AI Medical Diagnosis Platform</h3>
                 <div class="project-status winner">World Finalist</div>
               </div>
-              <div class="cube-face back glass-panel">
-                <p>
-                  AI-powered medical platform for wound detection and treatment
-                  recommendations. Won National AI4Y Competition, represented
-                  Israel in world competition achieving 2nd place globally.
-                </p>
-                <div class="project-tech">
-                  <span class="tech-orb">Python</span>
-                  <span class="tech-orb">AI/ML</span>
-                  <span class="tech-orb">Computer Vision</span>
-                  <span class="tech-orb">Web Development</span>
-                </div>
+              <h3>Analisis: AI Medical Diagnosis Platform</h3>
+              <p>AI-powered medical platform for wound detection achieving 2nd place globally in AI4Y World Competition.</p>
+              <div class="project-tech">
+                <span class="tech-badge">Python</span>
+                <span class="tech-badge">AI/ML</span>
+                <span class="tech-badge">Computer Vision</span>
+                <span class="tech-badge">Web Development</span>
               </div>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Scene 4: About Universe -->
+      <!-- Scene 4: About (Left/West) -->
       <div class="scene scene-about" data-scene="4">
-        <div class="scene-background">
-          <div class="connection-web" id="connectionWeb"></div>
-        </div>
-
         <div class="scene-content">
-          <div class="cosmos-center">
-            <div class="avatar-constellation">
-              <div class="avatar-orbit">
+          <div class="about-container">
+            <div class="avatar-section">
+              <div class="avatar-frame">
                 <img
-                  class="cosmic-avatar"
+                  class="avatar-image"
                   src="https://avatars.githubusercontent.com/u/116463487?v=4"
                   alt="Aviv Shaked"
                 />
-                <div class="avatar-rings"></div>
+                <div class="avatar-glow"></div>
               </div>
             </div>
 
-            <div class="about-nebula">
-              <h2 class="section-title smaller">Aviv Shaked</h2>
-              <h3 class="section-subtitle">
-                Cybersecurity Developer & Researcher
-              </h3>
+            <div class="about-content">
+              <h2 class="section-title">Aviv Shaked</h2>
+              <h3 class="section-subtitle">Cybersecurity Developer & Researcher</h3>
 
-              <div class="story-constellation">
-                <p class="section-paragraph">
-                  I'm an 18-year-old cybersecurity developer and researcher from
-                  Haifa, Israel. Currently pursuing advanced studies in
-                  cybersecurity at Magshimim Cyber Center and computer science
-                  at Bosmat Technological School.
+              <div class="about-text">
+                <p>
+                  I'm an 18-year-old cybersecurity developer and researcher from Haifa, Israel. 
+                  Currently pursuing advanced studies in cybersecurity at Magshimim Cyber Center 
+                  and computer science at Bosmat Technological School.
                 </p>
-                <p class="section-paragraph">
-                  My expertise lies in building secure, high-performance systems
-                  using modern C++. I've been part of the Captain Team of
-                  Analisis, which represented Israel in the AI4Y World
-                  Competition, and I'm currently developing revolutionary covert
-                  communication systems.
+                <p>
+                  My expertise lies in building secure, high-performance systems using modern C++. 
+                  I've been part of the Captain Team of Analisis, which represented Israel in the 
+                  AI4Y World Competition, and I'm currently developing revolutionary covert communication systems.
                 </p>
-                <p class="section-paragraph">
-                  Professional experience includes building automated tools and
-                  secure data systems at AllBikes, with expertise in Python
-                  automation and data processing. Always eager to take on
-                  challenging projects that push the boundaries of cybersecurity
-                  and software engineering.
+                <p>
+                  Professional experience includes building automated tools and secure data systems 
+                  at AllBikes, with expertise in Python automation and data processing. Always eager 
+                  to take on challenging projects that push the boundaries of cybersecurity and software engineering.
                 </p>
               </div>
 
-              <div class="connection-constellation">
-                <a
-                  href="https://www.linkedin.com/in/aviv-shaked-59a4b7271/"
-                  target="_blank"
-                  class="cosmic-link"
-                >
-                  <div class="link-planet linkedin">
-                    <div class="planet-icon">💼</div>
-                    <span>LinkedIn</span>
-                  </div>
+              <div class="social-links">
+                <a href="https://www.linkedin.com/in/aviv-shaked-59a4b7271/" target="_blank" class="social-link linkedin">
+                  <div class="social-icon">💼</div>
+                  <span>LinkedIn</span>
                 </a>
-                <a
-                  href="https://github.com/Patcholie"
-                  target="_blank"
-                  class="cosmic-link"
-                >
-                  <div class="link-planet github">
-                    <div class="planet-icon">💻</div>
-                    <span>GitHub</span>
-                  </div>
+                <a href="https://github.com/Patcholie" target="_blank" class="social-link github">
+                  <div class="social-icon">💻</div>
+                  <span>GitHub</span>
                 </a>
-                <a
-                  href="https://www.instagram.com/_avivshaked_/"
-                  target="_blank"
-                  class="cosmic-link"
-                >
-                  <div class="link-planet instagram">
-                    <div class="planet-icon">📸</div>
-                    <span>Instagram</span>
-                  </div>
+                <a href="https://www.instagram.com/_avivshaked_/" target="_blank" class="social-link instagram">
+                  <div class="social-icon">📸</div>
+                  <span>Instagram</span>
                 </a>
-                <a
-                  href="https://drive.google.com/file/d/1cUoF--q94LtUQKox5eGfMYom70GJoIGc/view?usp=sharing"
-                  target="_blank"
-                  class="cosmic-link resume"
-                >
-                  <div class="link-planet resume">
-                    <div class="planet-icon">📄</div>
-                    <span>Resume</span>
-                  </div>
+                <a href="https://drive.google.com/file/d/1cUoF--q94LtUQKox5eGfMYom70GJoIGc/view?usp=sharing" target="_blank" class="social-link resume">
+                  <div class="social-icon">📄</div>
+                  <span>Resume</span>
                 </a>
               </div>
             </div>
@@ -517,16 +390,21 @@
       </div>
     </div>
 
-    <!-- Mobile Camera Controls -->
-    <div class="mobile-camera-controls mobile-only" id="mobileCameraControls">
-      <div class="control-hint">Swipe to navigate</div>
-      <div class="mobile-nav-dots">
-        <div class="nav-dot active" data-scene="0"></div>
-        <div class="nav-dot" data-scene="1"></div>
-        <div class="nav-dot" data-scene="2"></div>
-        <div class="nav-dot" data-scene="3"></div>
-        <div class="nav-dot" data-scene="4"></div>
+    <!-- Mobile Controls -->
+    <div class="mobile-controls mobile-only" id="mobileControls">
+      <div class="mobile-nav">
+        <div class="mobile-nav-item active" data-scene="0">Home</div>
+        <div class="mobile-nav-item" data-scene="1">Skills</div>
+        <div class="mobile-nav-item" data-scene="2">Experience</div>
+        <div class="mobile-nav-item" data-scene="3">Projects</div>
+        <div class="mobile-nav-item" data-scene="4">About</div>
       </div>
+    </div>
+
+    <!-- Performance Monitor (Debug) -->
+    <div class="performance-monitor" id="performanceMonitor">
+      <div class="fps-counter">FPS: <span id="fpsCount">60</span></div>
+      <div class="scene-info">Scene: <span id="sceneInfo">Home</span></div>
     </div>
 
     <script src="scripts.js"></script>
