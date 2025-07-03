@@ -119,7 +119,7 @@ animateLargeCursor();
 
 // Enhanced cursor morphing with magnetic effect
 const magneticElements = document.querySelectorAll('.magnetic-btn');
-const interactiveElements = document.querySelectorAll('a, button, .card, .list-item, .sidebar-item, .traffic-light, .hero-visual, .card-icon, .list-icon, .profile-avatar, .notification-icon, .tag, .code-window, .code-dot, .code-line');
+const interactiveElements = document.querySelectorAll('a, button, .card, .list-item, .sidebar-item, .traffic-light, .hero-visual, .card-icon, .list-icon, .profile-avatar, .tag, .code-window, .code-dot, .code-line');
 
 magneticElements.forEach(el => {
     el.addEventListener('mouseenter', () => {
