@@ -122,50 +122,24 @@ interactiveElements.forEach(el => {
         isHovering = true;
         hoverTarget = el;
         cursorLarge.classList.add('morphed');
-        
+
         const rect = el.getBoundingClientRect();
-        let newWidth, newHeight;
-        
-        if (el.classList.contains('traffic-light') || el.classList.contains('profile-avatar')) {
-            const size = Math.max(rect.width, rect.height) + 24;
-            newWidth = Math.min(size, 60);
-            newHeight = newWidth;
-            cursorLarge.style.borderRadius = '50%';
-        } else if (el.classList.contains('card-icon') || el.classList.contains('list-icon')) {
-            const size = Math.max(rect.width, rect.height) + 16;
-            newWidth = Math.min(size, 56);
-            newHeight = newWidth;
-            cursorLarge.style.borderRadius = '12px';
-        } else if (el.classList.contains('sidebar-item')) {
-            newWidth = Math.min(rect.width + 16, 200);
-            newHeight = Math.min(rect.height + 8, 50);
-            cursorLarge.style.borderRadius = '8px';
-        } else if (el.classList.contains('card')) {
-            newWidth = Math.min(rect.width * 0.95, 320);
-            newHeight = Math.min(rect.height * 0.95, 240);
-            cursorLarge.style.borderRadius = '16px';
-        } else if (el.classList.contains('tag')) {
-            newWidth = rect.width + 12;
-            newHeight = rect.height + 8;
-            cursorLarge.style.borderRadius = '20px';
-        } else if (el.classList.contains('code-window')) {
-            newWidth = Math.min(rect.width * 0.98, 400);
-            newHeight = Math.min(rect.height * 0.98, 300);
-            cursorLarge.style.borderRadius = '16px';
-        } else if (el.classList.contains('code-dot')) {
-            const size = Math.max(rect.width, rect.height) + 20;
-            newWidth = Math.min(size, 50);
-            newHeight = newWidth;
-            cursorLarge.style.borderRadius = '50%';
-        } else if (el.classList.contains('code-line')) {
-            newWidth = Math.min(rect.width + 20, 350);
-            newHeight = rect.height + 8;
-            cursorLarge.style.borderRadius = '6px';
-        } else {
-            newWidth = Math.min(rect.width + 16, 120);
-            newHeight = Math.min(rect.height + 16, 80);
-            cursorLarge.style.borderRadius = '12px';
-        }
+        const paddingX = 16;
+        const paddingY = 12;
+
+        const newWidth = rect.width + paddingX * 2;
+        const newHeight = rect.height + paddingY * 2;
+
+        cursorLarge.style.width = `${newWidth}px`;
+        cursorLarge.style.height = `${newHeight}px`;
+
+        // Use element's own border-radius if available
+        const computedStyle = window.getComputedStyle(el);
+        const borderRadius = computedStyle.borderRadius || '12px';
+        cursorLarge.style.borderRadius = borderRadius;
+
+        cursorLarge.style.transition = 'all 0.3s ease';
+    });
         
         newWidth = Math.max(newWidth, 36);
         newHeight = Math.max(newHeight, 36);
