@@ -1,713 +1,1098 @@
-// Mobile Detection
+// =================================================================================
+// CINEMATIC PORTFOLIO - 3D CAMERA EXPERIENCE ENGINE
+// =================================================================================
+
+// Global Configuration
+const CAMERA_CONFIG = {
+    // Camera movement settings
+    smoothness: 0.08,           // Camera movement smoothness (lower = smoother)
+    rotationSmooth: 0.06,       // Rotation smoothness
+    sceneDistance: 2000,        // Distance between scenes in 3D space
+    
+    // Scene positions in 3D space
+    scenes: [
+        { x: 0, y: 0, z: 0, rotY: 0 },           // Hero
+        { x: 1500, y: -500, z: 2000, rotY: 20 },   // Skills
+        { x: -1200, y: 800, z: 4000, rotY: -15 },  // Experience
+        { x: 2000, y: -800, z: 6000, rotY: 25 },   // Projects
+        { x: 0, y: 1200, z: 8000, rotY: 0 }      // About
+    ],
+    
+    // Animation timings
+    sceneTransitionDuration: 2500,
+    particleSpeed: 0.8,
+    
+    // Mobile optimizations
+    mobile: {
+        smoothness: 0.12,
+        reducedParticles: true,
+        simplifiedTransitions: true
+    }
+};
+
+// Device Detection & Configuration
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
 const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-// Performance throttling
-let ticking = false;
-let scrollTimeoutId = null;
+// Apply mobile optimizations
+if (isMobile) {
+    Object.assign(CAMERA_CONFIG, CAMERA_CONFIG.mobile);
+}
 
-// Global state
-let isLoading = true;
-let currentSection = 'home';
-let parallaxElements = [];
-let horizontalScrollProgress = 0;
+// =================================================================================
+// CORE CAMERA SYSTEM
+// =================================================================================
 
-// Loading Screen
-document.body.classList.add('loading');
-
-window.addEventListener('load', () => {
-    setTimeout(() => {
-        document.getElementById('loadingScreen').classList.add('hidden');
-        document.body.classList.remove('loading');
-        isLoading = false;
+class CinematicCamera {
+    constructor() {
+        this.position = { x: 0, y: 0, z: 0 };
+        this.target = { x: 0, y: 0, z: 0 };
+        this.rotation = { x: 0, y: 0, z: 0 };
+        this.targetRotation = { x: 0, y: 0, z: 0 };
         
-        // Reset scroll position
-        const content = document.querySelector('.content');
-        if (content) {
-            content.scrollTop = 0;
-        } else {
-            window.scrollTo(0, 0);
-        }
+        this.currentScene = 0;
+        this.isTransitioning = false;
+        this.transitionProgress = 0;
         
-        // Initialize after loading
-        initializeAnimations();
-    }, 2800);
-});
-
-// Initialize all animations and interactions
-function initializeAnimations() {
-    createParticles();
-    initializeParallax();
-    setupScrollAnimations();
-    setupMobileNavigation();
-    setupInteractiveElements();
-    setupHorizontalScroll();
-    
-    if (!isMobile && !isTouch) {
-        setupCursorEffects();
+        this.viewport = document.getElementById('cameraViewport');
+        this.cinematicBg = document.getElementById('cinematicBg');
+        
+        this.mousePosition = { x: 0, y: 0 };
+        this.mouseInfluence = { x: 0, y: 0 };
+        
+        this.animationId = null;
+        this.lastTime = 0;
+        
+        this.init();
     }
-}
-
-// Enhanced Particle System
-function createParticles() {
-    const container = document.getElementById('particles');
-    const particleCount = isMobile ? 25 : 50; // Reduce particles on mobile
     
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + 'vw';
-        particle.style.animationDelay = Math.random() * 20 + 's';
-        particle.style.animationDuration = (15 + Math.random() * 10) + 's';
-        particle.style.opacity = isMobile ? 0.2 : 0.3; // Subtle on mobile
-        container.appendChild(particle);
+    init() {
+        this.setupEventListeners();
+        this.startAnimation();
+        this.goToScene(0, false); // Start at hero scene without animation
     }
-}
-
-// Simplified Parallax System
-function initializeParallax() {
-    parallaxElements = document.querySelectorAll('.parallax-element');
     
-    // Initialize parallax elements with simple, smooth properties
-    parallaxElements.forEach((element) => {
-        const speed = parseFloat(element.dataset.speed) || 0.5;
-        const direction = element.dataset.direction || 'up';
-        
-        element.parallaxData = {
-            speed,
-            direction,
-            originalTransform: element.style.transform || ''
-        };
-        
-        // Smooth transition for non-scroll interactions only
-        element.style.transition = 'opacity 0.3s ease, transform 0.1s linear';
-        element.style.willChange = 'transform, opacity';
-    });
-}
-
-// Smooth intersection observer for reveals
-function initializeAdvancedObserver() {
-    const observerOptions = {
-        threshold: [0, 0.2, 0.5, 0.8, 1],
-        rootMargin: '50px 0px 50px 0px'
-    };
-
-    const smoothObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            const element = entry.target;
-            
-            if (entry.isIntersecting) {
-                element.classList.add('reveal');
+    setupEventListeners() {
+        // Desktop mouse tracking for subtle camera movement
+        if (!isMobile && !isTouch) {
+            document.addEventListener('mousemove', (e) => {
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
                 
-                // Smooth staggered animation for child elements
-                if (element.classList.contains('card') || element.classList.contains('list-item')) {
-                    const siblings = [...element.parentElement.children];
-                    const index = siblings.indexOf(element);
-                    element.style.transitionDelay = `${index * 0.05}s`; // Reduced delay for smoothness
-                }
-            } else if (!isMobile) {
-                element.classList.remove('reveal');
-                element.style.transitionDelay = '';
-            }
-        });
-    }, observerOptions);
-
-    // Observe all animatable elements
-    const elementsToObserve = document.querySelectorAll('.content-section, .card, .list-item');
-    elementsToObserve.forEach(el => smoothObserver.observe(el));
-}
-
-// Mouse-based parallax for desktop only
-function updateMouseParallax() {
-    if (isMobile || isTouch) return;
-    
-    const parallaxBg = document.getElementById('parallaxBg');
-    let targetX = 0, targetY = 0;
-    let currentX = 0, currentY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
-
-        targetX = (e.clientX - centerX) / centerX;
-        targetY = (e.clientY - centerY) / centerY;
-    });
-
-    function animateMouseParallax() {
-        currentX += (targetX - currentX) * 0.05;
-        currentY += (targetY - currentY) * 0.05;
-
-        const maxTranslate = 15;
-        const translateX = currentX * maxTranslate;
-        const translateY = currentY * maxTranslate;
-
-        if (parallaxBg) {
-            parallaxBg.style.transform = `translate(${translateX}px, ${translateY}px) scale(1.02)`;
+                this.mousePosition.x = (e.clientX - centerX) / centerX;
+                this.mousePosition.y = (e.clientY - centerY) / centerY;
+            });
         }
-
-        requestAnimationFrame(animateMouseParallax);
-    }
-    animateMouseParallax();
-}
-
-// Smooth Camera-like Parallax System
-function updateScrollParallax() {
-    if (isLoading || isMobile) return;
-    
-    const content = document.querySelector('.content');
-    const scrollTop = content ? content.scrollTop : window.pageYOffset;
-    const windowHeight = window.innerHeight;
-    const documentHeight = content ? content.scrollHeight : document.documentElement.scrollHeight;
-    
-    // Global scroll progress (0 to 1) - smooth and linear
-    const globalScrollProgress = Math.min(scrollTop / (documentHeight - windowHeight), 1);
-    
-    parallaxElements.forEach((element) => {
-        const rect = element.getBoundingClientRect();
-        const elementTop = rect.top + scrollTop;
-        const elementHeight = rect.height;
-        const elementCenter = elementTop + elementHeight / 2;
         
-        // Only affect elements that are in or near the viewport
-        if (rect.top < windowHeight + 100 && rect.bottom > -100) {
-            const { speed, direction } = element.parallaxData;
-            
-            // Calculate smooth element progress relative to viewport center
-            const viewportCenter = scrollTop + windowHeight / 2;
-            const distanceFromCenter = (elementCenter - viewportCenter) / windowHeight;
-            
-            // Smooth, predictable movement based on distance from viewport center
-            const moveAmount = distanceFromCenter * speed * 60; // Reduced for smoothness
-            
-            let transform = '';
-            
-            switch (direction) {
-                case 'left':
-                    transform = `translateX(${-moveAmount}px) translateY(${moveAmount * 0.3}px)`;
+        // Navigation controls
+        this.setupNavigationControls();
+        
+        // Mobile touch controls
+        if (isMobile || isTouch) {
+            this.setupTouchControls();
+        }
+        
+        // Keyboard controls
+        this.setupKeyboardControls();
+        
+        // Window resize
+        window.addEventListener('resize', () => {
+            this.handleResize();
+        });
+    }
+    
+    setupNavigationControls() {
+        const navButtons = document.querySelectorAll('.nav-btn');
+        const navDots = document.querySelectorAll('.nav-dot');
+        
+        navButtons.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const sceneIndex = parseInt(btn.dataset.scene);
+                this.goToScene(sceneIndex);
+            });
+        });
+        
+        navDots.forEach(dot => {
+            dot.addEventListener('click', () => {
+                const sceneIndex = parseInt(dot.dataset.scene);
+                this.goToScene(sceneIndex);
+            });
+        });
+    }
+    
+    setupTouchControls() {
+        let startY = 0;
+        let startX = 0;
+        let isScrolling = false;
+        
+        document.addEventListener('touchstart', (e) => {
+            startY = e.touches[0].clientY;
+            startX = e.touches[0].clientX;
+            isScrolling = false;
+        }, { passive: true });
+        
+        document.addEventListener('touchmove', (e) => {
+            if (!isScrolling) {
+                const deltaY = e.touches[0].clientY - startY;
+                const deltaX = e.touches[0].clientX - startX;
+                
+                // Determine scroll direction
+                if (Math.abs(deltaY) > Math.abs(deltaX) && Math.abs(deltaY) > 50) {
+                    isScrolling = true;
+                    
+                    if (deltaY < 0 && this.currentScene < CAMERA_CONFIG.scenes.length - 1) {
+                        // Swipe up - next scene
+                        this.goToScene(this.currentScene + 1);
+                    } else if (deltaY > 0 && this.currentScene > 0) {
+                        // Swipe down - previous scene
+                        this.goToScene(this.currentScene - 1);
+                    }
+                }
+            }
+        }, { passive: true });
+    }
+    
+    setupKeyboardControls() {
+        document.addEventListener('keydown', (e) => {
+            switch (e.key) {
+                case 'ArrowUp':
+                case 'w':
+                case 'W':
+                    e.preventDefault();
+                    if (this.currentScene > 0) {
+                        this.goToScene(this.currentScene - 1);
+                    }
                     break;
-                case 'right':
-                    transform = `translateX(${moveAmount}px) translateY(${moveAmount * 0.3}px)`;
+                    
+                case 'ArrowDown':
+                case 's':
+                case 'S':
+                    e.preventDefault();
+                    if (this.currentScene < CAMERA_CONFIG.scenes.length - 1) {
+                        this.goToScene(this.currentScene + 1);
+                    }
                     break;
-                case 'up':
-                    transform = `translateY(${-moveAmount}px)`;
+                    
+                case 'Home':
+                    e.preventDefault();
+                    this.goToScene(0);
                     break;
-                case 'down':
-                    transform = `translateY(${moveAmount}px)`;
+                    
+                case 'End':
+                    e.preventDefault();
+                    this.goToScene(CAMERA_CONFIG.scenes.length - 1);
                     break;
+                    
                 default:
-                    // Default smooth vertical movement
-                    transform = `translateY(${-moveAmount * 0.5}px)`;
-            }
-            
-            // Apply smooth transform
-            element.style.transform = transform;
-            
-            // Smooth opacity changes for depth
-            const opacity = Math.max(0.7, 1 - Math.abs(distanceFromCenter) * 0.3);
-            element.style.opacity = opacity;
-        }
-    });
-    
-    // Smooth background parallax
-    updateSmoothBackgroundParallax(globalScrollProgress);
-}
-
-// Smooth background movement
-function updateSmoothBackgroundParallax(scrollProgress) {
-    const parallaxBg = document.getElementById('parallaxBg');
-    if (!parallaxBg || isMobile) return;
-    
-    // Very subtle, smooth movement
-    const moveY = scrollProgress * 20; // Slow, smooth movement
-    const scale = 1 + scrollProgress * 0.02; // Very subtle scaling
-    
-    parallaxBg.style.transform = `translateY(${moveY}px) scale(${scale})`;
-}
-
-// Smooth Horizontal Scroll Section
-function setupHorizontalScroll() {
-    const horizontalContainer = document.getElementById('horizontalContainer');
-    const horizontalSection = document.querySelector('.horizontal-scroll-section');
-    
-    if (!horizontalContainer || !horizontalSection || isMobile) return;
-    
-    function updateHorizontalScroll() {
-        const content = document.querySelector('.content');
-        const scrollTop = content ? content.scrollTop : window.pageYOffset;
-        const sectionRect = horizontalSection.getBoundingClientRect();
-        
-        // Only when section is in view
-        if (sectionRect.top <= window.innerHeight && sectionRect.bottom >= 0) {
-            // Smooth progress calculation
-            const progress = Math.max(0, Math.min(1, 
-                (window.innerHeight - sectionRect.top) / (window.innerHeight + sectionRect.height)
-            ));
-            
-            const maxScroll = horizontalContainer.scrollWidth - horizontalContainer.clientWidth;
-            const scrollValue = progress * maxScroll;
-            
-            // Simple, smooth horizontal movement
-            horizontalContainer.style.transform = `translateX(-${scrollValue}px)`;
-            
-            // Subtle opacity changes for items
-            const items = horizontalContainer.querySelectorAll('.horizontal-item');
-            items.forEach((item, index) => {
-                const itemProgress = Math.max(0, Math.min(1, progress - (index * 0.1)));
-                item.style.opacity = 0.6 + (itemProgress * 0.4);
-            });
-        }
-    }
-    
-    // Add to scroll listener
-    const content = document.querySelector('.content');
-    if (content) {
-        content.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    updateHorizontalScroll();
-                    ticking = false;
-                });
-                ticking = true;
+                    // Number keys for direct scene access
+                    const num = parseInt(e.key);
+                    if (!isNaN(num) && num >= 1 && num <= CAMERA_CONFIG.scenes.length) {
+                        e.preventDefault();
+                        this.goToScene(num - 1);
+                    }
+                    break;
             }
         });
     }
-}
-
-// Enhanced Cursor System (Desktop Only)
-function setupCursorEffects() {
-    const cursorSmall = document.querySelector('.cursor--small');
-    const cursorLarge = document.querySelector('.cursor--large');
-
-    if (!cursorSmall || !cursorLarge) return;
-
-    let mouseX = 0;
-    let mouseY = 0;
-    let largeCursorX = 0;
-    let largeCursorY = 0;
-    let isHovering = false;
-    let hoverTarget = null;
-
-    // Mouse movement tracking
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        
-        cursorSmall.style.left = mouseX + 'px';
-        cursorSmall.style.top = mouseY + 'px';
-    });
-
-    // Animate large cursor
-    function animateLargeCursor() {
-        if (isHovering && hoverTarget) {
-            const rect = hoverTarget.getBoundingClientRect();
-            const targetX = rect.left + rect.width / 2;
-            const targetY = rect.top + rect.height / 2;
-            
-            largeCursorX += (targetX - largeCursorX) * 0.25;
-            largeCursorY += (targetY - largeCursorY) * 0.25;
-        } else {
-            largeCursorX += (mouseX - largeCursorX) * 0.15;
-            largeCursorY += (mouseY - largeCursorY) * 0.15;
+    
+    goToScene(sceneIndex, animate = true) {
+        if (sceneIndex < 0 || sceneIndex >= CAMERA_CONFIG.scenes.length || 
+            sceneIndex === this.currentScene || this.isTransitioning) {
+            return;
         }
         
-        cursorLarge.style.left = largeCursorX + 'px';
-        cursorLarge.style.top = largeCursorY + 'px';
+        this.currentScene = sceneIndex;
+        const targetScene = CAMERA_CONFIG.scenes[sceneIndex];
         
-        requestAnimationFrame(animateLargeCursor);
-    }
-    animateLargeCursor();
-
-    // Interactive elements
-    const interactiveElements = document.querySelectorAll('a, button, .card, .list-item, .sidebar-item, .traffic-light, .hero-visual, .card-icon, .list-icon, .profile-avatar, .tag, .code-window, .code-dot, .code-line');
-
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            isHovering = true;
-            hoverTarget = el;
-            cursorLarge.classList.add('morphed', 'interactive');
-
-            const rect = el.getBoundingClientRect();
-            const computedStyle = window.getComputedStyle(el);
-
-            cursorLarge.style.borderRadius = computedStyle.borderRadius || '12px';
-            cursorLarge.style.width = rect.width + 'px';
-            cursorLarge.style.height = rect.height + 'px';
-            cursorLarge.style.transition = 'width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-radius 0.4s ease';
-        });
-
-        el.addEventListener('mouseleave', () => {
-            isHovering = false;
-            hoverTarget = null;
-            cursorLarge.classList.remove('morphed', 'interactive');
-
-            cursorLarge.style.width = '32px';
-            cursorLarge.style.height = '32px';
-            cursorLarge.style.borderRadius = '50%';
-        });
-    });
-
-    // Magnetic elements
-    const magneticElements = document.querySelectorAll('.magnetic-btn');
-    magneticElements.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursorLarge.classList.add('magnetic');
-        });
+        // Update navigation UI
+        this.updateNavigationUI();
         
-        el.addEventListener('mouseleave', () => {
-            cursorLarge.classList.remove('magnetic');
-        });
-    });
-}
-
-// Interactive Elements Setup
-function setupInteractiveElements() {
-    // Code window interactions
-    const codeDots = document.querySelectorAll('.code-dot');
-    const codeWindow = document.querySelector('.code-window');
-    const codeLines = document.querySelectorAll('.code-line');
-
-    codeDots.forEach((dot, index) => {
-        const clickHandler = () => {
-            if (index === 0) {
-                // Red dot - minimize effect
-                if (codeWindow) {
-                    codeWindow.style.transform = 'scale(0.95) rotate(-2deg)';
-                    setTimeout(() => {
-                        codeWindow.style.transform = 'scale(1) rotate(0deg)';
-                    }, 300);
-                }
-            } else if (index === 1) {
-                // Yellow dot - typewriter effect
-                codeLines.forEach((line, lineIndex) => {
-                    line.style.opacity = '0';
-                    setTimeout(() => {
-                        line.style.opacity = '1';
-                        line.style.animation = 'slideInCode 0.2s ease forwards';
-                    }, lineIndex * 100);
-                });
-            } else {
-                // Green dot - glow effect
-                if (codeWindow) {
-                    codeWindow.style.boxShadow = '0 0 40px rgba(59, 130, 246, 0.4), 0 20px 60px rgba(0, 0, 0, 0.6)';
-                    setTimeout(() => {
-                        codeWindow.style.boxShadow = '';
-                    }, 1000);
-                }
-            }
-        };
-
-        if (isMobile || isTouch) {
-            dot.addEventListener('touchend', clickHandler);
-        } else {
-            dot.addEventListener('click', clickHandler);
+        if (!animate || prefersReducedMotion) {
+            // Instant transition
+            this.position = { ...targetScene };
+            this.target = { ...targetScene };
+            this.targetRotation.y = targetScene.rotY;
+            this.rotation.y = targetScene.rotY;
+            this.updateSceneVisibility();
+            this.updateProgressIndicator();
+            return;
         }
-    });
-
-    // Enhanced code line interactions
-    codeLines.forEach(line => {
-        const hoverHandler = () => {
-            line.style.background = 'rgba(59, 130, 246, 0.05)';
-            line.style.borderLeft = '3px solid var(--accent-primary)';
-            line.style.paddingLeft = '8px';
+        
+        // Smooth animated transition
+        this.isTransitioning = true;
+        this.transitionProgress = 0;
+        
+        this.target = {
+            x: targetScene.x,
+            y: targetScene.y,
+            z: targetScene.z
         };
         
-        const leaveHandler = () => {
-            line.style.background = '';
-            line.style.borderLeft = '';
-            line.style.paddingLeft = '';
-        };
-
-        if (isMobile || isTouch) {
-            line.addEventListener('touchstart', hoverHandler);
-            line.addEventListener('touchend', leaveHandler);
-        } else {
-            line.addEventListener('mouseenter', hoverHandler);
-            line.addEventListener('mouseleave', leaveHandler);
-        }
-    });
-}
-
-// Mobile Navigation
-function setupMobileNavigation() {
-    const mobileNavToggle = document.getElementById('mobileNavToggle');
-    const sidebar = document.getElementById('sidebar');
+        this.targetRotation.y = targetScene.rotY;
+        
+        // Trigger scene-specific animations
+        this.triggerSceneAnimations(sceneIndex);
+        
+        // Update scene visibility after a delay
+        setTimeout(() => {
+            this.updateSceneVisibility();
+        }, CAMERA_CONFIG.sceneTransitionDuration * 0.3);
+    }
     
-    if (mobileNavToggle && sidebar) {
-        const toggleNavigation = () => {
-            mobileNavToggle.classList.toggle('active');
-            sidebar.classList.toggle('active');
+    updateNavigationUI() {
+        // Update navigation buttons
+        document.querySelectorAll('.nav-btn').forEach((btn, index) => {
+            btn.classList.toggle('active', index === this.currentScene);
+        });
+        
+        // Update mobile navigation dots
+        document.querySelectorAll('.nav-dot').forEach((dot, index) => {
+            dot.classList.toggle('active', index === this.currentScene);
+        });
+        
+        this.updateProgressIndicator();
+    }
+    
+    updateProgressIndicator() {
+        const progressText = document.getElementById('progressText');
+        const progressBar = document.querySelector('.progress-bar');
+        
+        if (progressText) {
+            progressText.textContent = String(this.currentScene + 1).padStart(2, '0');
+        }
+        
+        if (progressBar) {
+            const progress = (this.currentScene / (CAMERA_CONFIG.scenes.length - 1)) * 157;
+            progressBar.style.strokeDashoffset = 157 - progress;
+        }
+    }
+    
+    updateSceneVisibility() {
+        document.querySelectorAll('.scene').forEach((scene, index) => {
+            const isActive = index === this.currentScene;
+            scene.classList.toggle('active', isActive);
             
-            // Prevent background scrolling when nav is open
-            if (sidebar.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = '';
-            }
-        };
-
-        mobileNavToggle.addEventListener('click', toggleNavigation);
-        mobileNavToggle.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            toggleNavigation();
-        });
-
-        // Close navigation when clicking on sidebar items
-        const sidebarItems = sidebar.querySelectorAll('.sidebar-item');
-        sidebarItems.forEach(item => {
-            item.addEventListener('click', () => {
-                if (window.innerWidth <= 768) {
-                    mobileNavToggle.classList.remove('active');
-                    sidebar.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-            });
-        });
-
-        // Close navigation when clicking outside
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768 && 
-                sidebar.classList.contains('active') && 
-                !sidebar.contains(e.target) && 
-                !mobileNavToggle.contains(e.target)) {
-                mobileNavToggle.classList.remove('active');
-                sidebar.classList.remove('active');
-                document.body.style.overflow = '';
-            }
+            // Performance optimization: hide non-active scenes
+            scene.style.display = Math.abs(index - this.currentScene) <= 1 ? 'block' : 'none';
         });
     }
-}
-
-// Smooth Scroll Animations Setup
-function setupScrollAnimations() {
-    // Scroll progress indicator with smooth glow
-    function updateScrollProgress() {
-        const content = document.querySelector('.content');
-        const scrollProgress = document.getElementById('scrollProgress');
+    
+    triggerSceneAnimations(sceneIndex) {
+        // Scene-specific entrance animations
+        const scene = document.querySelector(`[data-scene="${sceneIndex}"]`);
+        if (!scene) return;
         
-        if (content && scrollProgress) {
-            const scrollTop = content.scrollTop;
-            const scrollHeight = content.scrollHeight - content.clientHeight;
-            const progress = Math.min((scrollTop / scrollHeight) * 100, 100);
-            scrollProgress.style.width = progress + '%';
+        // Remove any existing animation classes
+        scene.classList.remove('scene-enter');
+        
+        // Trigger entrance animation
+        setTimeout(() => {
+            scene.classList.add('scene-enter');
+        }, 100);
+        
+        // Scene-specific effects
+        switch (sceneIndex) {
+            case 0: // Hero
+                this.animateHeroElements();
+                break;
+            case 1: // Skills
+                this.animateSkillElements();
+                break;
+            case 2: // Experience
+                this.animateExperienceElements();
+                break;
+            case 3: // Projects
+                this.animateProjectElements();
+                break;
+            case 4: // About
+                this.animateAboutElements();
+                break;
         }
     }
-
-    // Smooth combined scroll listener
-    const content = document.querySelector('.content');
     
-    const scrollHandler = () => {
-        if (!ticking) {
-            requestAnimationFrame(() => {
-                updateScrollProgress();
-                updateActiveNav();
-                if (!isMobile) {
-                    updateScrollParallax();
-                }
-                ticking = false;
-            });
-            ticking = true;
-        }
-    };
-
-    if (content) {
-        content.addEventListener('scroll', scrollHandler, { passive: true });
+    animateHeroElements() {
+        const titleWords = document.querySelectorAll('.title-word');
+        titleWords.forEach((word, index) => {
+            word.style.animation = 'none';
+            word.offsetHeight; // Force reflow
+            word.style.animation = `titleReveal 1s cubic-bezier(0.25, 0.8, 0.25, 1) ${index * 0.2}s forwards`;
+        });
         
-        // Smooth scroll behavior
-        content.style.scrollBehavior = 'smooth';
-        content.style.webkitOverflowScrolling = 'touch';
-    } else {
-        window.addEventListener('scroll', scrollHandler, { passive: true });
+        const terminal = document.querySelector('.floating-terminal');
+        if (terminal) {
+            terminal.style.animation = 'none';
+            terminal.offsetHeight;
+            terminal.style.animation = 'terminalFloat 1.5s ease 0.5s forwards';
+        }
     }
     
-    // Initialize the smooth observer
-    initializeAdvancedObserver();
-}
-
-// Remove mouse parallax to prevent background jumping
-function updateMouseParallax() {
-    // Disabled to prevent jumping background
-    return;
-}
-
-// Active Navigation Highlighting
-function updateActiveNav() {
-    const navItems = document.querySelectorAll('.sidebar-item');
-    const sections = document.querySelectorAll('.content-section');
-    let current = '';
-
-    sections.forEach(section => {
-        const sectionTop = section.getBoundingClientRect().top;
-        const sectionHeight = section.offsetHeight;
-        const viewportMiddle = window.innerHeight / 2;
-
-        if (sectionTop <= viewportMiddle && sectionTop + sectionHeight > viewportMiddle) {
-            current = section.getAttribute('id');
-        }
-    });
-    
-    if (current !== currentSection) {
-        currentSection = current;
-        navItems.forEach(item => {
-            item.classList.remove('active');
-            if (item.getAttribute('href') === `#${current}`) {
-                item.classList.add('active');
-            }
-        });
-    }
-}
-
-// Smooth scrolling for navigation
-function setupSmoothScrolling() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                const content = document.querySelector('.content');
-                const targetTop = target.offsetTop - 100; // Account for header
-                
-                if (content) {
-                    content.scrollTo({
-                        top: targetTop,
-                        behavior: 'smooth'
-                    });
-                } else {
-                    window.scrollTo({
-                        top: targetTop,
-                        behavior: 'smooth'
-                    });
-                }
-            }
-        });
-    });
-}
-
-// Touch interactions for mobile
-function setupTouchInteractions() {
-    if (!isMobile && !isTouch) return;
-
-    // Add touch feedback to interactive elements
-    const touchElements = document.querySelectorAll('.btn, .card, .list-item, .sidebar-item, .tag');
-    
-    touchElements.forEach(element => {
-        element.addEventListener('touchstart', () => {
-            element.style.transform = 'scale(0.98)';
-        }, { passive: true });
-        
-        element.addEventListener('touchend', () => {
+    animateSkillElements() {
+        const skillPlanets = document.querySelectorAll('.skill-planet');
+        skillPlanets.forEach((planet, index) => {
+            planet.style.transform = 'translateZ(-200px) scale(0.5)';
+            planet.style.opacity = '0';
+            
             setTimeout(() => {
-                element.style.transform = '';
-            }, 150);
-        }, { passive: true });
+                planet.style.transition = 'all 1s cubic-bezier(0.25, 0.8, 0.25, 1)';
+                planet.style.transform = 'translateZ(0) scale(1)';
+                planet.style.opacity = '1';
+            }, index * 200);
+        });
+    }
+    
+    animateExperienceElements() {
+        const timelineNodes = document.querySelectorAll('.timeline-node');
+        timelineNodes.forEach((node, index) => {
+            node.style.transform = 'translateX(-100px)';
+            node.style.opacity = '0';
+            
+            setTimeout(() => {
+                node.style.transition = 'all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1)';
+                node.style.transform = 'translateX(0)';
+                node.style.opacity = '1';
+            }, index * 150);
+        });
+    }
+    
+    animateProjectElements() {
+        const projectCubes = document.querySelectorAll('.project-cube');
+        projectCubes.forEach((cube, index) => {
+            cube.style.transform = 'translateZ(-300px) rotateY(45deg)';
+            cube.style.opacity = '0';
+            
+            setTimeout(() => {
+                cube.style.transition = 'all 1s cubic-bezier(0.25, 0.8, 0.25, 1)';
+                cube.style.transform = 'translateZ(0) rotateY(0deg)';
+                cube.style.opacity = '1';
+            }, index * 200);
+        });
+    }
+    
+    animateAboutElements() {
+        const avatar = document.querySelector('.cosmic-avatar');
+        const paragraphs = document.querySelectorAll('.cosmic-paragraph');
+        const links = document.querySelectorAll('.cosmic-link');
         
-        element.addEventListener('touchcancel', () => {
-            element.style.transform = '';
-        }, { passive: true });
-    });
-}
-
-// Keyboard navigation
-function setupKeyboardNavigation() {
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Tab') {
-            document.body.classList.add('keyboard-nav');
+        if (avatar) {
+            avatar.style.transform = 'scale(0) rotateY(180deg)';
+            setTimeout(() => {
+                avatar.style.transition = 'all 1s cubic-bezier(0.25, 0.8, 0.25, 1)';
+                avatar.style.transform = 'scale(1) rotateY(0deg)';
+            }, 200);
         }
         
-        // ESC key to close mobile navigation
-        if (e.key === 'Escape') {
-            const sidebar = document.getElementById('sidebar');
-            const mobileNavToggle = document.getElementById('mobileNavToggle');
+        paragraphs.forEach((p, index) => {
+            p.style.opacity = '0';
+            p.style.transform = 'translateY(30px)';
             
-            if (sidebar && sidebar.classList.contains('active')) {
-                mobileNavToggle.classList.remove('active');
-                sidebar.classList.remove('active');
-                document.body.style.overflow = '';
+            setTimeout(() => {
+                p.style.transition = 'all 0.6s ease';
+                p.style.opacity = '1';
+                p.style.transform = 'translateY(0)';
+            }, 600 + index * 200);
+        });
+        
+        links.forEach((link, index) => {
+            link.style.transform = 'translateZ(-100px)';
+            link.style.opacity = '0';
+            
+            setTimeout(() => {
+                link.style.transition = 'all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1)';
+                link.style.transform = 'translateZ(0)';
+                link.style.opacity = '1';
+            }, 1200 + index * 100);
+        });
+    }
+    
+    updateCamera(currentTime) {
+        const deltaTime = currentTime - this.lastTime;
+        this.lastTime = currentTime;
+        
+        // Smooth camera position interpolation
+        this.position.x += (this.target.x - this.position.x) * CAMERA_CONFIG.smoothness;
+        this.position.y += (this.target.y - this.position.y) * CAMERA_CONFIG.smoothness;
+        this.position.z += (this.target.z - this.position.z) * CAMERA_CONFIG.smoothness;
+        
+        // Smooth rotation interpolation
+        this.rotation.y += (this.targetRotation.y - this.rotation.y) * CAMERA_CONFIG.rotationSmooth;
+        
+        // Mouse influence for subtle camera movement (desktop only)
+        if (!isMobile && !isTouch) {
+            this.mouseInfluence.x += (this.mousePosition.x * 20 - this.mouseInfluence.x) * 0.05;
+            this.mouseInfluence.y += (this.mousePosition.y * 10 - this.mouseInfluence.y) * 0.05;
+        }
+        
+        // Apply transforms
+        if (this.viewport) {
+            const transformString = `
+                translate3d(${-this.position.x + this.mouseInfluence.x}px, 
+                           ${-this.position.y + this.mouseInfluence.y}px, 
+                           ${-this.position.z}px) 
+                rotateY(${-this.rotation.y}deg)
+            `;
+            this.viewport.style.transform = transformString;
+        }
+        
+        // Update background parallax
+        if (this.cinematicBg && !isMobile) {
+            const bgTransform = `
+                translate3d(${this.position.x * 0.1}px, 
+                           ${this.position.y * 0.1}px, 
+                           0px) 
+                rotateZ(${this.rotation.y * 0.1}deg)
+            `;
+            this.cinematicBg.style.transform = bgTransform;
+        }
+        
+        // Check if transition is complete
+        if (this.isTransitioning) {
+            const distance = Math.sqrt(
+                Math.pow(this.target.x - this.position.x, 2) +
+                Math.pow(this.target.y - this.position.y, 2) +
+                Math.pow(this.target.z - this.position.z, 2)
+            );
+            
+            if (distance < 50) {
+                this.isTransitioning = false;
             }
         }
-    });
-
-    document.addEventListener('mousedown', () => {
-        document.body.classList.remove('keyboard-nav');
-    });
+    }
+    
+    startAnimation() {
+        const animate = (currentTime) => {
+            this.updateCamera(currentTime);
+            this.animationId = requestAnimationFrame(animate);
+        };
+        
+        this.animationId = requestAnimationFrame(animate);
+    }
+    
+    handleResize() {
+        // Recalculate mouse positions and camera settings for new viewport
+        this.mousePosition = { x: 0, y: 0 };
+        this.mouseInfluence = { x: 0, y: 0 };
+    }
+    
+    destroy() {
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+        }
+    }
 }
 
-// Window resize handler
-function handleResize() {
-    // Close mobile navigation on resize to desktop
-    if (window.innerWidth > 768) {
-        const sidebar = document.getElementById('sidebar');
-        const mobileNavToggle = document.getElementById('mobileNavToggle');
+// =================================================================================
+// ENHANCED 3D PARTICLE SYSTEM
+// =================================================================================
+
+class ParticleUniverse {
+    constructor() {
+        this.particles = [];
+        this.shootingStars = [];
+        this.codeFragments = [];
+        this.dataStreams = [];
         
-        if (sidebar && mobileNavToggle) {
-            mobileNavToggle.classList.remove('active');
-            sidebar.classList.remove('active');
-            document.body.style.overflow = '';
+        this.particleCount = isMobile ? 50 : 150;
+        this.shootingStarCount = isMobile ? 2 : 5;
+        this.codeFragmentCount = isMobile ? 10 : 30;
+        this.dataStreamCount = isMobile ? 5 : 15;
+        
+        this.animationId = null;
+        
+        this.init();
+    }
+    
+    init() {
+        this.createParticles();
+        this.createShootingStars();
+        this.createCodeFragments();
+        this.createDataStreams();
+        this.startAnimation();
+    }
+    
+    createParticles() {
+        const layers = document.querySelectorAll('.particle-layer');
+        
+        layers.forEach((layer, layerIndex) => {
+            const particlesInLayer = Math.floor(this.particleCount / layers.length);
+            
+            for (let i = 0; i < particlesInLayer; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                
+                // Random starting position
+                particle.style.left = Math.random() * 100 + 'vw';
+                particle.style.top = Math.random() * 100 + 'vh';
+                
+                // Random animation delay and duration
+                const delay = Math.random() * 20;
+                const duration = 15 + Math.random() * 15;
+                
+                particle.style.animationDelay = delay + 's';
+                particle.style.animationDuration = duration + 's';
+                
+                // Layer-specific properties
+                const opacity = 0.2 + (layerIndex * 0.2);
+                particle.style.opacity = opacity;
+                
+                layer.appendChild(particle);
+                this.particles.push({
+                    element: particle,
+                    layer: layerIndex,
+                    speed: 0.5 + Math.random() * 0.5
+                });
+            }
+        });
+    }
+    
+    createShootingStars() {
+        const container = document.getElementById('shootingStars');
+        if (!container) return;
+        
+        for (let i = 0; i < this.shootingStarCount; i++) {
+            const star = document.createElement('div');
+            star.className = 'shooting-star';
+            
+            // Random starting position and delay
+            star.style.left = 100 + Math.random() * 50 + 'vw';
+            star.style.top = Math.random() * 50 + 'vh';
+            star.style.animationDelay = Math.random() * 10 + 's';
+            star.style.animationDuration = 2 + Math.random() * 3 + 's';
+            
+            container.appendChild(star);
+            this.shootingStars.push(star);
         }
     }
     
-    // Reinitialize parallax elements
-    if (parallaxElements.length > 0) {
-        initializeParallax();
-    }
-}
-
-// Performance optimizations
-function optimizePerformance() {
-    // Reduce motion for users who prefer it
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.documentElement.style.setProperty('--transition-fast', '0.01ms');
-        document.documentElement.style.setProperty('--transition-smooth', '0.01ms');
-        document.documentElement.style.setProperty('--transition-gentle', '0.01ms');
+    createCodeFragments() {
+        const container = document.getElementById('codeFragments');
+        if (!container) return;
         
-        // Disable parallax for reduced motion
-        parallaxElements.forEach(element => {
-            element.style.transform = 'none';
-        });
-        return;
+        const codeSnippets = [
+            'std::mutex',
+            'class HitchHiker',
+            'void transmit()',
+            'bool secure',
+            'pthread_t',
+            'encrypt()',
+            '0x41414141',
+            'TCP_NODELAY',
+            'socket()',
+            'bind()',
+            'listen()',
+            'accept()',
+            'recv()',
+            'send()',
+            'close()'
+        ];
+        
+        for (let i = 0; i < this.codeFragmentCount; i++) {
+            const fragment = document.createElement('div');
+            fragment.className = 'code-fragment';
+            fragment.textContent = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+            
+            // Random properties
+            fragment.style.left = Math.random() * 100 + 'vw';
+            fragment.style.animationDelay = Math.random() * 15 + 's';
+            fragment.style.animationDuration = 10 + Math.random() * 10 + 's';
+            fragment.style.fontSize = 0.6 + Math.random() * 0.4 + 'rem';
+            
+            container.appendChild(fragment);
+            this.codeFragments.push(fragment);
+        }
     }
     
-    // Use passive listeners where possible
-    const passiveEvents = ['scroll', 'touchstart', 'touchmove', 'wheel'];
-    passiveEvents.forEach(eventName => {
-        const existingListeners = window.getEventListeners ? window.getEventListeners(document) : [];
-        // This is mainly for development debugging
-    });
-}
-
-// Initialize everything when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    setupSmoothScrolling();
-    setupTouchInteractions();
-    setupKeyboardNavigation();
-    optimizePerformance();
+    createDataStreams() {
+        const container = document.getElementById('dataStreams');
+        if (!container) return;
+        
+        for (let i = 0; i < this.dataStreamCount; i++) {
+            const stream = document.createElement('div');
+            stream.className = 'data-stream';
+            
+            // Random position and properties
+            stream.style.left = Math.random() * 100 + 'vw';
+            stream.style.animationDelay = Math.random() * 8 + 's';
+            stream.style.animationDuration = 6 + Math.random() * 4 + 's';
+            stream.style.height = 100 + Math.random() * 200 + 'px';
+            
+            container.appendChild(stream);
+            this.dataStreams.push(stream);
+        }
+    }
     
-    // Mouse parallax removed to prevent background jumping
-});
-
-// Handle window resize
-window.addEventListener('resize', () => {
-    clearTimeout(scrollTimeoutId);
-    scrollTimeoutId = setTimeout(handleResize, 100);
-});
-
-// Prevent context menu on long press for mobile
-if (isMobile || isTouch) {
-    document.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-    });
+    createCodeRain() {
+        const container = document.getElementById('codeRain');
+        if (!container) return;
+        
+        const rainCharacters = '01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン';
+        
+        for (let i = 0; i < 20; i++) {
+            const drop = document.createElement('div');
+            drop.className = 'rain-drop';
+            drop.textContent = rainCharacters[Math.floor(Math.random() * rainCharacters.length)];
+            
+            drop.style.left = Math.random() * 100 + 'vw';
+            drop.style.animationDelay = Math.random() * 10 + 's';
+            drop.style.animationDuration = 8 + Math.random() * 4 + 's';
+            
+            container.appendChild(drop);
+        }
+    }
+    
+    updateParticles(currentTime) {
+        // Dynamic particle behavior could be added here
+        // For now, CSS animations handle the movement
+    }
+    
+    startAnimation() {
+        const animate = (currentTime) => {
+            this.updateParticles(currentTime);
+            this.animationId = requestAnimationFrame(animate);
+        };
+        
+        this.animationId = requestAnimationFrame(animate);
+    }
+    
+    destroy() {
+        if (this.animationId) {
+            cancelAnimationFrame(this.animationId);
+        }
+    }
 }
 
-// Error handling
+// =================================================================================
+// INTERACTIVE ELEMENTS & EFFECTS
+// =================================================================================
+
+class InteractiveEffects {
+    constructor() {
+        this.init();
+    }
+    
+    init() {
+        this.setupTerminalInteractions();
+        this.setupProjectCubeInteractions();
+        this.setupSkillPlanetInteractions();
+        this.setupLinkPlanetInteractions();
+        this.setupCodeLineInteractions();
+    }
+    
+    setupTerminalInteractions() {
+        const dots = document.querySelectorAll('.dot');
+        const terminal = document.querySelector('.floating-terminal');
+        const codeLines = document.querySelectorAll('.code-line');
+        
+        dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                switch (index) {
+                    case 0: // Red dot - minimize effect
+                        if (terminal) {
+                            terminal.style.transform = 'scale(0.9) rotateY(-5deg)';
+                            setTimeout(() => {
+                                terminal.style.transform = '';
+                            }, 300);
+                        }
+                        break;
+                        
+                    case 1: // Yellow dot - typewriter effect
+                        codeLines.forEach((line, lineIndex) => {
+                            line.style.opacity = '0';
+                            line.style.transform = 'translateX(-20px)';
+                            
+                            setTimeout(() => {
+                                line.style.transition = 'all 0.3s ease';
+                                line.style.opacity = '1';
+                                line.style.transform = 'translateX(0)';
+                            }, lineIndex * 100);
+                        });
+                        break;
+                        
+                    case 2: // Green dot - matrix effect
+                        this.createMatrixEffect();
+                        break;
+                }
+            });
+        });
+    }
+    
+    setupProjectCubeInteractions() {
+        const cubes = document.querySelectorAll('.project-cube');
+        
+        cubes.forEach(cube => {
+            let isFlipped = false;
+            
+            cube.addEventListener('click', () => {
+                if (!isFlipped) {
+                    cube.style.transform = 'translateZ(50px) rotateY(180deg)';
+                    isFlipped = true;
+                } else {
+                    cube.style.transform = 'translateZ(0) rotateY(0deg)';
+                    isFlipped = false;
+                }
+            });
+            
+            // Auto-flip back after delay
+            cube.addEventListener('mouseleave', () => {
+                setTimeout(() => {
+                    if (isFlipped) {
+                        cube.style.transform = 'translateZ(0) rotateY(0deg)';
+                        isFlipped = false;
+                    }
+                }, 3000);
+            });
+        });
+    }
+    
+    setupSkillPlanetInteractions() {
+        const planets = document.querySelectorAll('.skill-planet');
+        
+        planets.forEach(planet => {
+            planet.addEventListener('mouseenter', () => {
+                // Create orbital rings
+                this.createOrbitalRings(planet);
+            });
+            
+            planet.addEventListener('mouseleave', () => {
+                // Remove orbital rings
+                const rings = planet.querySelectorAll('.orbital-ring');
+                rings.forEach(ring => ring.remove());
+            });
+            
+            planet.addEventListener('click', () => {
+                // Pulse effect
+                planet.style.animation = 'skillPulse 0.6s ease';
+                setTimeout(() => {
+                    planet.style.animation = '';
+                }, 600);
+            });
+        });
+    }
+    
+    setupLinkPlanetInteractions() {
+        const linkPlanets = document.querySelectorAll('.link-planet');
+        
+        linkPlanets.forEach(planet => {
+            planet.addEventListener('mouseenter', () => {
+                // Create connection lines
+                this.createConnectionLines(planet);
+            });
+            
+            planet.addEventListener('mouseleave', () => {
+                // Remove connection lines
+                const lines = document.querySelectorAll('.connection-line');
+                lines.forEach(line => line.remove());
+            });
+        });
+    }
+    
+    setupCodeLineInteractions() {
+        const codeLines = document.querySelectorAll('.code-line');
+        
+        codeLines.forEach(line => {
+            line.addEventListener('mouseenter', () => {
+                line.style.background = 'rgba(0, 255, 255, 0.1)';
+                line.style.transform = 'translateX(10px) scale(1.02)';
+                line.style.boxShadow = '0 0 20px rgba(0, 255, 255, 0.3)';
+            });
+            
+            line.addEventListener('mouseleave', () => {
+                line.style.background = '';
+                line.style.transform = '';
+                line.style.boxShadow = '';
+            });
+        });
+    }
+    
+    createMatrixEffect() {
+        const terminal = document.querySelector('.terminal-content');
+        if (!terminal) return;
+        
+        const matrixChars = '01アイウエオカキクケコサシスセソ';
+        
+        for (let i = 0; i < 20; i++) {
+            const char = document.createElement('span');
+            char.textContent = matrixChars[Math.floor(Math.random() * matrixChars.length)];
+            char.style.position = 'absolute';
+            char.style.left = Math.random() * 100 + '%';
+            char.style.top = Math.random() * 100 + '%';
+            char.style.color = '#00ff00';
+            char.style.fontSize = '0.8rem';
+            char.style.animation = 'matrixFall 2s linear forwards';
+            char.style.zIndex = '1000';
+            
+            terminal.appendChild(char);
+            
+            setTimeout(() => {
+                char.remove();
+            }, 2000);
+        }
+    }
+    
+    createOrbitalRings(planet) {
+        for (let i = 1; i <= 3; i++) {
+            const ring = document.createElement('div');
+            ring.className = 'orbital-ring';
+            ring.style.position = 'absolute';
+            ring.style.top = '50%';
+            ring.style.left = '50%';
+            ring.style.width = (100 + i * 30) + '%';
+            ring.style.height = (100 + i * 30) + '%';
+            ring.style.transform = 'translate(-50%, -50%)';
+            ring.style.border = '1px solid rgba(0, 255, 255, 0.3)';
+            ring.style.borderRadius = '50%';
+            ring.style.pointerEvents = 'none';
+            ring.style.animation = `ringRotate ${10 + i * 2}s linear infinite`;
+            
+            planet.appendChild(ring);
+        }
+    }
+    
+    createConnectionLines(startPlanet) {
+        const otherPlanets = document.querySelectorAll('.link-planet');
+        const startRect = startPlanet.getBoundingClientRect();
+        
+        otherPlanets.forEach(planet => {
+            if (planet === startPlanet) return;
+            
+            const endRect = planet.getBoundingClientRect();
+            const line = document.createElement('div');
+            line.className = 'connection-line';
+            
+            // Calculate line properties
+            const deltaX = endRect.left - startRect.left;
+            const deltaY = endRect.top - startRect.top;
+            const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+            const angle = Math.atan2(deltaY, deltaX) * 180 / Math.PI;
+            
+            line.style.position = 'fixed';
+            line.style.left = startRect.left + startRect.width / 2 + 'px';
+            line.style.top = startRect.top + startRect.height / 2 + 'px';
+            line.style.width = distance + 'px';
+            line.style.height = '1px';
+            line.style.background = 'linear-gradient(90deg, rgba(0, 255, 255, 0.5), transparent)';
+            line.style.transformOrigin = '0 0';
+            line.style.transform = `rotate(${angle}deg)`;
+            line.style.pointerEvents = 'none';
+            line.style.zIndex = '999';
+            line.style.animation = 'connectionPulse 2s ease-in-out infinite';
+            
+            document.body.appendChild(line);
+        });
+    }
+}
+
+// =================================================================================
+// LOADING SCREEN MANAGER
+// =================================================================================
+
+class LoadingManager {
+    constructor() {
+        this.loadingScreen = document.getElementById('loadingScreen');
+        this.isLoaded = false;
+        
+        this.init();
+    }
+    
+    init() {
+        // Prevent any interaction during loading
+        document.body.classList.add('loading');
+        
+        // Simulate loading time
+        setTimeout(() => {
+            this.completeLoading();
+        }, 4000);
+        
+        // Also listen for actual page load
+        window.addEventListener('load', () => {
+            if (!this.isLoaded) {
+                setTimeout(() => {
+                    this.completeLoading();
+                }, 1000);
+            }
+        });
+    }
+    
+    completeLoading() {
+        if (this.isLoaded) return;
+        
+        this.isLoaded = true;
+        
+        // Hide loading screen
+        if (this.loadingScreen) {
+            this.loadingScreen.classList.add('hidden');
+        }
+        
+        // Remove loading class from body
+        document.body.classList.remove('loading');
+        
+        // Initialize main application after loading
+        setTimeout(() => {
+            window.portfolioApp.initialize();
+        }, 500);
+    }
+}
+
+// =================================================================================
+// MAIN APPLICATION
+// =================================================================================
+
+class CinematicPortfolio {
+    constructor() {
+        this.camera = null;
+        this.particleUniverse = null;
+        this.interactiveEffects = null;
+        this.loadingManager = null;
+        
+        this.isInitialized = false;
+    }
+    
+    initialize() {
+        if (this.isInitialized) return;
+        
+        console.log('🎬 Initializing Cinematic Portfolio Experience...');
+        
+        // Initialize core systems
+        this.camera = new CinematicCamera();
+        this.particleUniverse = new ParticleUniverse();
+        this.interactiveEffects = new InteractiveEffects();
+        
+        // Setup additional effects
+        this.setupAdditionalEffects();
+        
+        // Performance monitoring
+        this.setupPerformanceMonitoring();
+        
+        this.isInitialized = true;
+        
+        console.log('✨ Cinematic Portfolio Experience Ready!');
+    }
+    
+    setupAdditionalEffects() {
+        // Add CSS animations for matrix effects
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes matrixFall {
+                0% { opacity: 1; transform: translateY(0); }
+                100% { opacity: 0; transform: translateY(100px); }
+            }
+            
+            @keyframes skillPulse {
+                0%, 100% { transform: translateZ(0) scale(1); }
+                50% { transform: translateZ(100px) scale(1.1); }
+            }
+            
+            @keyframes connectionPulse {
+                0%, 100% { opacity: 0.5; }
+                50% { opacity: 1; }
+            }
+            
+            .scene-enter {
+                animation: sceneEnter 1s cubic-bezier(0.25, 0.8, 0.25, 1) forwards;
+            }
+            
+            @keyframes sceneEnter {
+                from {
+                    opacity: 0;
+                    transform: translateZ(-500px) scale(0.8);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateZ(0) scale(1);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    setupPerformanceMonitoring() {
+        // Monitor frame rate and adjust quality accordingly
+        let frameCount = 0;
+        let lastTime = performance.now();
+        
+        const checkPerformance = () => {
+            frameCount++;
+            const currentTime = performance.now();
+            
+            if (currentTime - lastTime >= 1000) {
+                const fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
+                
+                // Adjust quality based on performance
+                if (fps < 30 && !isMobile) {
+                    console.warn('⚠️ Low FPS detected, reducing particle count...');
+                    this.reduceParticleCount();
+                }
+                
+                frameCount = 0;
+                lastTime = currentTime;
+            }
+            
+            requestAnimationFrame(checkPerformance);
+        };
+        
+        requestAnimationFrame(checkPerformance);
+    }
+    
+    reduceParticleCount() {
+        // Remove some particles for better performance
+        const particles = document.querySelectorAll('.particle');
+        for (let i = particles.length - 1; i >= particles.length / 2; i--) {
+            if (particles[i]) {
+                particles[i].remove();
+            }
+        }
+    }
+    
+    destroy() {
+        if (this.camera) {
+            this.camera.destroy();
+        }
+        
+        if (this.particleUniverse) {
+            this.particleUniverse.destroy();
+        }
+    }
+}
+
+// =================================================================================
+// INITIALIZATION
+// =================================================================================
+
+// Create global application instance
+window.portfolioApp = new CinematicPortfolio();
+
+// Initialize loading manager immediately
+document.addEventListener('DOMContentLoaded', () => {
+    const loadingManager = new LoadingManager();
+});
+
+// Handle page visibility changes for performance
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        // Pause animations when tab is not visible
+        document.body.style.animationPlayState = 'paused';
+    } else {
+        // Resume animations when tab becomes visible
+        document.body.style.animationPlayState = 'running';
+    }
+});
+
+// Handle errors gracefully
 window.addEventListener('error', (e) => {
-    console.warn('Non-critical error:', e.error);
+    console.warn('⚠️ Non-critical error in portfolio:', e.error);
     // Continue with degraded functionality rather than breaking
 });
 
-// Export for potential external use
-window.PortfolioApp = {
-    isMobile,
-    isTouch,
-    updateScrollParallax,
-    updateActiveNav,
-    currentSection: () => currentSection
-};
+// Cleanup on page unload
+window.addEventListener('beforeunload', () => {
+    if (window.portfolioApp) {
+        window.portfolioApp.destroy();
+    }
+});
+
+// Export for debugging
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = { CinematicPortfolio, CinematicCamera, ParticleUniverse };
+}
+
+console.log('🚀 Cinematic Portfolio Engine Loaded - Ready for Launch!');
