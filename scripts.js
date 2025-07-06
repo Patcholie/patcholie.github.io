@@ -10,7 +10,6 @@ let scrollTimeoutId = null;
 let isLoading = true;
 let currentSection = 'home';
 let parallaxElements = [];
-let horizontalScrollProgress = 0;
 
 // Loading Screen
 document.body.classList.add('loading');
@@ -41,7 +40,6 @@ function initializeAnimations() {
     setupScrollAnimations();
     setupMobileNavigation();
     setupInteractiveElements();
-    setupHorizontalScroll();
     
     if (!isMobile && !isTouch) {
         setupCursorEffects();
@@ -150,68 +148,6 @@ function updateMouseParallax() {
     animateMouseParallax();
 }
 
-// Smooth Camera-like Parallax System
-function updateScrollParallax() {
-    if (isLoading || isMobile) return;
-    
-    const content = document.querySelector('.content');
-    const scrollTop = content ? content.scrollTop : window.pageYOffset;
-    const windowHeight = window.innerHeight;
-    const documentHeight = content ? content.scrollHeight : document.documentElement.scrollHeight;
-    
-    // Global scroll progress (0 to 1) - smooth and linear
-    const globalScrollProgress = Math.min(scrollTop / (documentHeight - windowHeight), 1);
-    
-    parallaxElements.forEach((element) => {
-        const rect = element.getBoundingClientRect();
-        const elementTop = rect.top + scrollTop;
-        const elementHeight = rect.height;
-        const elementCenter = elementTop + elementHeight / 2;
-        
-        // Only affect elements that are in or near the viewport
-        if (rect.top < windowHeight + 100 && rect.bottom > -100) {
-            const { speed, direction } = element.parallaxData;
-            
-            // Calculate smooth element progress relative to viewport center
-            const viewportCenter = scrollTop + windowHeight / 2;
-            const distanceFromCenter = (elementCenter - viewportCenter) / windowHeight;
-            
-            // Smooth, predictable movement based on distance from viewport center
-            const moveAmount = distanceFromCenter * speed * 60; // Reduced for smoothness
-            
-            let transform = '';
-            
-            switch (direction) {
-                case 'left':
-                    transform = `translateX(${-moveAmount}px) translateY(${moveAmount * 0.3}px)`;
-                    break;
-                case 'right':
-                    transform = `translateX(${moveAmount}px) translateY(${moveAmount * 0.3}px)`;
-                    break;
-                case 'up':
-                    transform = `translateY(${-moveAmount}px)`;
-                    break;
-                case 'down':
-                    transform = `translateY(${moveAmount}px)`;
-                    break;
-                default:
-                    // Default smooth vertical movement
-                    transform = `translateY(${-moveAmount * 0.5}px)`;
-            }
-            
-            // Apply smooth transform
-            element.style.transform = transform;
-            
-            // Smooth opacity changes for depth
-            const opacity = Math.max(0.7, 1 - Math.abs(distanceFromCenter) * 0.3);
-            element.style.opacity = opacity;
-        }
-    });
-    
-    // Smooth background parallax
-    updateSmoothBackgroundParallax(globalScrollProgress);
-}
-
 // Smooth background movement
 function updateSmoothBackgroundParallax(scrollProgress) {
     const parallaxBg = document.getElementById('parallaxBg');
@@ -224,54 +160,6 @@ function updateSmoothBackgroundParallax(scrollProgress) {
     parallaxBg.style.transform = `translateY(${moveY}px) scale(${scale})`;
 }
 
-// Smooth Horizontal Scroll Section
-function setupHorizontalScroll() {
-    const horizontalContainer = document.getElementById('horizontalContainer');
-    const horizontalSection = document.querySelector('.horizontal-scroll-section');
-    
-    if (!horizontalContainer || !horizontalSection || isMobile) return;
-    
-    function updateHorizontalScroll() {
-        const content = document.querySelector('.content');
-        const scrollTop = content ? content.scrollTop : window.pageYOffset;
-        const sectionRect = horizontalSection.getBoundingClientRect();
-        
-        // Only when section is in view
-        if (sectionRect.top <= window.innerHeight && sectionRect.bottom >= 0) {
-            // Smooth progress calculation
-            const progress = Math.max(0, Math.min(1, 
-                (window.innerHeight - sectionRect.top) / (window.innerHeight + sectionRect.height)
-            ));
-            
-            const maxScroll = horizontalContainer.scrollWidth - horizontalContainer.clientWidth;
-            const scrollValue = progress * maxScroll;
-            
-            // Simple, smooth horizontal movement
-            horizontalContainer.style.transform = `translateX(-${scrollValue}px)`;
-            
-            // Subtle opacity changes for items
-            const items = horizontalContainer.querySelectorAll('.horizontal-item');
-            items.forEach((item, index) => {
-                const itemProgress = Math.max(0, Math.min(1, progress - (index * 0.1)));
-                item.style.opacity = 0.6 + (itemProgress * 0.4);
-            });
-        }
-    }
-    
-    // Add to scroll listener
-    const content = document.querySelector('.content');
-    if (content) {
-        content.addEventListener('scroll', () => {
-            if (!ticking) {
-                requestAnimationFrame(() => {
-                    updateHorizontalScroll();
-                    ticking = false;
-                });
-                ticking = true;
-            }
-        });
-    }
-}
 
 // Enhanced Cursor System (Desktop Only)
 function setupCursorEffects() {
@@ -325,6 +213,7 @@ function setupCursorEffects() {
             isHovering = true;
             hoverTarget = el;
             cursorLarge.classList.add('morphed', 'interactive');
+            cursorSmall.classList.add('hovered');
 
             const rect = el.getBoundingClientRect();
             const computedStyle = window.getComputedStyle(el);
@@ -339,6 +228,7 @@ function setupCursorEffects() {
             isHovering = false;
             hoverTarget = null;
             cursorLarge.classList.remove('morphed', 'interactive');
+            cursorSmall.classList.remove('hovered');
 
             cursorLarge.style.width = '32px';
             cursorLarge.style.height = '32px';
@@ -357,6 +247,22 @@ function setupCursorEffects() {
             cursorLarge.classList.remove('magnetic');
         });
     });
+
+    /* ───────── click pulse (inner dot) ───────── */
+    document.addEventListener('mousedown', () => {
+        cursorSmall.classList.remove('clicked');  // restart if mid‑animation
+        void cursorSmall.offsetWidth;             // force reflow so keyframes replay
+        cursorSmall.classList.add('clicked');
+    });
+    
+    /* remove .clicked after the keyframe finishes so the
+       dot returns to its proper idle size (small or hovered) */
+    cursorSmall.addEventListener('animationend', (e) => {
+        if (e.animationName === 'cursorClick') {
+            cursorSmall.classList.remove('clicked');
+        }
+    });
+
 }
 
 // Interactive Elements Setup
@@ -500,9 +406,6 @@ function setupScrollAnimations() {
             requestAnimationFrame(() => {
                 updateScrollProgress();
                 updateActiveNav();
-                if (!isMobile) {
-                    updateScrollParallax();
-                }
                 ticking = false;
             });
             ticking = true;
@@ -665,14 +568,7 @@ function optimizePerformance() {
         });
         return;
     }
-    
-    // Use passive listeners where possible
-    const passiveEvents = ['scroll', 'touchstart', 'touchmove', 'wheel'];
-    passiveEvents.forEach(eventName => {
-        const existingListeners = window.getEventListeners ? window.getEventListeners(document) : [];
-        // This is mainly for development debugging
-    });
-}
+    }
 
 // Initialize everything when DOM is ready
 document.addEventListener('DOMContentLoaded', () => {
@@ -680,9 +576,7 @@ document.addEventListener('DOMContentLoaded', () => {
     setupTouchInteractions();
     setupKeyboardNavigation();
     optimizePerformance();
-    
-    // Mouse parallax removed to prevent background jumping
-});
+    });
 
 // Handle window resize
 window.addEventListener('resize', () => {
@@ -707,7 +601,6 @@ window.addEventListener('error', (e) => {
 window.PortfolioApp = {
     isMobile,
     isTouch,
-    updateScrollParallax,
     updateActiveNav,
     currentSection: () => currentSection
 };
