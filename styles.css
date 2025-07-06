@@ -14,7 +14,7 @@
   --glass-primary: rgba(255, 255, 255, 0.06);
   --glass-secondary: rgba(255, 255, 255, 0.1);
   --glass-tertiary: rgba(255, 255, 255, 0.14);
-  --glass-hover: rgba(255, 255, 255, 0.18);
+  --glass-hover: rgba(255, 255, 255, 0.07);
   --glass-reflection: linear-gradient(
     135deg,
     rgba(255, 255, 255, 0.12) 0%,
