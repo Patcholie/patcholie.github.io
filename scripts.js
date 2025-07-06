@@ -1,4 +1,4 @@
-// ===== ENHANCED 3D PARALLAX PORTFOLIO JAVASCRIPT =====
+// ===== ENHANCED 3D PARALLAX PORTFOLIO JAVASCRIPT - FIXED =====
 
 // Performance and device detection
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
@@ -19,8 +19,8 @@ const scrollThrottle = 16; // ~60fps
 
 // Parallax configuration
 const parallaxConfig = {
-    enabled: !prefersReducedMotion,
-    intensity: isMobile ? 0.3 : 0.6
+    enabled: !prefersReducedMotion && !isMobile,
+    intensity: isMobile ? 0.2 : 0.4
 };
 
 // ===== INITIALIZATION =====
@@ -33,7 +33,9 @@ document.addEventListener('DOMContentLoaded', () => {
     setupScrollHandling();
     setupNavigation();
     setupMobileMenu();
-    setupCursorEffects();
+    if (!isMobile && !isTouch) {
+        setupCursorEffects();
+    }
     setupInteractiveElements();
     setupAnimationObservers();
     updateTime();
@@ -71,7 +73,9 @@ function initializeLoadingScreen() {
         
         // Start main animations
         setTimeout(() => {
-            startParallaxAnimation();
+            if (parallaxConfig.enabled) {
+                startParallaxAnimation();
+            }
             revealInitialContent();
         }, 800);
     }, 3000);
@@ -92,20 +96,23 @@ function revealInitialContent() {
     });
 }
 
-// ===== SIMPLIFIED PARALLAX SYSTEM =====
+// ===== FIXED PARALLAX SYSTEM =====
 
 function setupParallaxSystem() {
     if (!parallaxConfig.enabled) return;
     
-    // Only apply parallax to background layers
+    // Only apply parallax to specific background elements
     const backgroundLayers = document.querySelectorAll('.parallax-layer[data-depth]');
     backgroundLayers.forEach(layer => {
         const depth = parseFloat(layer.dataset.depth) || 0;
         const speed = parseFloat(layer.dataset.speed) || 1;
         
-        // Store parallax data for background layers only
+        // Only store parallax data for background layers (negative depth)
         if (depth < 0) {
             layer.parallaxData = { depth, speed };
+            // Ensure these layers don't interfere with fixed elements
+            layer.style.position = 'fixed';
+            layer.style.pointerEvents = 'none';
         }
     });
 }
@@ -115,14 +122,17 @@ function startParallaxAnimation() {
     
     function animate() {
         const viewport = document.getElementById('parallaxViewport');
-        if (!viewport) return;
+        if (!viewport) {
+            animationFrame = requestAnimationFrame(animate);
+            return;
+        }
         
         const scrollY = viewport.scrollTop;
         
-        // Only animate background layers
+        // Only animate background layers with negative depth
         const backgroundLayers = document.querySelectorAll('.parallax-layer[data-depth]');
         backgroundLayers.forEach(layer => {
-            if (layer.parallaxData) {
+            if (layer.parallaxData && layer.parallaxData.depth < 0) {
                 const { speed } = layer.parallaxData;
                 const offset = scrollY * (speed - 1) * parallaxConfig.intensity;
                 layer.style.transform = `translateY(${offset}px)`;
@@ -304,11 +314,9 @@ function setupMobileMenu() {
     });
 }
 
-// ===== CURSOR EFFECTS =====
+// ===== FIXED CURSOR EFFECTS =====
 
 function setupCursorEffects() {
-    if (isMobile || isTouch) return;
-    
     const cursorSmall = document.querySelector('.cursor-small');
     const cursorLarge = document.querySelector('.cursor-large');
     
@@ -318,50 +326,108 @@ function setupCursorEffects() {
     let mouseY = 0;
     let largeCursorX = 0;
     let largeCursorY = 0;
+    let isHovering = false;
+    let hoverTarget = null;
     
-    // Mouse movement tracking
+    // Fixed mouse movement tracking - NO TRANSITIONS for small cursor
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
         mouseY = e.clientY;
         
+        // Direct 1:1 tracking for small cursor - NO TRANSITIONS
         cursorSmall.style.left = mouseX + 'px';
         cursorSmall.style.top = mouseY + 'px';
-    });
+        cursorSmall.style.transition = 'none'; // Remove all transitions for smooth tracking
+    }, { passive: true });
     
-    // Animate large cursor with lag
-    function animateCursor() {
-        largeCursorX += (mouseX - largeCursorX) * 0.1;
-        largeCursorY += (mouseY - largeCursorY) * 0.1;
+    // Animate large cursor with smooth lag
+    function animateLargeCursor() {
+        if (isHovering && hoverTarget) {
+            const rect = hoverTarget.getBoundingClientRect();
+            const targetX = rect.left + rect.width / 2;
+            const targetY = rect.top + rect.height / 2;
+            
+            largeCursorX += (targetX - largeCursorX) * 0.25;
+            largeCursorY += (targetY - largeCursorY) * 0.25;
+        } else {
+            largeCursorX += (mouseX - largeCursorX) * 0.15;
+            largeCursorY += (mouseY - largeCursorY) * 0.15;
+        }
         
         cursorLarge.style.left = largeCursorX + 'px';
         cursorLarge.style.top = largeCursorY + 'px';
         
-        requestAnimationFrame(animateCursor);
+        requestAnimationFrame(animateLargeCursor);
     }
-    animateCursor();
+    animateLargeCursor();
     
-    // Interactive elements
-    const interactiveElements = document.querySelectorAll('a, button, .btn, .nav-item, .traffic-light, .dot, .magnetic, .expertise-card, .project-card, .timeline-item');
+    // Fixed interactive elements - improved selector and logic
+    const interactiveElements = document.querySelectorAll('a, button, .btn, .nav-item, .traffic-light, .dot, .magnetic, .expertise-card, .project-card, .timeline-item, .skill-tag, .tech-tag, .contact-btn, .terminal-dots, .code-line, .hero-badge, .stat-card');
     
     interactiveElements.forEach(element => {
+        element.addEventListener('mouseenter', (e) => {
+            isHovering = true;
+            hoverTarget = element;
+            
+            const rect = element.getBoundingClientRect();
+            const computedStyle = window.getComputedStyle(element);
+            
+            // Add morphed class immediately
+            cursorLarge.classList.add('morphed', 'interactive');
+            cursorSmall.classList.add('hovered');
+
+            // Set size and position to match the element
+            cursorLarge.style.width = (rect.width + 8) + 'px';
+            cursorLarge.style.height = (rect.height + 8) + 'px';
+            cursorLarge.style.borderRadius = computedStyle.borderRadius || '12px';
+            cursorLarge.style.transition = 'width 0.3s ease, height 0.3s ease, border-radius 0.3s ease';
+            
+            // Position the cursor to center of element
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            largeCursorX = centerX;
+            largeCursorY = centerY;
+        });
+
+        element.addEventListener('mouseleave', () => {
+            isHovering = false;
+            hoverTarget = null;
+            
+            // Remove morphed classes
+            cursorLarge.classList.remove('morphed', 'interactive');
+            cursorSmall.classList.remove('hovered');
+
+            // Reset to default size
+            cursorLarge.style.width = '40px';
+            cursorLarge.style.height = '40px';
+            cursorLarge.style.borderRadius = '50%';
+            cursorLarge.style.transition = 'width 0.3s ease, height 0.3s ease, border-radius 0.3s ease';
+        });
+    });
+    
+    // Enhanced magnetic buttons
+    const magneticElements = document.querySelectorAll('.magnetic, .btn');
+    magneticElements.forEach(element => {
         element.addEventListener('mouseenter', () => {
-            cursorLarge.classList.add('hover');
-            cursorSmall.style.transform = 'translate(-50%, -50%) scale(1.5)';
+            cursorLarge.classList.add('magnetic');
         });
         
         element.addEventListener('mouseleave', () => {
-            cursorLarge.classList.remove('hover');
-            cursorSmall.style.transform = 'translate(-50%, -50%) scale(1)';
+            cursorLarge.classList.remove('magnetic');
         });
     });
     
     // Click effect
     document.addEventListener('mousedown', () => {
         cursorSmall.style.transform = 'translate(-50%, -50%) scale(0.8)';
+        cursorSmall.style.transition = 'transform 0.1s ease';
     });
     
     document.addEventListener('mouseup', () => {
         cursorSmall.style.transform = 'translate(-50%, -50%) scale(1)';
+        setTimeout(() => {
+            cursorSmall.style.transition = 'none'; // Remove transition after animation
+        }, 100);
     });
 }
 
@@ -387,6 +453,7 @@ function setupTerminalEffects() {
             switch(index) {
                 case 0: // Red dot - minimize
                     terminal.style.transform = 'scale(0.95) rotate(-1deg)';
+                    terminal.style.transition = 'transform 0.3s ease';
                     setTimeout(() => {
                         terminal.style.transform = '';
                     }, 300);
@@ -398,6 +465,7 @@ function setupTerminalEffects() {
                     
                 case 2: // Green dot - glow
                     terminal.style.boxShadow = '0 0 50px rgba(0, 212, 255, 0.5)';
+                    terminal.style.transition = 'box-shadow 0.3s ease';
                     setTimeout(() => {
                         terminal.style.boxShadow = '';
                     }, 1000);
@@ -484,11 +552,13 @@ function setupMagneticElements() {
                 const moveY = y * strength * 0.3;
                 
                 element.style.transform = `translate(${moveX}px, ${moveY}px)`;
+                element.style.transition = 'transform 0.1s ease';
             }
         });
         
         element.addEventListener('mouseleave', () => {
             element.style.transform = '';
+            element.style.transition = 'transform 0.3s ease';
         });
     });
 }
@@ -551,6 +621,7 @@ function setupCardHoverEffects() {
             if (!isMobile) {
                 card.style.transform = 'translateY(-10px)';
                 card.style.boxShadow = '0 20px 60px rgba(0, 212, 255, 0.15)';
+                card.style.transition = 'all 0.3s ease';
             }
         });
         
@@ -675,15 +746,6 @@ function setupPerformanceMonitoring() {
 
 // Handle window resize
 window.addEventListener('resize', debounce(() => {
-    // Update mobile detection
-    const wasMobile = isMobile;
-    const newIsMobile = window.innerWidth <= 768;
-    
-    if (wasMobile !== newIsMobile) {
-        // Reinitialize if device type changed
-        location.reload();
-    }
-    
     // Close mobile menu on resize to desktop
     if (window.innerWidth > 768) {
         const sidebar = document.getElementById('sidebar');
