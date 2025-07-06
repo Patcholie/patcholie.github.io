@@ -1,729 +1,647 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@300;400;500&display=swap"
-    />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles.css" />
-  </head>
-  <body>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aviv Shaked - Cybersecurity Engineer</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
     <!-- Loading Screen -->
     <div class="loading-screen" id="loadingScreen">
-      <div class="loading-logo">Aviv Shaked</div>
-      <div class="loading-progress">
-        <div class="loading-bar"></div>
-      </div>
+        <div class="loading-content">
+            <div class="loading-logo">
+                <span class="logo-text">Aviv Shaked</span>
+                <div class="logo-subtitle">Cybersecurity Engineer</div>
+            </div>
+            <div class="loading-progress">
+                <div class="loading-bar"></div>
+            </div>
+            <div class="loading-stats">
+                <div class="stat">
+                    <span class="stat-number" data-target="99">0</span>
+                    <span class="stat-label">% Security</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" data-target="5">0</span>
+                    <span class="stat-label">Projects</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-number" data-target="3">0</span>
+                    <span class="stat-label">Years</span>
+                </div>
+            </div>
+        </div>
+        <div class="loading-particles"></div>
     </div>
 
     <!-- Scroll Progress -->
     <div class="scroll-progress">
-      <div class="scroll-progress-bar" id="scrollProgress"></div>
+        <div class="scroll-progress-bar" id="scrollProgress"></div>
     </div>
 
-    <!-- Animated Particles -->
-    <div class="particles-container" id="particles"></div>
+    <!-- Custom Cursor (Desktop) -->
+    <div class="cursor cursor-small desktop-only"></div>
+    <div class="cursor cursor-large desktop-only"></div>
 
-    <!-- Enhanced Parallax Background -->
-    <div class="parallax-bg" id="parallaxBg">
-      <video autoplay muted loop playsinline id="backgroundVideo">
-        <source src="sky_loop_background.mp4" type="video/mp4" />
-        Your browser does not support the video tag.
-      </video>
-      <div class="glass-overlay"></div>
-      <div class="glass-reflection"></div>
+    <!-- Fixed Background Layers for Parallax -->
+    <div class="parallax-layer" data-depth="-0.8" data-speed="0.2">
+        <video autoplay muted loop playsinline class="bg-video">
+            <source src="sky_loop_background.mp4" type="video/mp4">
+        </video>
+        <div class="bg-overlay"></div>
     </div>
 
-    <!-- Custom Cursor (Desktop Only) -->
-    <div class="cursor cursor--small desktop-only"></div>
-    <div class="cursor cursor--large desktop-only"></div>
+    <div class="parallax-layer" data-depth="-0.6" data-speed="0.3">
+        <div class="particles-field"></div>
+    </div>
 
-    <!-- Main App -->
-    <div class="app">
-      <!-- Header -->
-      <header class="header glass-panel">
-        <div class="traffic-lights">
-          <div class="traffic-light red"></div>
-          <div class="traffic-light yellow"></div>
-          <div class="traffic-light green"></div>
+    <div class="parallax-layer" data-depth="-0.4" data-speed="0.4">
+        <div class="floating-geometry">
+            <div class="geo-element" style="top: 10%; left: 80%;"></div>
+            <div class="geo-element" style="top: 60%; left: 10%;"></div>
+            <div class="geo-element" style="top: 30%; left: 70%;"></div>
+            <div class="geo-element" style="top: 80%; left: 60%;"></div>
         </div>
-        <div class="header-title">Aviv Shaked - Portfolio</div>
-        <div class="header-profile">
-          <img
-            class="profile-avatar"
-            src="https://avatars.githubusercontent.com/u/116463487?v=4"
-            alt="Profile"
-          />
-        </div>
-      </header>
+    </div>
 
-      <!-- Mobile Navigation Toggle -->
-      <button class="mobile-nav-toggle mobile-only" id="mobileNavToggle">
-        <span></span>
-        <span></span>
-        <span></span>
-      </button>
+    <!-- Main App Container -->
+    <div class="parallax-viewport" id="parallaxViewport">
+        
+        <!-- Header - Fixed Layer -->
+        <header class="header glass-panel" data-depth="0" data-speed="1">
+            <div class="header-content">
+                <div class="traffic-lights">
+                    <div class="traffic-light red" data-action="minimize"></div>
+                    <div class="traffic-light yellow" data-action="pause"></div>
+                    <div class="traffic-light green" data-action="maximize"></div>
+                </div>
+                <div class="header-title">Aviv Shaked - Portfolio Terminal</div>
+                <div class="header-status">
+                    <span class="status-indicator"></span>
+                    <span class="status-text">SECURE</span>
+                </div>
+            </div>
+        </header>
 
-      <!-- Main Layout -->
-      <div class="main-layout">
-        <!-- Sidebar -->
-        <nav class="sidebar glass-panel" id="sidebar">
-          <div class="sidebar-section parallax-element" data-speed="0.5">
-            <div class="sidebar-title">Navigation</div>
-            <a href="#home" class="sidebar-item active">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z" />
-                <polyline points="9,22 9,12 15,12 15,22" />
-              </svg>
-              Home
-            </a>
-            <a href="#expertise" class="sidebar-item">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                <circle cx="8.5" cy="8.5" r="1.5" />
-                <path d="M21 15l-5-5L5 21" />
-              </svg>
-              Expertise
-            </a>
-            <a href="#experience" class="sidebar-item">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
-                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16" />
-              </svg>
-              Experience
-            </a>
-            <a href="#projects" class="sidebar-item">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <polyline points="16,18 22,12 16,6" />
-                <polyline points="8,6 2,12 8,18" />
-              </svg>
-              Projects
-            </a>
-            <a href="#about" class="sidebar-item">
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                <circle cx="12" cy="7" r="4" />
-              </svg>
-              About
-            </a>
-          </div>
+        <!-- Mobile Navigation -->
+        <button class="mobile-nav-toggle mobile-only" id="mobileNavToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
 
-          <div class="sidebar-section parallax-element" data-speed="0.3">
-            <div class="sidebar-title">Connect</div>
-            <a
-              href="https://www.linkedin.com/in/aviv-shaked-59a4b7271/"
-              target="_blank"
-              class="sidebar-item"
-            >
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"
-                />
-              </svg>
-              LinkedIn
-            </a>
-            <a
-              href="https://github.com/Patcholie"
-              target="_blank"
-              class="sidebar-item"
-            >
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
-                />
-              </svg>
-              GitHub
-            </a>
-            <a
-              href="https://www.instagram.com/_avivshaked_/"
-              target="_blank"
-              class="sidebar-item"
-            >
-              <svg viewBox="0 0 24 24" fill="currentColor">
-                <path
-                  d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"
-                />
-              </svg>
-              Instagram
-            </a>
-          </div>
+        <!-- Navigation Sidebar -->
+        <nav class="sidebar glass-panel" id="sidebar" data-depth="0.1" data-speed="1.1">
+            <div class="sidebar-content">
+                <div class="nav-section">
+                    <div class="nav-title">NAVIGATION</div>
+                    <a href="#home" class="nav-item active" data-section="home">
+                        <div class="nav-icon">⌂</div>
+                        <span>Home</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                    <a href="#expertise" class="nav-item" data-section="expertise">
+                        <div class="nav-icon">⚡</div>
+                        <span>Expertise</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                    <a href="#experience" class="nav-item" data-section="experience">
+                        <div class="nav-icon">💼</div>
+                        <span>Experience</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                    <a href="#projects" class="nav-item" data-section="projects">
+                        <div class="nav-icon">🚀</div>
+                        <span>Projects</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                    <a href="#contact" class="nav-item" data-section="contact">
+                        <div class="nav-icon">📡</div>
+                        <span>Contact</span>
+                        <div class="nav-indicator"></div>
+                    </a>
+                </div>
+
+                <div class="nav-section">
+                    <div class="nav-title">CONNECT</div>
+                    <a href="https://www.linkedin.com/in/aviv-shaked-59a4b7271/" target="_blank" class="nav-item external">
+                        <div class="nav-icon">💼</div>
+                        <span>LinkedIn</span>
+                    </a>
+                    <a href="https://github.com/Patcholie" target="_blank" class="nav-item external">
+                        <div class="nav-icon">⚙</div>
+                        <span>GitHub</span>
+                    </a>
+                    <a href="https://www.instagram.com/_avivshaked_/" target="_blank" class="nav-item external">
+                        <div class="nav-icon">📷</div>
+                        <span>Instagram</span>
+                    </a>
+                </div>
+
+                <div class="sidebar-footer">
+                    <div class="system-info">
+                        <div class="info-line">
+                            <span>Status:</span>
+                            <span class="text-success">Online</span>
+                        </div>
+                        <div class="info-line">
+                            <span>Location:</span>
+                            <span>Haifa, IL</span>
+                        </div>
+                        <div class="info-line">
+                            <span>Time:</span>
+                            <span id="currentTime">--:--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </nav>
 
-        <!-- Main Content -->
-        <main class="content">
-          <!-- Hero Section -->
-          <section id="home" class="content-section parallax-section">
-            <div class="hero">
-              <div
-                class="hero-content parallax-element"
-                data-speed="0.3"
-                data-direction="left"
-              >
-                <h1>Aviv Shaked</h1>
-                    <p class="hero-description">
-                      Cybersecurity engineer focused on covert systems, C++ performance, and real-world security problems.  
-                      I'm an 18-year-old researcher from Haifa building advanced tooling for automation, detection evasion, and secure networks.
-                    </p>
-                <div class="hero-stats">
-                  <div
-                    class="stat-item parallax-element"
-                    data-speed="0.2"
-                    data-count="2"
-                  >
-                    <span class="stat-number">Focus</span>
-                    <span class="stat-label">Quality through ongoing innovation</span>
-                  </div>
-                  <div
-                    class="stat-item parallax-element"
-                    data-speed="0.25"
-                    data-count="5"
-                  >
-                    <span class="stat-number">5+</span>
-                    <span class="stat-label">Major Projects</span>
-                  </div>
-                  <div
-                    class="stat-item parallax-element"
-                    data-speed="0.2"
-                    data-count="3"
-                  >
-                    <span class="stat-number">3+</span>
-                    <span class="stat-label">Years Experience</span>
-                  </div>
+        <!-- Main Content Area -->
+        <main class="main-content">
+            
+            <!-- Hero Section -->
+            <section id="home" class="content-section hero-section">
+                <div class="hero-bg-text">CYBERSECURITY</div>
+                
+                <!-- Floating Elements -->
+                <div class="floating-icons">
+                    <div class="float-icon" style="top: 20%; left: 10%;">🔒</div>
+                    <div class="float-icon" style="top: 60%; left: 85%;">⚡</div>
+                    <div class="float-icon" style="top: 80%; left: 15%;">🛡️</div>
                 </div>
-                <div class="hero-buttons">
-                  <a href="#projects" class="btn btn-primary magnetic-btn"
-                    >View Projects</a
-                  >
-                  <a
-                    href="https://drive.google.com/file/d/1cUoF--q94LtUQKox5eGfMYom70GJoIGc/view?usp=sharing"
-                    target="_blank"
-                    class="btn magnetic-btn"
-                    >Resume</a
-                  >
-                </div>
-              </div>
-              <div
-                class="hero-visual parallax-element"
-                data-speed="0.4"
-                data-direction="right"
-              >
-                <div class="code-window glass-panel parallax-float">
-                  <div class="code-header">
-                    <div class="code-dots">
-                      <div class="code-dot red"></div>
-                      <div class="code-dot yellow"></div>
-                      <div class="code-dot green"></div>
+                
+                <div class="section-container">
+                    <div class="hero-container">
+                        <div class="hero-content">
+                            <div class="hero-badge">
+                                <span class="badge-text">Elite Cybersecurity Engineer</span>
+                                <div class="badge-glow"></div>
+                            </div>
+                            
+                            <h1 class="hero-title">
+                                <span class="title-line">Aviv</span>
+                                <span class="title-line hero-highlight">Shaked</span>
+                            </h1>
+                            
+                            <div class="hero-subtitle">
+                                Building <span class="highlight">undetectable systems</span> and 
+                                <span class="highlight">covert networks</span> that redefine cybersecurity
+                            </div>
+
+                            <div class="hero-description">
+                                18-year-old researcher from Haifa specializing in network steganography, 
+                                advanced C++ systems, and revolutionary security solutions that stay ahead of tomorrow's threats.
+                            </div>
+
+                            <div class="hero-stats">
+                                <div class="stat-card glass-panel">
+                                    <div class="stat-number">99.9%</div>
+                                    <div class="stat-label">Undetected</div>
+                                </div>
+                                <div class="stat-card glass-panel">
+                                    <div class="stat-number">5+</div>
+                                    <div class="stat-label">Major Projects</div>
+                                </div>
+                                <div class="stat-card glass-panel">
+                                    <div class="stat-number">3+</div>
+                                    <div class="stat-label">Years Experience</div>
+                                </div>
+                            </div>
+
+                            <div class="hero-actions">
+                                <a href="#projects" class="btn btn-primary magnetic">
+                                    <span>View Projects</span>
+                                    <div class="btn-glow"></div>
+                                </a>
+                                <a href="https://drive.google.com/file/d/1cUoF--q94LtUQKox5eGfMYom70GJoIGc/view?usp=sharing" 
+                                   target="_blank" class="btn btn-secondary magnetic">
+                                    <span>Download Resume</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="hero-visual">
+                            <div class="terminal-window glass-panel">
+                                <div class="terminal-header">
+                                    <div class="terminal-dots">
+                                        <div class="dot red"></div>
+                                        <div class="dot yellow"></div>
+                                        <div class="dot green"></div>
+                                    </div>
+                                    <div class="terminal-title">steganography.cpp</div>
+                                    <div class="terminal-status">
+                                        <span class="status-secure">SECURE</span>
+                                    </div>
+                                </div>
+                                <div class="terminal-content">
+                                    <div class="code-line">
+                                        <span class="line-number">01</span>
+                                        <span class="code-comment">// Network Steganography System</span>
+                                    </div>
+                                    <div class="code-line">
+                                        <span class="line-number">02</span>
+                                        <span class="code-keyword">class</span> 
+                                        <span class="code-class">HitchHiker</span> {
+                                    </div>
+                                    <div class="code-line">
+                                        <span class="line-number">03</span>
+                                        <span class="code-indent">private:</span>
+                                    </div>
+                                    <div class="code-line">
+                                        <span class="line-number">04</span>
+                                        <span class="code-indent">    std::mutex</span> 
+                                        <span class="code-var">_mutex</span>;
+                                    </div>
+                                    <div class="code-line">
+                                        <span class="line-number">05</span>
+                                        <span class="code-indent">    PacketHandler</span> 
+                                        <span class="code-var">_handler</span>;
+                                    </div>
+                                    <div class="code-line">
+                                        <span class="line-number">06</span>
+                                        <span class="code-indent">public:</span>
+                                    </div>
+                                    <div class="code-line">
+                                        <span class="line-number">07</span>
+                                        <span class="code-indent">    void</span> 
+                                        <span class="code-function">transmitCovert</span>();
+                                    </div>
+                                    <div class="code-line">
+                                        <span class="line-number">08</span>
+                                        <span class="code-indent">    bool</span> 
+                                        <span class="code-function">isUndetectable</span>();
+                                    </div>
+                                    <div class="code-line">
+                                        <span class="line-number">09</span>
+                                        };
+                                    </div>
+                                </div>
+                                <div class="terminal-cursor"></div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="code-title">steganography.cpp</div>
-                  </div>
-                  <div class="code-content">
-                    <div class="code-line">
-                      <span class="code-comment"
-                        >// Network Steganography System</span
-                      >
+                </div>
+            </section>
+
+            <!-- Expertise Section -->
+            <section id="expertise" class="content-section">
+                <div class="section-bg-text">EXPERTISE</div>
+                
+                <div class="section-container">
+                    <header class="section-header">
+                        <div class="section-badge">
+                            <span>Technical Mastery</span>
+                        </div>
+                        <h2 class="section-title">Areas of <span class="highlight">Expertise</span></h2>
+                        <p class="section-description">
+                            Deep technical knowledge across cybersecurity, systems programming, and AI development
+                        </p>
+                    </header>
+
+                    <div class="expertise-grid">
+                        <div class="expertise-card glass-panel magnetic">
+                            <div class="card-icon">
+                                <div class="icon-bg"></div>
+                                🔐
+                            </div>
+                            <h3 class="card-title">Cybersecurity & Network Security</h3>
+                            <div class="card-level">Expert Level</div>
+                            <p class="card-description">
+                                Advanced network security, penetration testing, and reverse engineering. 
+                                Specializing in network steganography and covert communication systems.
+                            </p>
+                            <div class="card-skills">
+                                <span class="skill-tag">C++20</span>
+                                <span class="skill-tag">Steganography</span>
+                                <span class="skill-tag">Network Programming</span>
+                                <span class="skill-tag">Penetration Testing</span>
+                            </div>
+                            <div class="card-glow"></div>
+                        </div>
+
+                        <div class="expertise-card glass-panel magnetic">
+                            <div class="card-icon">
+                                <div class="icon-bg"></div>
+                                ⚡
+                            </div>
+                            <h3 class="card-title">Low-Level Systems Programming</h3>
+                            <div class="card-level">Expert Level</div>
+                            <p class="card-description">
+                                High-performance C++ development with focus on memory management, 
+                                multi-threading, and system-level architecture optimization.
+                            </p>
+                            <div class="card-skills">
+                                <span class="skill-tag">C/C++</span>
+                                <span class="skill-tag">Assembly</span>
+                                <span class="skill-tag">Multi-threading</span>
+                                <span class="skill-tag">RAII</span>
+                            </div>
+                            <div class="card-glow"></div>
+                        </div>
+
+                        <div class="expertise-card glass-panel magnetic">
+                            <div class="card-icon">
+                                <div class="icon-bg"></div>
+                                🤖
+                            </div>
+                            <h3 class="card-title">AI & Full-Stack Development</h3>
+                            <div class="card-level">Professional</div>
+                            <p class="card-description">
+                                AI/ML implementations, automation tools, and full-stack development. 
+                                Experience with neural networks and intelligent data processing.
+                            </p>
+                            <div class="card-skills">
+                                <span class="skill-tag">Python</span>
+                                <span class="skill-tag">AI/ML</span>
+                                <span class="skill-tag">Web Development</span>
+                                <span class="skill-tag">Automation</span>
+                            </div>
+                            <div class="card-glow"></div>
+                        </div>
                     </div>
-                    <div class="code-line">
-                      <span class="code-keyword">class</span>
-                      <span class="code-function">HitchHiker</span> {
+                </div>
+            </section>
+
+            <!-- Experience Section -->
+            <section id="experience" class="content-section">
+                <div class="section-bg-text">EXPERIENCE</div>
+                
+                <div class="section-container">
+                    <header class="section-header">
+                        <div class="section-badge">
+                            <span>Professional Journey</span>
+                        </div>
+                        <h2 class="section-title">Professional <span class="highlight">Experience</span></h2>
+                        <p class="section-description">
+                            Building cutting-edge solutions and advancing cybersecurity research
+                        </p>
+                    </header>
+
+                    <div class="experience-timeline">
+                        <div class="timeline-item glass-panel">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <h3>Product Uploader & Tools Developer</h3>
+                                    <div class="company">AllBikes</div>
+                                    <div class="timeline-badge active">2023-Present</div>
+                                </div>
+                                <p class="timeline-description">
+                                    Building automated tools and secure data systems with Python automation. 
+                                    Developing scalable upload systems and data processing pipelines.
+                                </p>
+                                <div class="timeline-skills">
+                                    <span class="skill-tag">Python</span>
+                                    <span class="skill-tag">Automation</span>
+                                    <span class="skill-tag">Data Processing</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item glass-panel">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <h3>Student & Researcher</h3>
+                                    <div class="company">Cyber Education Center</div>
+                                    <div class="timeline-badge active">2023-Present</div>
+                                </div>
+                                <p class="timeline-description">
+                                    Advanced cybersecurity studies and cutting-edge research projects. 
+                                    Specializing in network security and covert communication systems.
+                                </p>
+                                <div class="timeline-skills">
+                                    <span class="skill-tag">Cybersecurity</span>
+                                    <span class="skill-tag">Research</span>
+                                    <span class="skill-tag">Network Security</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="timeline-item glass-panel">
+                            <div class="timeline-marker"></div>
+                            <div class="timeline-content">
+                                <div class="timeline-header">
+                                    <h3>Captain Team Member</h3>
+                                    <div class="company">Analisis - AI4Y World Competition</div>
+                                    <div class="timeline-badge winner">2022-2023</div>
+                                </div>
+                                <p class="timeline-description">
+                                    Led team to 2nd place globally in AI4Y World Competition. 
+                                    Developed AI-powered medical diagnosis platform with computer vision.
+                                </p>
+                                <div class="timeline-skills">
+                                    <span class="skill-tag">AI/ML</span>
+                                    <span class="skill-tag">Computer Vision</span>
+                                    <span class="skill-tag">Team Leadership</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="code-line">
-                      &nbsp;&nbsp;<span class="code-keyword">private</span>:
+                </div>
+            </section>
+
+            <!-- Projects Section -->
+            <section id="projects" class="content-section">
+                <div class="section-bg-text">PROJECTS</div>
+                
+                <div class="section-container">
+                    <header class="section-header">
+                        <div class="section-badge">
+                            <span>Featured Work</span>
+                        </div>
+                        <h2 class="section-title">Revolutionary <span class="highlight">Projects</span></h2>
+                        <p class="section-description">
+                            Innovative solutions pushing the boundaries of cybersecurity and systems programming
+                        </p>
+                    </header>
+
+                    <div class="projects-grid">
+                        <div class="project-card glass-panel magnetic featured">
+                            <div class="project-header">
+                                <div class="project-icon">🕵️</div>
+                                <div class="project-status development">In Development</div>
+                            </div>
+                            <h3 class="project-title">HitchHiker: Network Steganography Platform</h3>
+                            <p class="project-description">
+                                Revolutionary covert communication system enabling hidden data transmission 
+                                without creating new network packets. Features advanced C++20 implementation 
+                                with multi-threading and undetectable steganography techniques.
+                            </p>
+                            <div class="project-highlights">
+                                <div class="highlight-item">
+                                    <span class="highlight-label">Stealth:</span>
+                                    <span class="highlight-value">100% Undetectable</span>
+                                </div>
+                                <div class="highlight-item">
+                                    <span class="highlight-label">Performance:</span>
+                                    <span class="highlight-value">Multi-threaded</span>
+                                </div>
+                            </div>
+                            <div class="project-tech">
+                                <span class="tech-tag primary">C++20</span>
+                                <span class="tech-tag">Multi-threading</span>
+                                <span class="tech-tag">Docker</span>
+                                <span class="tech-tag">CMake</span>
+                                <span class="tech-tag">Network Security</span>
+                            </div>
+                            <div class="project-glow"></div>
+                        </div>
+
+                        <div class="project-card glass-panel magnetic">
+                            <div class="project-header">
+                                <div class="project-icon">⚡</div>
+                                <div class="project-status completed">Completed</div>
+                            </div>
+                            <h3 class="project-title">Multiplayer Trivia Game System</h3>
+                            <p class="project-description">
+                                High-performance C++ server with Unity client handling 25+ concurrent players. 
+                                Features custom binary protocol and thread-safe architecture.
+                            </p>
+                            <div class="project-highlights">
+                                <div class="highlight-item">
+                                    <span class="highlight-label">Capacity:</span>
+                                    <span class="highlight-value">25+ Players</span>
+                                </div>
+                                <div class="highlight-item">
+                                    <span class="highlight-label">Protocol:</span>
+                                    <span class="highlight-value">Custom Binary</span>
+                                </div>
+                            </div>
+                            <div class="project-tech">
+                                <span class="tech-tag">C++17</span>
+                                <span class="tech-tag">Unity</span>
+                                <span class="tech-tag">SQLite3</span>
+                                <span class="tech-tag">RAII</span>
+                            </div>
+                            <div class="project-glow"></div>
+                        </div>
+
+                        <div class="project-card glass-panel magnetic">
+                            <div class="project-header">
+                                <div class="project-icon">🏆</div>
+                                <div class="project-status winner">World Finalist</div>
+                            </div>
+                            <h3 class="project-title">Analisis: AI Medical Diagnosis Platform</h3>
+                            <p class="project-description">
+                                AI-powered medical platform for wound detection and treatment recommendations. 
+                                Achieved 2nd place globally in AI4Y World Competition.
+                            </p>
+                            <div class="project-highlights">
+                                <div class="highlight-item">
+                                    <span class="highlight-label">Ranking:</span>
+                                    <span class="highlight-value">2nd Globally</span>
+                                </div>
+                                <div class="highlight-item">
+                                    <span class="highlight-label">Accuracy:</span>
+                                    <span class="highlight-value">95%+</span>
+                                </div>
+                            </div>
+                            <div class="project-tech">
+                                <span class="tech-tag">Python</span>
+                                <span class="tech-tag">AI/ML</span>
+                                <span class="tech-tag">Computer Vision</span>
+                                <span class="tech-tag">Web Development</span>
+                            </div>
+                            <div class="project-glow"></div>
+                        </div>
                     </div>
-                    <div class="code-line">
-                      &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-type"
-                        >std::mutex</span
-                      >
-                      <span class="code-function">_mutex</span>;
+                </div>
+            </section>
+
+            <!-- Contact Section -->
+            <section id="contact" class="content-section">
+                <div class="section-bg-text">CONTACT</div>
+                
+                <div class="section-container">
+                    <header class="section-header">
+                        <div class="section-badge">
+                            <span>Get In Touch</span>
+                        </div>
+                        <h2 class="section-title">Let's Build <span class="highlight">Something Secure</span></h2>
+                        <p class="section-description">
+                            Ready to collaborate on cutting-edge cybersecurity projects
+                        </p>
+                    </header>
+
+                    <div class="contact-container">
+                        <div class="contact-info glass-panel">
+                            <div class="contact-avatar">
+                                <img src="https://avatars.githubusercontent.com/u/116463487?v=4" alt="Aviv Shaked">
+                                <div class="avatar-status"></div>
+                            </div>
+                            <h3>Aviv Shaked</h3>
+                            <p class="contact-title">Cybersecurity Engineer & Researcher</p>
+                            <p class="contact-description">
+                                18-year-old cybersecurity researcher from Haifa, Israel. 
+                                Passionate about building secure, high-performance systems and 
+                                pushing the boundaries of what's possible in cybersecurity.
+                            </p>
+                            
+                            <div class="contact-details">
+                                <div class="detail-item">
+                                    <span class="detail-label">Location:</span>
+                                    <span class="detail-value">Haifa, Israel</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Status:</span>
+                                    <span class="detail-value text-success">Available for Projects</span>
+                                </div>
+                                <div class="detail-item">
+                                    <span class="detail-label">Specialization:</span>
+                                    <span class="detail-value">Network Security & C++</span>
+                                </div>
+                            </div>
+
+                            <div class="contact-actions">
+                                <a href="https://www.linkedin.com/in/aviv-shaked-59a4b7271/" 
+                                   target="_blank" class="contact-btn linkedin magnetic">
+                                    <span>LinkedIn</span>
+                                </a>
+                                <a href="https://github.com/Patcholie" 
+                                   target="_blank" class="contact-btn github magnetic">
+                                    <span>GitHub</span>
+                                </a>
+                                <a href="https://drive.google.com/file/d/1cUoF--q94LtUQKox5eGfMYom70GJoIGc/view?usp=sharing" 
+                                   target="_blank" class="contact-btn resume magnetic">
+                                    <span>Resume</span>
+                                </a>
+                            </div>
+                        </div>
+
+                        <div class="contact-cta glass-panel">
+                            <h3>Ready to Collaborate?</h3>
+                            <p>Let's discuss your next cybersecurity project or explore opportunities to work together.</p>
+                            <div class="cta-features">
+                                <div class="feature-item">
+                                    <span class="feature-icon">🔒</span>
+                                    <span>Advanced Security Solutions</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-icon">⚡</span>
+                                    <span>High-Performance Systems</span>
+                                </div>
+                                <div class="feature-item">
+                                    <span class="feature-icon">🚀</span>
+                                    <span>Innovative Approaches</span>
+                                </div>
+                            </div>
+                            <a href="https://www.linkedin.com/in/aviv-shaked-59a4b7271/" 
+                               target="_blank" class="btn btn-primary magnetic">
+                                <span>Start a Conversation</span>
+                                <div class="btn-glow"></div>
+                            </a>
+                        </div>
                     </div>
-                    <div class="code-line">
-                      &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-type"
-                        >PacketHandler</span
-                      >
-                      <span class="code-function">_handler</span>;
-                    </div>
-                    <div class="code-line">
-                      &nbsp;&nbsp;<span class="code-keyword">public</span>:
-                    </div>
-                    <div class="code-line">
-                      &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword"
-                        >void</span
-                      >
-                      <span class="code-function">transmitCovert</span>();
-                    </div>
-                    <div class="code-line">
-                      &nbsp;&nbsp;&nbsp;&nbsp;<span class="code-keyword"
-                        >bool</span
-                      >
-                      <span class="code-function">isUndetectable</span>();
-                    </div>
-                    <div class="code-line">};</div>
-                  </div>
                 </div>
-              </div>
-            </div>
-          </section>
+            </section>
 
-          <!-- Expertise Section -->
-          <section id="expertise" class="content-section parallax-section">
-            <div
-              class="section-header parallax-element"
-              data-speed="0.2"
-              data-direction="up"
-            >
-              <div>
-                <h2 class="section-title">Technical Expertise</h2>
-                <p class="section-subtitle">
-                  Deep knowledge across multiple domains of cybersecurity and
-                  software development
-                </p>
-              </div>
-            </div>
-            <div class="card-grid">
-              <div
-                class="card glass-panel parallax-element"
-                data-speed="0.3"
-                data-direction="left"
-              >
-                <div class="card-header">
-                  <div class="card-icon">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                      <circle cx="12" cy="16" r="1" />
-                      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 class="card-title">Cybersecurity & Network Security</h3>
-                    <p class="card-subtitle">Expert Level</p>
-                  </div>
-                </div>
-                <p class="card-description">
-                  Network security, penetration testing, and reverse
-                  engineering. Experience with network steganography, covert
-                  communication systems, and security research.
-                </p>
-                <div class="card-tags">
-                  <span class="tag">C++20</span>
-                  <span class="tag">Steganography</span>
-                  <span class="tag">Network Programming</span>
-                  <span class="tag">Penetration Testing</span>
-                </div>
-              </div>
-
-              <div
-                class="card glass-panel parallax-element"
-                data-speed="0.4"
-                data-direction="up"
-              >
-                <div class="card-header">
-                  <div class="card-icon">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <polyline points="16,18 22,12 16,6" />
-                      <polyline points="8,6 2,12 8,18" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 class="card-title">Low-Level Systems Programming</h3>
-                    <p class="card-subtitle">Expert Level</p>
-                  </div>
-                </div>
-                <p class="card-description">
-                  Advanced C++ development with focus on performance, memory
-                  management, and system-level programming. Expertise in
-                  multi-threading, networking, and server architecture.
-                </p>
-                <div class="card-tags">
-                  <span class="tag">C/C++</span>
-                  <span class="tag">Assembly</span>
-                  <span class="tag">Multi-threading</span>
-                  <span class="tag">RAII</span>
-                </div>
-              </div>
-
-              <div
-                class="card glass-panel parallax-element"
-                data-speed="0.3"
-                data-direction="right"
-              >
-                <div class="card-header">
-                  <div class="card-icon">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <circle cx="12" cy="12" r="3" />
-                      <path
-                        d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 class="card-title">Full-Stack Development & AI</h3>
-                    <p class="card-subtitle">Professional</p>
-                  </div>
-                </div>
-                <p class="card-description">
-                  Full-stack Python development including AI/ML implementations,
-                  automation tools, and web development. Experience with neural
-                  networks and data processing systems.
-                </p>
-                <div class="card-tags">
-                  <span class="tag">Python</span>
-                  <span class="tag">AI/ML</span>
-                  <span class="tag">Web Development</span>
-                  <span class="tag">Automation</span>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- Experience Section -->
-          <section id="experience" class="content-section parallax-section">
-            <div
-              class="section-header parallax-element"
-              data-speed="0.3"
-              data-direction="left"
-            >
-              <div>
-                <h2 class="section-title">Professional Experience</h2>
-                <p class="section-subtitle">
-                  Building cutting-edge solutions and advancing cybersecurity
-                  research
-                </p>
-              </div>
-            </div>
-            <div class="experience-timeline">
-              <div
-                class="list-item glass-panel parallax-element"
-                data-speed="0.7"
-                data-direction="right"
-              >
-                <div class="list-content">
-                  <div class="list-icon">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <path
-                        d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"
-                      />
-                    </svg>
-                  </div>
-                  <div class="list-text">
-                    <h4>AllBikes - Product Uploader & Tools Developer</h4>
-                    <p>
-                      Building automated tools and secure data systems with
-                      Python automation
-                    </p>
-                  </div>
-                </div>
-                <span class="status-badge active">2023-Present</span>
-              </div>
-
-              <div
-                class="list-item glass-panel parallax-element"
-                data-speed="0.5"
-                data-direction="left"
-              >
-                <div class="list-content">
-                  <div class="list-icon">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <path d="M22 10v6M2 10l10-5 10 5-10 5z" />
-                      <path d="M6 12v5c3 3 9 3 12 0v-5" />
-                    </svg>
-                  </div>
-                  <div class="list-text">
-                    <h4>Cyber Education Center - Student & Researcher</h4>
-                    <p>
-                      Advanced cybersecurity studies and cutting-edge research
-                      projects
-                    </p>
-                  </div>
-                </div>
-                <span class="status-badge active">2023-Present</span>
-              </div>
-
-              <div
-                class="list-item glass-panel parallax-element"
-                data-speed="0.8"
-                data-direction="up"
-              >
-                <div class="list-content">
-                  <div class="list-icon">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <path d="M6 9l6 6 6-6" />
-                    </svg>
-                  </div>
-                  <div class="list-text">
-                    <h4>Analisis Team - AI4Y World Competition</h4>
-                    <p>
-                      Captain Team member, 2nd place globally in AI4Y World
-                      Competition
-                    </p>
-                  </div>
-                </div>
-                <span class="status-badge winner">2022-2023</span>
-              </div>
-            </div>
-          </section>
-
-          <!-- Projects Section -->
-          <section id="projects" class="content-section parallax-section">
-            <div
-              class="section-header parallax-element"
-              data-speed="0.4"
-              data-direction="up"
-            >
-              <div>
-                <h2 class="section-title">Featured Projects</h2>
-                <p class="section-subtitle">
-                  Innovative solutions in cybersecurity, AI, and systems
-                  programming
-                </p>
-              </div>
-            </div>
-            <div class="card-grid">
-              <div
-                class="card glass-panel parallax-element"
-                data-speed="0.6"
-                data-direction="left"
-              >
-                <div class="card-header">
-                  <div class="card-icon">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
-                      <circle cx="12" cy="16" r="1" />
-                      <path d="M7 11V7a5 5 0 0 1 10 0v4" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 class="card-title">
-                      HitchHiker: Network Steganography Platform
-                    </h3>
-                    <span class="status-badge development">In Development</span>
-                  </div>
-                </div>
-                <p class="card-description">
-                  Revolutionary covert communication system that enables hidden
-                  data transmission without creating new network packets.
-                  Advanced C++20 implementation with multi-threading, Docker
-                  containerization, and undetectable steganography.
-                </p>
-                <div class="card-tags">
-                  <span class="tag">C++20</span>
-                  <span class="tag">Multi-threading</span>
-                  <span class="tag">Docker</span>
-                  <span class="tag">CMake</span>
-                  <span class="tag">Network Security</span>
-                </div>
-              </div>
-
-              <div
-                class="card glass-panel parallax-element"
-                data-speed="0.8"
-                data-direction="right"
-              >
-                <div class="card-header">
-                  <div class="card-icon">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <polygon
-                        points="13,2 3,14 12,14 11,22 21,10 12,10 13,2"
-                      />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 class="card-title">Multiplayer Trivia Game System</h3>
-                    <span class="status-badge active">Completed</span>
-                  </div>
-                </div>
-                <p class="card-description">
-                  High-performance C++ server with Unity client. Handles 25+
-                  concurrent players with custom binary protocol, thread-safe
-                  architecture, and real-time synchronization.
-                </p>
-                <div class="card-tags">
-                  <span class="tag">C++17</span>
-                  <span class="tag">Unity</span>
-                  <span class="tag">SQLite3</span>
-                  <span class="tag">RAII</span>
-                  <span class="tag">Network Programming</span>
-                </div>
-              </div>
-
-              <div
-                class="card glass-panel parallax-element"
-                data-speed="0.5"
-                data-direction="up"
-              >
-                <div class="card-header">
-                  <div class="card-icon">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="2"
-                    >
-                      <path d="M9 12l2 2 4-4" />
-                      <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3" />
-                      <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3" />
-                      <path d="M3 12c0 5.5 4.5 10 10 10s10-4.5 10-10" />
-                    </svg>
-                  </div>
-                  <div>
-                    <h3 class="card-title">
-                      Analisis: AI Medical Diagnosis Platform
-                    </h3>
-                    <span class="status-badge winner">World Finalist</span>
-                  </div>
-                </div>
-                <p class="card-description">
-                  AI-powered medical platform for wound detection and treatment
-                  recommendations. Won National AI4Y Competition, represented
-                  Israel in world competition achieving 2nd place globally.
-                </p>
-                <div class="card-tags">
-                  <span class="tag">Python</span>
-                  <span class="tag">AI/ML</span>
-                  <span class="tag">Computer Vision</span>
-                  <span class="tag">Web Development</span>
-                </div>
-              </div>
-            </div>
-          </section>
-
-          <!-- About Section -->
-          <section id="about" class="content-section parallax-section">
-            <div
-              class="section-header parallax-element"
-              data-speed="0.3"
-              data-direction="left"
-            >
-              <div>
-                <h2 class="section-title">About Me</h2>
-                <p class="section-subtitle">
-                  Passionate about cybersecurity, innovation, and building the
-                  future
-                </p>
-              </div>
-            </div>
-            <div
-              class="card glass-panel parallax-element"
-              data-speed="0.6"
-              data-direction="right"
-            >
-              <div class="card-header">
-                <div
-                  style="
-                    width: 60px;
-                    height: 60px;
-                    border-radius: 12px;
-                    overflow: hidden;
-                    border: 2px solid var(--border-medium);
-                  "
-                >
-                  <img
-                    src="https://avatars.githubusercontent.com/u/116463487?v=4"
-                    style="width: 100%; height: 100%; object-fit: cover"
-                    alt="Aviv Shaked"
-                  />
-                </div>
-                <div>
-                  <h3 class="card-title">Aviv Shaked</h3>
-                  <p class="card-subtitle">
-                    Cybersecurity Developer & Researcher
-                  </p>
-                </div>
-              </div>
-              <p class="card-description">
-                I'm an 18-year-old cybersecurity developer and researcher from
-                Haifa, Israel. Currently pursuing advanced studies in
-                cybersecurity at Magshimim Cyber Center and computer science at
-                Bosmat Technological School.
-                <br /><br />
-                My expertise lies in building secure, high-performance systems
-                using modern C++. I've been part of the Captain Team of
-                Analisis, which represented Israel in the AI4Y World
-                Competition, and I'm currently developing revolutionary covert
-                communication systems.
-                <br /><br />
-                Professional experience includes building automated tools and
-                secure data systems at AllBikes, with expertise in Python
-                automation and data processing. Always eager to take on
-                challenging projects that push the boundaries of cybersecurity
-                and software engineering.
-              </p>
-              <div class="card-tags">
-                <span class="tag">Cybersecurity Research</span>
-                <span class="tag">C++ Expert</span>
-                <span class="tag">AI Competition Winner</span>
-                <span class="tag">Systems Programming</span>
-              </div>
-            </div>
-          </section>
         </main>
-      </div>
     </div>
+
     <script src="scripts.js"></script>
-  </body>
+</body>
 </html>

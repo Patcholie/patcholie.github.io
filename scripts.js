@@ -1,180 +1,324 @@
-// Mobile Detection
+// ===== ENHANCED 3D PARALLAX PORTFOLIO JAVASCRIPT =====
+
+// Performance and device detection
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
 const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-// Performance throttling
-let ticking = false;
-let scrollTimeoutId = null;
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 // Global state
 let isLoading = true;
 let currentSection = 'home';
-let parallaxElements = [];
+let scrollProgress = 0;
+let isScrolling = false;
+let scrollTimeout;
+let animationFrame;
 
-// Loading Screen
-document.body.classList.add('loading');
+// Performance throttling
+let lastScrollTime = 0;
+const scrollThrottle = 16; // ~60fps
 
-window.addEventListener('load', () => {
+// Parallax configuration
+const parallaxConfig = {
+    enabled: !prefersReducedMotion,
+    intensity: isMobile ? 0.3 : 0.6
+};
+
+// ===== INITIALIZATION =====
+
+document.addEventListener('DOMContentLoaded', () => {
+    console.log('🚀 Initializing Enhanced 3D Parallax Portfolio...');
+    
+    initializeLoadingScreen();
+    setupParallaxSystem();
+    setupScrollHandling();
+    setupNavigation();
+    setupMobileMenu();
+    setupCursorEffects();
+    setupInteractiveElements();
+    setupAnimationObservers();
+    updateTime();
+    
+    console.log('✨ Portfolio initialized successfully!');
+});
+
+// ===== LOADING SCREEN =====
+
+function initializeLoadingScreen() {
+    const loadingScreen = document.getElementById('loadingScreen');
+    const statNumbers = document.querySelectorAll('.loading-stats .stat-number');
+    
+    // Animate counter numbers
+    statNumbers.forEach(stat => {
+        const target = parseInt(stat.dataset.target);
+        let current = 0;
+        const increment = target / 50; // 50 steps
+        
+        const counter = setInterval(() => {
+            current += increment;
+            if (current >= target) {
+                current = target;
+                clearInterval(counter);
+            }
+            stat.textContent = Math.floor(current);
+        }, 40);
+    });
+    
+    // Hide loading screen after delay
     setTimeout(() => {
-        document.getElementById('loadingScreen').classList.add('hidden');
+        loadingScreen.classList.add('hidden');
         document.body.classList.remove('loading');
         isLoading = false;
         
-        // Reset scroll position
-        const content = document.querySelector('.content');
-        if (content) {
-            content.scrollTop = 0;
-        } else {
-            window.scrollTo(0, 0);
-        }
-        
-        // Initialize after loading
-        initializeAnimations();
-    }, 2800);
-});
-
-// Initialize all animations and interactions
-function initializeAnimations() {
-    createParticles();
-    initializeParallax();
-    setupScrollAnimations();
-    setupMobileNavigation();
-    setupInteractiveElements();
-    
-    if (!isMobile && !isTouch) {
-        setupCursorEffects();
-    }
+        // Start main animations
+        setTimeout(() => {
+            startParallaxAnimation();
+            revealInitialContent();
+        }, 800);
+    }, 3000);
 }
 
-// Enhanced Particle System
-function createParticles() {
-    const container = document.getElementById('particles');
-    const particleCount = isMobile ? 25 : 50; // Reduce particles on mobile
-    
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + 'vw';
-        particle.style.animationDelay = Math.random() * 20 + 's';
-        particle.style.animationDuration = (15 + Math.random() * 10) + 's';
-        particle.style.opacity = isMobile ? 0.2 : 0.3; // Subtle on mobile
-        container.appendChild(particle);
-    }
-}
-
-// Simplified Parallax System
-function initializeParallax() {
-    parallaxElements = document.querySelectorAll('.parallax-element');
-    
-    // Initialize parallax elements with simple, smooth properties
-    parallaxElements.forEach((element) => {
-        const speed = parseFloat(element.dataset.speed) || 0.5;
-        const direction = element.dataset.direction || 'up';
+function revealInitialContent() {
+    // Simple reveal animation for hero content
+    const heroElements = document.querySelectorAll('.hero-content > *');
+    heroElements.forEach((element, index) => {
+        element.style.opacity = '0';
+        element.style.transform = 'translateY(30px)';
         
-        element.parallaxData = {
-            speed,
-            direction,
-            originalTransform: element.style.transform || ''
-        };
-        
-        // Smooth transition for non-scroll interactions only
-        element.style.transition = 'opacity 0.3s ease, transform 0.1s linear';
-        element.style.willChange = 'transform, opacity';
+        setTimeout(() => {
+            element.style.transition = 'all 0.8s ease';
+            element.style.opacity = '1';
+            element.style.transform = 'translateY(0)';
+        }, index * 200 + 500);
     });
 }
 
-// Smooth intersection observer for reveals
-function initializeAdvancedObserver() {
-    const observerOptions = {
-        threshold: [0, 0.2, 0.5, 0.8, 1],
-        rootMargin: '50px 0px 50px 0px'
-    };
+// ===== SIMPLIFIED PARALLAX SYSTEM =====
 
-    const smoothObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            const element = entry.target;
-            
-            if (entry.isIntersecting) {
-                element.classList.add('reveal');
-                
-                // Smooth staggered animation for child elements
-                if (element.classList.contains('card') || element.classList.contains('list-item')) {
-                    const siblings = [...element.parentElement.children];
-                    const index = siblings.indexOf(element);
-                    element.style.transitionDelay = `${index * 0.05}s`; // Reduced delay for smoothness
-                }
-            } else if (!isMobile) {
-                element.classList.remove('reveal');
-                element.style.transitionDelay = '';
+function setupParallaxSystem() {
+    if (!parallaxConfig.enabled) return;
+    
+    // Only apply parallax to background layers
+    const backgroundLayers = document.querySelectorAll('.parallax-layer[data-depth]');
+    backgroundLayers.forEach(layer => {
+        const depth = parseFloat(layer.dataset.depth) || 0;
+        const speed = parseFloat(layer.dataset.speed) || 1;
+        
+        // Store parallax data for background layers only
+        if (depth < 0) {
+            layer.parallaxData = { depth, speed };
+        }
+    });
+}
+
+function startParallaxAnimation() {
+    if (!parallaxConfig.enabled) return;
+    
+    function animate() {
+        const viewport = document.getElementById('parallaxViewport');
+        if (!viewport) return;
+        
+        const scrollY = viewport.scrollTop;
+        
+        // Only animate background layers
+        const backgroundLayers = document.querySelectorAll('.parallax-layer[data-depth]');
+        backgroundLayers.forEach(layer => {
+            if (layer.parallaxData) {
+                const { speed } = layer.parallaxData;
+                const offset = scrollY * (speed - 1) * parallaxConfig.intensity;
+                layer.style.transform = `translateY(${offset}px)`;
             }
         });
-    }, observerOptions);
-
-    // Observe all animatable elements
-    const elementsToObserve = document.querySelectorAll('.content-section, .card, .list-item');
-    elementsToObserve.forEach(el => smoothObserver.observe(el));
+        
+        animationFrame = requestAnimationFrame(animate);
+    }
+    
+    animate();
 }
 
-// Mouse-based parallax for desktop only
-function updateMouseParallax() {
+// ===== SCROLL HANDLING =====
+
+function setupScrollHandling() {
+    const viewport = document.getElementById('parallaxViewport');
+    const progressBar = document.getElementById('scrollProgress');
+    
+    if (!viewport || !progressBar) return;
+    
+    function handleScroll() {
+        const currentTime = performance.now();
+        if (currentTime - lastScrollTime < scrollThrottle) return;
+        lastScrollTime = currentTime;
+        
+        const scrollTop = viewport.scrollTop;
+        const scrollHeight = viewport.scrollHeight - viewport.clientHeight;
+        scrollProgress = Math.min(scrollTop / scrollHeight, 1);
+        
+        // Update progress bar
+        progressBar.style.width = `${scrollProgress * 100}%`;
+        
+        // Update active section
+        updateActiveSection();
+        
+        // Handle scroll state
+        isScrolling = true;
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(() => {
+            isScrolling = false;
+        }, 150);
+    }
+    
+    viewport.addEventListener('scroll', handleScroll, { passive: true });
+    
+    // Smooth scroll for anchor links
+    setupSmoothScrolling();
+}
+
+function setupSmoothScrolling() {
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href').substring(1);
+            const targetElement = document.getElementById(targetId);
+            const viewport = document.getElementById('parallaxViewport');
+            
+            if (targetElement && viewport) {
+                const targetTop = targetElement.offsetTop - 100; // Account for header
+                
+                viewport.scrollTo({
+                    top: targetTop,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+function updateActiveSection() {
+    const sections = document.querySelectorAll('.content-section');
+    const viewport = document.getElementById('parallaxViewport');
+    
+    if (!viewport) return;
+    
+    const viewportTop = viewport.scrollTop;
+    const viewportHeight = viewport.clientHeight;
+    const viewportCenter = viewportTop + viewportHeight / 2;
+    
+    let activeSection = '';
+    
+    sections.forEach(section => {
+        const sectionTop = section.offsetTop;
+        const sectionHeight = section.offsetHeight;
+        const sectionCenter = sectionTop + sectionHeight / 2;
+        
+        if (Math.abs(viewportCenter - sectionCenter) < sectionHeight / 2) {
+            activeSection = section.id;
+        }
+    });
+    
+    if (activeSection && activeSection !== currentSection) {
+        updateActiveNavigation(activeSection);
+        currentSection = activeSection;
+    }
+}
+
+function updateActiveNavigation(activeSection) {
+    const navItems = document.querySelectorAll('.nav-item[data-section]');
+    
+    navItems.forEach(item => {
+        item.classList.remove('active');
+        if (item.dataset.section === activeSection) {
+            item.classList.add('active');
+        }
+    });
+}
+
+// ===== NAVIGATION =====
+
+function setupNavigation() {
+    const navItems = document.querySelectorAll('.nav-item[data-section]');
+    
+    navItems.forEach(item => {
+        item.addEventListener('click', (e) => {
+            e.preventDefault();
+            
+            const targetSection = item.dataset.section;
+            const targetElement = document.getElementById(targetSection);
+            const viewport = document.getElementById('parallaxViewport');
+            
+            if (targetElement && viewport) {
+                const targetTop = targetElement.offsetTop - 100;
+                
+                viewport.scrollTo({
+                    top: targetTop,
+                    behavior: 'smooth'
+                });
+            }
+        });
+    });
+}
+
+// ===== MOBILE MENU =====
+
+function setupMobileMenu() {
+    const mobileToggle = document.getElementById('mobileNavToggle');
+    const sidebar = document.getElementById('sidebar');
+    
+    if (!mobileToggle || !sidebar) return;
+    
+    mobileToggle.addEventListener('click', () => {
+        const isActive = mobileToggle.classList.contains('active');
+        
+        mobileToggle.classList.toggle('active');
+        sidebar.classList.toggle('active');
+        
+        // Prevent background scrolling
+        if (sidebar.classList.contains('active')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    });
+    
+    // Close menu when clicking nav items
+    const navItems = sidebar.querySelectorAll('.nav-item[data-section]');
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            if (window.innerWidth <= 768) {
+                mobileToggle.classList.remove('active');
+                sidebar.classList.remove('active');
+                document.body.style.overflow = '';
+            }
+        });
+    });
+    
+    // Close menu when clicking outside
+    document.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768 && 
+            sidebar.classList.contains('active') && 
+            !sidebar.contains(e.target) && 
+            !mobileToggle.contains(e.target)) {
+            mobileToggle.classList.remove('active');
+            sidebar.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    });
+}
+
+// ===== CURSOR EFFECTS =====
+
+function setupCursorEffects() {
     if (isMobile || isTouch) return;
     
-    const parallaxBg = document.getElementById('parallaxBg');
-    let targetX = 0, targetY = 0;
-    let currentX = 0, currentY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
-
-        targetX = (e.clientX - centerX) / centerX;
-        targetY = (e.clientY - centerY) / centerY;
-    });
-
-    function animateMouseParallax() {
-        currentX += (targetX - currentX) * 0.05;
-        currentY += (targetY - currentY) * 0.05;
-
-        const maxTranslate = 15;
-        const translateX = currentX * maxTranslate;
-        const translateY = currentY * maxTranslate;
-
-        if (parallaxBg) {
-            parallaxBg.style.transform = `translate(${translateX}px, ${translateY}px) scale(1.02)`;
-        }
-
-        requestAnimationFrame(animateMouseParallax);
-    }
-    animateMouseParallax();
-}
-
-// Smooth background movement
-function updateSmoothBackgroundParallax(scrollProgress) {
-    const parallaxBg = document.getElementById('parallaxBg');
-    if (!parallaxBg || isMobile) return;
+    const cursorSmall = document.querySelector('.cursor-small');
+    const cursorLarge = document.querySelector('.cursor-large');
     
-    // Very subtle, smooth movement
-    const moveY = scrollProgress * 20; // Slow, smooth movement
-    const scale = 1 + scrollProgress * 0.02; // Very subtle scaling
-    
-    parallaxBg.style.transform = `translateY(${moveY}px) scale(${scale})`;
-}
-
-
-// Enhanced Cursor System (Desktop Only)
-function setupCursorEffects() {
-    const cursorSmall = document.querySelector('.cursor--small');
-    const cursorLarge = document.querySelector('.cursor--large');
-
     if (!cursorSmall || !cursorLarge) return;
-
+    
     let mouseX = 0;
     let mouseY = 0;
     let largeCursorX = 0;
     let largeCursorY = 0;
-    let isHovering = false;
-    let hoverTarget = null;
-
+    
     // Mouse movement tracking
     document.addEventListener('mousemove', (e) => {
         mouseX = e.clientX;
@@ -183,315 +327,429 @@ function setupCursorEffects() {
         cursorSmall.style.left = mouseX + 'px';
         cursorSmall.style.top = mouseY + 'px';
     });
-
-    // Animate large cursor
-    function animateLargeCursor() {
-        if (isHovering && hoverTarget) {
-            const rect = hoverTarget.getBoundingClientRect();
-            const targetX = rect.left + rect.width / 2;
-            const targetY = rect.top + rect.height / 2;
-            
-            largeCursorX += (targetX - largeCursorX) * 0.25;
-            largeCursorY += (targetY - largeCursorY) * 0.25;
-        } else {
-            largeCursorX += (mouseX - largeCursorX) * 0.15;
-            largeCursorY += (mouseY - largeCursorY) * 0.15;
-        }
+    
+    // Animate large cursor with lag
+    function animateCursor() {
+        largeCursorX += (mouseX - largeCursorX) * 0.1;
+        largeCursorY += (mouseY - largeCursorY) * 0.1;
         
         cursorLarge.style.left = largeCursorX + 'px';
         cursorLarge.style.top = largeCursorY + 'px';
         
-        requestAnimationFrame(animateLargeCursor);
+        requestAnimationFrame(animateCursor);
     }
-    animateLargeCursor();
-
+    animateCursor();
+    
     // Interactive elements
-    const interactiveElements = document.querySelectorAll('a, button, .card, .list-item, .sidebar-item, .traffic-light, .hero-visual, .card-icon, .list-icon, .profile-avatar, .tag, .code-window, .code-dot, .code-line');
-
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            isHovering = true;
-            hoverTarget = el;
-            cursorLarge.classList.add('morphed', 'interactive');
-            cursorSmall.classList.add('hovered');
-
-            const rect = el.getBoundingClientRect();
-            const computedStyle = window.getComputedStyle(el);
-
-            cursorLarge.style.borderRadius = computedStyle.borderRadius || '12px';
-            cursorLarge.style.width = rect.width + 'px';
-            cursorLarge.style.height = rect.height + 'px';
-            cursorLarge.style.transition = 'width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-radius 0.4s ease';
-        });
-
-        el.addEventListener('mouseleave', () => {
-            isHovering = false;
-            hoverTarget = null;
-            cursorLarge.classList.remove('morphed', 'interactive');
-            cursorSmall.classList.remove('hovered');
-
-            cursorLarge.style.width = '32px';
-            cursorLarge.style.height = '32px';
-            cursorLarge.style.borderRadius = '50%';
-        });
-    });
-
-    // Magnetic elements
-    const magneticElements = document.querySelectorAll('.magnetic-btn');
-    magneticElements.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursorLarge.classList.add('magnetic');
+    const interactiveElements = document.querySelectorAll('a, button, .btn, .nav-item, .traffic-light, .dot, .magnetic, .expertise-card, .project-card, .timeline-item');
+    
+    interactiveElements.forEach(element => {
+        element.addEventListener('mouseenter', () => {
+            cursorLarge.classList.add('hover');
+            cursorSmall.style.transform = 'translate(-50%, -50%) scale(1.5)';
         });
         
-        el.addEventListener('mouseleave', () => {
-            cursorLarge.classList.remove('magnetic');
+        element.addEventListener('mouseleave', () => {
+            cursorLarge.classList.remove('hover');
+            cursorSmall.style.transform = 'translate(-50%, -50%) scale(1)';
         });
     });
-
-    /* ───────── click pulse (inner dot) ───────── */
+    
+    // Click effect
     document.addEventListener('mousedown', () => {
-        cursorSmall.classList.remove('clicked');  // restart if mid‑animation
-        void cursorSmall.offsetWidth;             // force reflow so keyframes replay
-        cursorSmall.classList.add('clicked');
+        cursorSmall.style.transform = 'translate(-50%, -50%) scale(0.8)';
     });
     
-    /* remove .clicked after the keyframe finishes so the
-       dot returns to its proper idle size (small or hovered) */
-    cursorSmall.addEventListener('animationend', (e) => {
-        if (e.animationName === 'cursorClick') {
-            cursorSmall.classList.remove('clicked');
-        }
+    document.addEventListener('mouseup', () => {
+        cursorSmall.style.transform = 'translate(-50%, -50%) scale(1)';
     });
-
 }
 
-// Interactive Elements Setup
+// ===== INTERACTIVE ELEMENTS =====
+
 function setupInteractiveElements() {
-    // Code window interactions
-    const codeDots = document.querySelectorAll('.code-dot');
-    const codeWindow = document.querySelector('.code-window');
+    setupTerminalEffects();
+    setupTrafficLights();
+    setupMagneticElements();
+    setupButtonEffects();
+    setupCardHoverEffects();
+}
+
+function setupTerminalEffects() {
+    const dots = document.querySelectorAll('.terminal-dots .dot');
+    const terminal = document.querySelector('.terminal-window');
     const codeLines = document.querySelectorAll('.code-line');
-
-    codeDots.forEach((dot, index) => {
-        const clickHandler = () => {
-            if (index === 0) {
-                // Red dot - minimize effect
-                if (codeWindow) {
-                    codeWindow.style.transform = 'scale(0.95) rotate(-2deg)';
+    
+    if (!dots.length || !terminal) return;
+    
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            switch(index) {
+                case 0: // Red dot - minimize
+                    terminal.style.transform = 'scale(0.95) rotate(-1deg)';
                     setTimeout(() => {
-                        codeWindow.style.transform = 'scale(1) rotate(0deg)';
+                        terminal.style.transform = '';
                     }, 300);
-                }
-            } else if (index === 1) {
-                // Yellow dot - typewriter effect
-                codeLines.forEach((line, lineIndex) => {
-                    line.style.opacity = '0';
+                    break;
+                    
+                case 1: // Yellow dot - typewriter
+                    typewriterEffect(codeLines);
+                    break;
+                    
+                case 2: // Green dot - glow
+                    terminal.style.boxShadow = '0 0 50px rgba(0, 212, 255, 0.5)';
                     setTimeout(() => {
-                        line.style.opacity = '1';
-                        line.style.animation = 'slideInCode 0.2s ease forwards';
-                    }, lineIndex * 100);
-                });
-            } else {
-                // Green dot - glow effect
-                if (codeWindow) {
-                    codeWindow.style.boxShadow = '0 0 40px rgba(59, 130, 246, 0.4), 0 20px 60px rgba(0, 0, 0, 0.6)';
-                    setTimeout(() => {
-                        codeWindow.style.boxShadow = '';
+                        terminal.style.boxShadow = '';
                     }, 1000);
-                }
+                    break;
             }
-        };
-
-        if (isMobile || isTouch) {
-            dot.addEventListener('touchend', clickHandler);
-        } else {
-            dot.addEventListener('click', clickHandler);
-        }
-    });
-
-    // Enhanced code line interactions
-    codeLines.forEach(line => {
-        const hoverHandler = () => {
-            line.style.background = 'rgba(59, 130, 246, 0.05)';
-            line.style.borderLeft = '3px solid var(--accent-primary)';
-            line.style.paddingLeft = '8px';
-        };
-        
-        const leaveHandler = () => {
-            line.style.background = '';
-            line.style.borderLeft = '';
-            line.style.paddingLeft = '';
-        };
-
-        if (isMobile || isTouch) {
-            line.addEventListener('touchstart', hoverHandler);
-            line.addEventListener('touchend', leaveHandler);
-        } else {
-            line.addEventListener('mouseenter', hoverHandler);
-            line.addEventListener('mouseleave', leaveHandler);
-        }
+        });
     });
 }
 
-// Mobile Navigation
-function setupMobileNavigation() {
-    const mobileNavToggle = document.getElementById('mobileNavToggle');
-    const sidebar = document.getElementById('sidebar');
+function typewriterEffect(lines) {
+    lines.forEach((line, index) => {
+        line.style.opacity = '0';
+        line.style.transform = 'translateX(-20px)';
+        
+        setTimeout(() => {
+            line.style.transition = 'all 0.3s ease';
+            line.style.opacity = '1';
+            line.style.transform = 'translateX(0)';
+        }, index * 100);
+    });
+}
+
+function setupTrafficLights() {
+    const trafficLights = document.querySelectorAll('.traffic-light');
     
-    if (mobileNavToggle && sidebar) {
-        const toggleNavigation = () => {
-            mobileNavToggle.classList.toggle('active');
-            sidebar.classList.toggle('active');
+    trafficLights.forEach((light, index) => {
+        light.addEventListener('click', () => {
+            // Create ripple effect
+            const ripple = document.createElement('div');
+            ripple.style.cssText = `
+                position: absolute;
+                border-radius: 50%;
+                background: currentColor;
+                transform: scale(0);
+                animation: ripple 0.6s linear;
+                width: 100%;
+                height: 100%;
+                top: 0;
+                left: 0;
+                opacity: 0.3;
+                pointer-events: none;
+            `;
             
-            // Prevent background scrolling when nav is open
-            if (sidebar.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = '';
-            }
-        };
-
-        mobileNavToggle.addEventListener('click', toggleNavigation);
-        mobileNavToggle.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            toggleNavigation();
+            light.style.position = 'relative';
+            light.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 600);
         });
-
-        // Close navigation when clicking on sidebar items
-        const sidebarItems = sidebar.querySelectorAll('.sidebar-item');
-        sidebarItems.forEach(item => {
-            item.addEventListener('click', () => {
-                if (window.innerWidth <= 768) {
-                    mobileNavToggle.classList.remove('active');
-                    sidebar.classList.remove('active');
-                    document.body.style.overflow = '';
+    });
+    
+    // Add ripple animation
+    if (!document.querySelector('#ripple-animation')) {
+        const style = document.createElement('style');
+        style.id = 'ripple-animation';
+        style.textContent = `
+            @keyframes ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
                 }
-            });
-        });
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
 
-        // Close navigation when clicking outside
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768 && 
-                sidebar.classList.contains('active') && 
-                !sidebar.contains(e.target) && 
-                !mobileNavToggle.contains(e.target)) {
-                mobileNavToggle.classList.remove('active');
+function setupMagneticElements() {
+    if (isMobile || isTouch) return;
+    
+    const magneticElements = document.querySelectorAll('.magnetic');
+    
+    magneticElements.forEach(element => {
+        element.addEventListener('mousemove', (e) => {
+            const rect = element.getBoundingClientRect();
+            const x = e.clientX - rect.left - rect.width / 2;
+            const y = e.clientY - rect.top - rect.height / 2;
+            
+            const distance = Math.sqrt(x * x + y * y);
+            const maxDistance = 100;
+            
+            if (distance < maxDistance) {
+                const strength = (maxDistance - distance) / maxDistance;
+                const moveX = x * strength * 0.3;
+                const moveY = y * strength * 0.3;
+                
+                element.style.transform = `translate(${moveX}px, ${moveY}px)`;
+            }
+        });
+        
+        element.addEventListener('mouseleave', () => {
+            element.style.transform = '';
+        });
+    });
+}
+
+function setupButtonEffects() {
+    const buttons = document.querySelectorAll('.btn');
+    
+    buttons.forEach(button => {
+        // Ripple effect on click
+        button.addEventListener('click', function(e) {
+            const rect = this.getBoundingClientRect();
+            const ripple = document.createElement('span');
+            const size = Math.max(rect.width, rect.height);
+            const x = e.clientX - rect.left - size / 2;
+            const y = e.clientY - rect.top - size / 2;
+            
+            ripple.style.cssText = `
+                position: absolute;
+                border-radius: 50%;
+                background: rgba(255, 255, 255, 0.3);
+                transform: scale(0);
+                animation: button-ripple 0.6s linear;
+                width: ${size}px;
+                height: ${size}px;
+                top: ${y}px;
+                left: ${x}px;
+                pointer-events: none;
+            `;
+            
+            this.style.position = 'relative';
+            this.style.overflow = 'hidden';
+            this.appendChild(ripple);
+            
+            setTimeout(() => ripple.remove(), 600);
+        });
+    });
+    
+    // Add button ripple animation
+    if (!document.querySelector('#button-ripple-animation')) {
+        const style = document.createElement('style');
+        style.id = 'button-ripple-animation';
+        style.textContent = `
+            @keyframes button-ripple {
+                to {
+                    transform: scale(4);
+                    opacity: 0;
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+}
+
+function setupCardHoverEffects() {
+    // Enhanced card hover effects
+    const cards = document.querySelectorAll('.expertise-card, .project-card, .timeline-item');
+    
+    cards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            if (!isMobile) {
+                card.style.transform = 'translateY(-10px)';
+                card.style.boxShadow = '0 20px 60px rgba(0, 212, 255, 0.15)';
+            }
+        });
+        
+        card.addEventListener('mouseleave', () => {
+            if (!isMobile) {
+                card.style.transform = '';
+                card.style.boxShadow = '';
+            }
+        });
+    });
+}
+
+// ===== ANIMATION OBSERVERS =====
+
+function setupAnimationObservers() {
+    // Simple intersection observer for subtle reveal animations
+    const observerOptions = {
+        threshold: 0.1,
+        rootMargin: '50px 0px'
+    };
+    
+    const revealObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            const element = entry.target;
+            
+            if (entry.isIntersecting) {
+                element.classList.add('revealed');
+                
+                // Stagger children animations if they exist
+                const children = element.querySelectorAll('.expertise-card, .timeline-item, .project-card');
+                children.forEach((child, index) => {
+                    child.style.transitionDelay = `${index * 0.1}s`;
+                });
+            }
+        });
+    }, observerOptions);
+    
+    // Observe sections only, cards are visible by default
+    const sectionsToObserve = document.querySelectorAll('.content-section');
+    sectionsToObserve.forEach(section => {
+        revealObserver.observe(section);
+    });
+}
+
+// ===== UTILITY FUNCTIONS =====
+
+function updateTime() {
+    const timeElement = document.getElementById('currentTime');
+    if (!timeElement) return;
+    
+    function updateClock() {
+        const now = new Date();
+        const timeString = now.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: false
+        });
+        timeElement.textContent = timeString;
+    }
+    
+    updateClock();
+    setInterval(updateClock, 1000);
+}
+
+function debounce(func, wait) {
+    let timeout;
+    return function executedFunction(...args) {
+        const later = () => {
+            clearTimeout(timeout);
+            func(...args);
+        };
+        clearTimeout(timeout);
+        timeout = setTimeout(later, wait);
+    };
+}
+
+function throttle(func, limit) {
+    let inThrottle;
+    return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    }
+}
+
+// ===== PERFORMANCE MONITORING =====
+
+function setupPerformanceMonitoring() {
+    let frameCount = 0;
+    let lastTime = performance.now();
+    
+    function measureFPS() {
+        frameCount++;
+        const currentTime = performance.now();
+        
+        if (currentTime - lastTime >= 1000) {
+            const fps = Math.round((frameCount * 1000) / (currentTime - lastTime));
+            
+            // Adjust quality based on performance
+            if (fps < 30 && parallaxConfig.enabled) {
+                parallaxConfig.intensity *= 0.8;
+                console.warn('🐌 Performance degraded, reducing parallax effects');
+            }
+            
+            frameCount = 0;
+            lastTime = currentTime;
+        }
+        
+        requestAnimationFrame(measureFPS);
+    }
+    
+    if (!prefersReducedMotion) {
+        requestAnimationFrame(measureFPS);
+    }
+}
+
+// ===== WINDOW EVENT HANDLERS =====
+
+// Handle window resize
+window.addEventListener('resize', debounce(() => {
+    // Update mobile detection
+    const wasMobile = isMobile;
+    const newIsMobile = window.innerWidth <= 768;
+    
+    if (wasMobile !== newIsMobile) {
+        // Reinitialize if device type changed
+        location.reload();
+    }
+    
+    // Close mobile menu on resize to desktop
+    if (window.innerWidth > 768) {
+        const sidebar = document.getElementById('sidebar');
+        const mobileToggle = document.getElementById('mobileNavToggle');
+        
+        if (sidebar && mobileToggle) {
+            mobileToggle.classList.remove('active');
+            sidebar.classList.remove('active');
+            document.body.style.overflow = '';
+        }
+    }
+}, 100));
+
+// Handle visibility change
+document.addEventListener('visibilitychange', () => {
+    if (document.hidden) {
+        // Pause animations when tab is not visible
+        if (animationFrame) {
+            cancelAnimationFrame(animationFrame);
+        }
+    } else {
+        // Resume animations when tab becomes visible
+        if (parallaxConfig.enabled && !isLoading) {
+            startParallaxAnimation();
+        }
+    }
+});
+
+// Keyboard navigation
+document.addEventListener('keydown', (e) => {
+    switch(e.key) {
+        case 'Escape':
+            // Close mobile menu
+            const sidebar = document.getElementById('sidebar');
+            const mobileToggle = document.getElementById('mobileNavToggle');
+            
+            if (sidebar && sidebar.classList.contains('active')) {
+                mobileToggle.classList.remove('active');
                 sidebar.classList.remove('active');
                 document.body.style.overflow = '';
             }
-        });
+            break;
+            
+        case 'Tab':
+            document.body.classList.add('keyboard-nav');
+            break;
     }
-}
+});
 
-// Smooth Scroll Animations Setup
-function setupScrollAnimations() {
-    // Scroll progress indicator with smooth glow
-    function updateScrollProgress() {
-        const content = document.querySelector('.content');
-        const scrollProgress = document.getElementById('scrollProgress');
-        
-        if (content && scrollProgress) {
-            const scrollTop = content.scrollTop;
-            const scrollHeight = content.scrollHeight - content.clientHeight;
-            const progress = Math.min((scrollTop / scrollHeight) * 100, 100);
-            scrollProgress.style.width = progress + '%';
-        }
-    }
+document.addEventListener('mousedown', () => {
+    document.body.classList.remove('keyboard-nav');
+});
 
-    // Smooth combined scroll listener
-    const content = document.querySelector('.content');
+// Touch handling for mobile
+if (isMobile || isTouch) {
+    document.addEventListener('touchstart', () => {
+        document.body.style.cursor = 'auto';
+    }, { passive: true });
     
-    const scrollHandler = () => {
-        if (!ticking) {
-            requestAnimationFrame(() => {
-                updateScrollProgress();
-                updateActiveNav();
-                ticking = false;
-            });
-            ticking = true;
-        }
-    };
-
-    if (content) {
-        content.addEventListener('scroll', scrollHandler, { passive: true });
-        
-        // Smooth scroll behavior
-        content.style.scrollBehavior = 'smooth';
-        content.style.webkitOverflowScrolling = 'touch';
-    } else {
-        window.addEventListener('scroll', scrollHandler, { passive: true });
-    }
-    
-    // Initialize the smooth observer
-    initializeAdvancedObserver();
-}
-
-// Remove mouse parallax to prevent background jumping
-function updateMouseParallax() {
-    // Disabled to prevent jumping background
-    return;
-}
-
-// Active Navigation Highlighting
-function updateActiveNav() {
-    const navItems = document.querySelectorAll('.sidebar-item');
-    const sections = document.querySelectorAll('.content-section');
-    let current = '';
-
-    sections.forEach(section => {
-        const sectionTop = section.getBoundingClientRect().top;
-        const sectionHeight = section.offsetHeight;
-        const viewportMiddle = window.innerHeight / 2;
-
-        if (sectionTop <= viewportMiddle && sectionTop + sectionHeight > viewportMiddle) {
-            current = section.getAttribute('id');
-        }
+    // Prevent context menu on long press
+    document.addEventListener('contextmenu', (e) => {
+        e.preventDefault();
     });
     
-    if (current !== currentSection) {
-        currentSection = current;
-        navItems.forEach(item => {
-            item.classList.remove('active');
-            if (item.getAttribute('href') === `#${current}`) {
-                item.classList.add('active');
-            }
-        });
-    }
-}
-
-// Smooth scrolling for navigation
-function setupSmoothScrolling() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                const content = document.querySelector('.content');
-                const targetTop = target.offsetTop - 100; // Account for header
-                
-                if (content) {
-                    content.scrollTo({
-                        top: targetTop,
-                        behavior: 'smooth'
-                    });
-                } else {
-                    window.scrollTo({
-                        top: targetTop,
-                        behavior: 'smooth'
-                    });
-                }
-            }
-        });
-    });
-}
-
-// Touch interactions for mobile
-function setupTouchInteractions() {
-    if (!isMobile && !isTouch) return;
-
-    // Add touch feedback to interactive elements
-    const touchElements = document.querySelectorAll('.btn, .card, .list-item, .sidebar-item, .tag');
-    
+    // Add touch feedback
+    const touchElements = document.querySelectorAll('.btn, .nav-item, .expertise-card, .project-card, .timeline-item');
     touchElements.forEach(element => {
         element.addEventListener('touchstart', () => {
             element.style.transform = 'scale(0.98)';
@@ -502,105 +760,41 @@ function setupTouchInteractions() {
                 element.style.transform = '';
             }, 150);
         }, { passive: true });
-        
-        element.addEventListener('touchcancel', () => {
-            element.style.transform = '';
-        }, { passive: true });
-    });
-}
-
-// Keyboard navigation
-function setupKeyboardNavigation() {
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Tab') {
-            document.body.classList.add('keyboard-nav');
-        }
-        
-        // ESC key to close mobile navigation
-        if (e.key === 'Escape') {
-            const sidebar = document.getElementById('sidebar');
-            const mobileNavToggle = document.getElementById('mobileNavToggle');
-            
-            if (sidebar && sidebar.classList.contains('active')) {
-                mobileNavToggle.classList.remove('active');
-                sidebar.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        }
-    });
-
-    document.addEventListener('mousedown', () => {
-        document.body.classList.remove('keyboard-nav');
-    });
-}
-
-// Window resize handler
-function handleResize() {
-    // Close mobile navigation on resize to desktop
-    if (window.innerWidth > 768) {
-        const sidebar = document.getElementById('sidebar');
-        const mobileNavToggle = document.getElementById('mobileNavToggle');
-        
-        if (sidebar && mobileNavToggle) {
-            mobileNavToggle.classList.remove('active');
-            sidebar.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    }
-    
-    // Reinitialize parallax elements
-    if (parallaxElements.length > 0) {
-        initializeParallax();
-    }
-}
-
-// Performance optimizations
-function optimizePerformance() {
-    // Reduce motion for users who prefer it
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.documentElement.style.setProperty('--transition-fast', '0.01ms');
-        document.documentElement.style.setProperty('--transition-smooth', '0.01ms');
-        document.documentElement.style.setProperty('--transition-gentle', '0.01ms');
-        
-        // Disable parallax for reduced motion
-        parallaxElements.forEach(element => {
-            element.style.transform = 'none';
-        });
-        return;
-    }
-    }
-
-// Initialize everything when DOM is ready
-document.addEventListener('DOMContentLoaded', () => {
-    setupSmoothScrolling();
-    setupTouchInteractions();
-    setupKeyboardNavigation();
-    optimizePerformance();
-    });
-
-// Handle window resize
-window.addEventListener('resize', () => {
-    clearTimeout(scrollTimeoutId);
-    scrollTimeoutId = setTimeout(handleResize, 100);
-});
-
-// Prevent context menu on long press for mobile
-if (isMobile || isTouch) {
-    document.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
     });
 }
 
 // Error handling
 window.addEventListener('error', (e) => {
     console.warn('Non-critical error:', e.error);
-    // Continue with degraded functionality rather than breaking
+    // Continue with degraded functionality
 });
 
-// Export for potential external use
-window.PortfolioApp = {
-    isMobile,
-    isTouch,
-    updateActiveNav,
-    currentSection: () => currentSection
+window.addEventListener('unhandledrejection', (e) => {
+    console.warn('Unhandled promise rejection:', e.reason);
+    e.preventDefault(); // Prevent default browser error handling
+});
+
+// ===== INITIALIZATION COMPLETION =====
+
+// Start performance monitoring
+setupPerformanceMonitoring();
+
+// Export for debugging
+window.ParallaxPortfolio = {
+    config: parallaxConfig,
+    state: {
+        currentSection: () => currentSection,
+        scrollProgress: () => scrollProgress,
+        isLoading: () => isLoading,
+        isMobile,
+        isTouch
+    },
+    utils: {
+        updateActiveSection,
+        updateTime,
+        debounce,
+        throttle
+    }
 };
+
+console.log('🎉 Enhanced 3D Parallax Portfolio fully loaded and ready!');
