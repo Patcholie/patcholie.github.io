@@ -858,5 +858,3 @@ window.ParallaxPortfolio = {
         throttle
     }
 };
-
-console.log('🎉 Enhanced 3D Parallax Portfolio fully loaded and ready!');

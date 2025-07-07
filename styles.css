@@ -323,9 +323,16 @@ body {
     overflow-x: hidden;
     overflow-y: auto;
     position: relative;
-    /* Remove 3D transforms that interfere with fixed positioning */
+    /* 3D Parallax Setup */
+    perspective: 1px;
+    transform-style: preserve-3d;
 }
 
+.parallax-viewport *, 
+.parallax-viewport *::before, 
+.parallax-viewport *::after {
+    transform-style: preserve-3d;
+}
 /* ===== BACKGROUND LAYERS - PROPERLY FIXED ===== */
 
 .parallax-layer[data-depth="-0.8"] {
@@ -788,7 +795,7 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) translateZ(-0.5px) scale(1.5);
     font-size: clamp(4rem, 15vw, 12rem);
     font-weight: 900;
     color: rgba(255, 255, 255, 0.02);
@@ -796,9 +803,8 @@ body {
     white-space: nowrap;
     pointer-events: none;
     user-select: none;
-    z-index: -1;
+    z-index: -500;
 }
-
 /* ===== HERO SECTION ===== */
 
 .hero-section {
@@ -834,7 +840,7 @@ body {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%) translateZ(-0.8px) scale(1.8);
     font-size: clamp(6rem, 20vw, 16rem);
     font-weight: 900;
     background: linear-gradient(135deg, rgba(0, 212, 255, 0.1), rgba(255, 107, 107, 0.1));
@@ -844,9 +850,8 @@ body {
     opacity: 0.3;
     pointer-events: none;
     user-select: none;
-    z-index: -1;
+    z-index: -800;
 }
-
 .hero-badge {
     display: inline-flex;
     align-items: center;
@@ -1855,7 +1860,26 @@ body {
     .timeline-item:active {
         transform: scale(0.98);
     }
+
+    /* Disable 3D parallax on mobile for performance */
+
+    .parallax-viewport {
+    perspective: none;
+    transform-style: flat;
+    }
+    
+    .section-bg-text {
+        transform: translate(-50%, -50%);
+        z-index: -1;
+    }
+    
+    .hero-bg-text {
+        transform: translate(-50%, -50%);
+        z-index: -1;
+    }
+
 }
+
 
 /* ===== ANIMATIONS ===== */
 
