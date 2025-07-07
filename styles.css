@@ -113,9 +113,20 @@
 
 /* Base Styles */
 html {
-    scroll-behavior: smooth;
     font-size: 16px;
 }
+
+html.has-scroll-smooth {
+    overflow: hidden; 
+}
+
+html.has-scroll-dragging {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
 
 body {
     font-family: var(--font-family-primary);

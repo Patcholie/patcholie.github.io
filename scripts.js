@@ -47,6 +47,7 @@ const STATE = {
     animationFrameId: null,
     intersectionObserver: null,
     progressObserver: null,
+    locomotiveScroll: null,
     
     // Performance monitoring
     frameCount: 0,
@@ -123,11 +124,15 @@ const Utils = {
 
     // Smooth scroll to element
     smoothScrollTo(element, offset = CONFIG.SCROLL_OFFSET) {
-        const elementPosition = this.getElementOffset(element).top - offset;
-        window.scrollTo({
-            top: elementPosition,
-            behavior: 'smooth'
-        });
+        if (STATE.locomotiveScroll) {
+            STATE.locomotiveScroll.scrollTo(element, {
+                offset: -offset // Locomotive Scroll uses negative offset
+            });
+        } else {
+            // Fallback for when the library isn't loaded
+            const elementPosition = this.getElementOffset(element).top - offset;
+            window.scrollTo({ top: elementPosition, behavior: 'smooth' });
+        }
     },
 
     // Generate random number between min and max
@@ -272,6 +277,14 @@ class Preloader {
     }
 
     onComplete() {
+        STATE.locomotiveScroll = new LocomotiveScroll({
+            el: document.querySelector('[data-scroll-container]'),
+            smooth: true,
+            lerp: 0.08, // Adjust for desired smoothness (0.05-0.1 is a good range)
+        });
+
+        this.rebindScrollEvents();
+
         // Trigger hero animations
         HeroAnimations.init();
         
@@ -284,6 +297,38 @@ class Preloader {
         // Initialize performance monitoring
         PerformanceMonitor.init();
     }
+
+    rebindScrollEvents() {
+        // When Locomotive Scroll scrolls, it dispatches an event.
+        // We listen to that instead of the window's scroll event.
+        STATE.locomotiveScroll.on('scroll', (args) => {
+            // 'args' contains scroll data like args.scroll.y
+
+            // Update navigation state
+            NavigationSystem.handleScroll(args.scroll.y);
+
+            // Update scroll progress bar
+            ProgressTracking.updateProgress(args);
+
+            // You can remove your custom parallax logic and use data-scroll-speed instead
+            // ProgressTracking.updateParallax(args.scroll.y); 
+        });
+
+        // Update Locomotive Scroll's internal state when the window is resized
+        window.addEventListener('resize', () => {
+            if (STATE.locomotiveScroll) {
+                STATE.locomotiveScroll.update();
+            }
+        });
+
+        // Update the scroll when new images load, etc.
+        STATE.locomotiveScroll.on('call', (func, way, obj) => {
+            if (func === 'update') {
+                STATE.locomotiveScroll.update();
+            }
+        });
+    }
+
 }
 
 // ===== CURSOR SYSTEM =====
@@ -531,8 +576,7 @@ class NavigationSystem {
         }
     }
 
-    handleScroll() {
-        const currentScrollY = window.pageYOffset;
+    handleScroll(currentScrollY) {
         
         // Update navigation background based on scroll
         if (currentScrollY > 100) {
@@ -803,9 +847,7 @@ class ProgressTracking {
     }
 
     static updateProgress() {
-        const scrollTop = window.pageYOffset;
-        const documentHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const scrollProgress = (scrollTop / documentHeight) * 100;
+        const scrollProgress = (args.scroll.y / args.limit.y) * 100;
         
         if (this.progressFill) {
             this.progressFill.style.width = `${Math.min(scrollProgress, 100)}%`;
