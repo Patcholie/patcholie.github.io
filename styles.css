@@ -142,7 +142,9 @@ body {
     pointer-events: none;
     z-index: var(--z-tooltip);
     border-radius: 50%;
-    transform: translate(-50%, -50%);
+    will-change: transform;
+    top: 0;
+    left: 0;
 }
 
 .cursor-dot {
@@ -150,22 +152,28 @@ body {
     height: 8px;
     background: var(--color-accent-primary);
     box-shadow: 0 0 16px var(--color-accent-primary);
-    transition: transform var(--transition-fast);
 }
 
 .cursor-outline {
-    width: 32px;
-    height: 32px;
-    border: 2px solid rgba(0, 212, 255, 0.3);
-    transition: all var(--transition-normal);
+    width: 40px;
+    height: 40px;
+    border: 2px solid rgba(0, 212, 255, 0.4);
+    background: transparent;
+    mix-blend-mode: difference;
 }
 
 .cursor-outline.hover {
-    width: 48px;
-    height: 48px;
     border-color: var(--color-accent-primary);
     background: rgba(0, 212, 255, 0.1);
-    backdrop-filter: blur(10px);
+    mix-blend-mode: normal;
+}
+
+.cursor-outline.morphed {
+    border-radius: 12px;
+    background: rgba(0, 213, 255, 0.051);
+    border-color: var(--color-accent-primary);
+    box-shadow: 0 0 20px rgba(0, 212, 255, 0.3);
+    mix-blend-mode: normal;
 }
 
 @media (max-width: 768px) {
@@ -589,30 +597,28 @@ body {
     line-height: 1.6;
 }
 
-/* Hero Section */
-.hero-section {
-    position: relative;
-    overflow: hidden;
-}
-
-.hero-background {
-    position: absolute;
+/* Global Background */
+.global-background {
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: -1;
+    z-index: -10;
+    overflow: hidden;
+    pointer-events: none;
 }
 
-.gradient-orb {
+.global-background .gradient-orb {
     position: absolute;
     border-radius: 50%;
     filter: blur(120px);
     opacity: 0.6;
     animation: float 20s ease-in-out infinite;
+    will-change: transform;
 }
 
-.orb-1 {
+.global-background .orb-1 {
     width: 600px;
     height: 600px;
     background: var(--gradient-orb-1);
@@ -621,7 +627,7 @@ body {
     animation-delay: 0s;
 }
 
-.orb-2 {
+.global-background .orb-2 {
     width: 400px;
     height: 400px;
     background: var(--gradient-orb-2);
@@ -630,7 +636,7 @@ body {
     animation-delay: 7s;
 }
 
-.orb-3 {
+.global-background .orb-3 {
     width: 500px;
     height: 500px;
     background: var(--gradient-orb-3);
@@ -640,7 +646,7 @@ body {
     animation-delay: 14s;
 }
 
-.grid-overlay {
+.global-background .grid-overlay {
     position: absolute;
     top: 0;
     left: 0;
@@ -651,6 +657,12 @@ body {
         linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
     background-size: 50px 50px;
     opacity: 0.5;
+}
+
+/* Hero Section */
+.hero-section {
+    position: relative;
+    overflow: hidden;
 }
 
 .hero-content {

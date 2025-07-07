@@ -307,7 +307,7 @@ class CursorSystem {
             a, button, .btn, .nav-link, .social-link, .contact-link,
             .expertise-card, .project-card, .timeline-content,
             .stat-card, .skill-tag, .tech-tag, .control-dot,
-            .code-line, .hero-badge, [role="button"], [tabindex]
+            .code-line, .hero-badge, [role="button"], [tabindex]:not([tabindex="-1"])
         `);
         
         this.init();
@@ -326,11 +326,13 @@ class CursorSystem {
         }, { passive: true });
 
         document.addEventListener('mousedown', () => {
-            this.cursorDot.style.transform = 'translate(-50%, -50%) scale(0.5)';
+            this.cursorDot.classList.add('clicked');
+            this.cursorOutline.classList.add('clicked');
         });
 
         document.addEventListener('mouseup', () => {
-            this.cursorDot.style.transform = 'translate(-50%, -50%) scale(1)';
+            this.cursorDot.classList.remove('clicked');
+            this.cursorOutline.classList.remove('clicked');
         });
     }
 
@@ -351,6 +353,21 @@ class CursorSystem {
         this.currentElement = element;
         this.cursorOutline.classList.add('hover');
         
+        // Morph cursor to element size and position
+        const rect = element.getBoundingClientRect();
+        
+        this.cursorOutline.classList.add('morphed');
+        this.cursorOutline.style.width = (rect.width + 16) + 'px';
+        this.cursorOutline.style.height = (rect.height + 16) + 'px';
+        
+        // Get computed border radius
+        const computedStyle = window.getComputedStyle(element);
+        const borderRadius = computedStyle.borderRadius || '12px';
+        this.cursorOutline.style.borderRadius = borderRadius;
+        
+        // Position cursor outline to center of element (fixed position)
+        this.cursorOutline.style.transition = 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)';
+        
         // Add magnetic effect for specific elements
         if (element.classList.contains('btn') || element.classList.contains('magnetic')) {
             this.addMagneticEffect(element);
@@ -360,7 +377,14 @@ class CursorSystem {
     onElementLeave() {
         this.isHovering = false;
         this.currentElement = null;
-        this.cursorOutline.classList.remove('hover');
+        this.cursorOutline.classList.remove('hover', 'morphed');
+        
+        // Reset cursor size and transition
+        this.cursorOutline.style.width = '40px';
+        this.cursorOutline.style.height = '40px';
+        this.cursorOutline.style.borderRadius = '50%';
+        this.cursorOutline.style.transition = 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)';
+        
         this.removeMagneticEffect();
     }
 
@@ -396,17 +420,35 @@ class CursorSystem {
     }
 
     animate() {
-        // Smooth cursor movement
-        this.dotX = Utils.lerp(this.dotX, STATE.mouseX, 1);
-        this.dotY = Utils.lerp(this.dotY, STATE.mouseY, 1);
-        this.outlineX = Utils.lerp(this.outlineX, STATE.mouseX, 0.15);
-        this.outlineY = Utils.lerp(this.outlineY, STATE.mouseY, 0.15);
+        // Dot follows mouse exactly with no delay/smoothing
+        this.dotX = STATE.mouseX;
+        this.dotY = STATE.mouseY;
 
-        // Apply transforms
-        this.cursorDot.style.left = this.dotX + 'px';
-        this.cursorDot.style.top = this.dotY + 'px';
-        this.cursorOutline.style.left = this.outlineX + 'px';
-        this.cursorOutline.style.top = this.outlineY + 'px';
+        // Outline behavior depends on hover state
+        if (this.isHovering && this.currentElement) {
+            // When hovering, position outline at element center
+            const rect = this.currentElement.getBoundingClientRect();
+            const centerX = rect.left + rect.width / 2;
+            const centerY = rect.top + rect.height / 2;
+            
+            this.outlineX = centerX;
+            this.outlineY = centerY;
+        } else {
+            // When not hovering, follow mouse with smooth lag
+            this.outlineX = Utils.lerp(this.outlineX, STATE.mouseX, 0.25);
+            this.outlineY = Utils.lerp(this.outlineY, STATE.mouseY, 0.25);
+        }
+
+        // Apply transforms with better performance
+        const dotScale = this.cursorDot.classList.contains('clicked') ? ' scale(0.8)' : '';
+        const outlineScale = this.cursorOutline.classList.contains('clicked') ? ' scale(0.9)' : '';
+        
+        // Get current dimensions for proper centering
+        const outlineWidth = parseInt(this.cursorOutline.style.width) || 40;
+        const outlineHeight = parseInt(this.cursorOutline.style.height) || 40;
+        
+        this.cursorDot.style.transform = `translate(${this.dotX - 4}px, ${this.dotY - 4}px)${dotScale}`;
+        this.cursorOutline.style.transform = `translate(${this.outlineX - (outlineWidth / 2)}px, ${this.outlineY - (outlineHeight / 2)}px)${outlineScale}`;
 
         requestAnimationFrame(() => this.animate());
     }
@@ -748,12 +790,15 @@ class ScrollAnimations {
 class ProgressTracking {
     static init() {
         this.progressFill = document.querySelector('.scroll-progress-fill');
+        this.globalBackground = document.querySelector('.global-background');
+        this.gridOverlay = document.querySelector('.global-background .grid-overlay');
         this.bindEvents();
     }
 
     static bindEvents() {
         window.addEventListener('scroll', Utils.throttle(() => {
             this.updateProgress();
+            this.updateParallax();
         }, CONFIG.SCROLL_THROTTLE), { passive: true });
     }
 
@@ -767,6 +812,32 @@ class ProgressTracking {
         }
         
         STATE.scrollY = scrollTop;
+    }
+
+    static updateParallax() {
+        if (CONFIG.PREFERS_REDUCED_MOTION) return;
+        
+        const scrollY = window.pageYOffset;
+        
+        // Much subtler parallax to keep background in view
+        if (this.gridOverlay) {
+            const parallaxSpeed = 0.05; // Reduced from 0.2
+            this.gridOverlay.style.transform = `translateY(${scrollY * parallaxSpeed}px)`;
+        }
+        
+        // Very subtle movement to gradient orbs to keep them in view
+        const orbs = document.querySelectorAll('.global-background .gradient-orb');
+        orbs.forEach((orb, index) => {
+            const speed = 0.02 + (index * 0.01); // Much reduced from 0.1
+            const direction = index % 2 === 0 ? 1 : -1;
+            
+            if (orb.classList.contains('orb-3')) {
+                // Keep the original translateX for orb-3
+                orb.style.transform = `translateX(-50%) translateY(${scrollY * speed * direction}px)`;
+            } else {
+                orb.style.transform = `translateY(${scrollY * speed * direction}px)`;
+            }
+        });
     }
 }
 
