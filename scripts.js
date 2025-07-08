@@ -11,6 +11,36 @@ const AppState = {
   trailCount: 20,
 };
 
+// Smooth Scrolling
+const container = document.querySelector(".container");
+
+const scroller = new LocomotiveScroll({
+  el: container,
+  smooth: true
+});
+
+scroller.on("scroll", ScrollTrigger.update);
+
+ScrollTrigger.scrollerProxy(container, {
+  scrollTop(value) {
+    return arguments.length
+      ? scroller.scrollTo(value, 0, 0)
+      : scroller.scroll.instance.scroll.y;
+  },
+  getBoundingClientRect() {
+    return {
+      top: 0,
+      left: 0,
+      width: window.innerWidth,
+      height: window.innerHeight
+    };
+  },
+  pinType: container.style.transform ? "transform" : "fixed"
+});
+
+ScrollTrigger.addEventListener("refresh", () => scroller.update());
+ScrollTrigger.refresh();
+
 // Professional Cursor System
 class EliteCursor {
   constructor() {
@@ -429,7 +459,7 @@ class NavigationSystem {
     this.navToggle.addEventListener("click", () => this.openMenu());
     this.closeToggle.addEventListener("click", () => this.closeMenu());
 
-    // Navigation links with smooth scrolling - FIXED
+    // Navigation links with smooth scrolling
     this.navLinks.forEach((link) => {
       link.addEventListener("click", (e) => {
         e.preventDefault();
@@ -439,10 +469,11 @@ class NavigationSystem {
         if (targetSection) {
           this.closeMenu();
 
-          // Wait for menu to close, then scroll
+          // Wait for menu to close, then scroll using Locomotive Scroll's method
           setTimeout(() => {
-            this.smoothScrollTo(targetSection);
-          }, 800);
+            // Use the scroller instance directly
+            scroller.scrollTo(targetSection);
+          }, 800); // Keep this delay to allow the menu to animate out
         }
       });
     });
@@ -459,41 +490,7 @@ class NavigationSystem {
     });
   }
 
-  // Professional smooth scroll implementation
-  smoothScrollTo(target) {
-    const targetPosition = target.offsetTop;
-    const startPosition = window.pageYOffset;
-    const distance = targetPosition - startPosition;
-    const duration = 1200;
-    let start = null;
-
-    function animation(currentTime) {
-      if (start === null) start = currentTime;
-      const timeElapsed = currentTime - start;
-      const run = this.easeInOutQuart(
-        timeElapsed,
-        startPosition,
-        distance,
-        duration
-      );
-      window.scrollTo(0, run);
-      if (timeElapsed < duration) requestAnimationFrame(animation.bind(this));
-    }
-
-    animation = animation.bind(this);
-    requestAnimationFrame(animation);
-  }
-
-  // Smooth easing function
-  easeInOutQuart(t, b, c, d) {
-    t /= d / 2;
-    if (t < 1) return (c / 2) * t * t * t * t + b;
-    t -= 2;
-    return (-c / 2) * (t * t * t * t - 2) + b;
-  }
-
-  setupScrollTriggers() {
-    // Animate sections on scroll
+ setupScrollTriggers() {
     const sections = document.querySelectorAll(".section");
 
     sections.forEach((section) => {
@@ -506,6 +503,9 @@ class NavigationSystem {
         gsap.set(sectionHeader, { opacity: 0, y: 50 });
 
         ScrollTrigger.create({
+          // ADD THIS LINE
+          scroller: container, 
+          
           trigger: section,
           start: "top 80%",
           onEnter: () => {
@@ -523,6 +523,9 @@ class NavigationSystem {
         gsap.set(sectionContent, { opacity: 0, y: 50 });
 
         ScrollTrigger.create({
+          // ADD THIS LINE
+          scroller: container,
+          
           trigger: section,
           start: "top 70%",
           onEnter: () => {
@@ -537,7 +540,8 @@ class NavigationSystem {
         });
       }
     });
-  }
+}
+
 
   openMenu() {
     if (AppState.isMenuOpen) return;
@@ -671,3 +675,12 @@ document.addEventListener("DOMContentLoaded", () => {
 window.addEventListener("resize", () => {
   ScrollTrigger.refresh();
 });
+
+// Ensuring final refresh on load
+window.addEventListener("load", function () {
+  // Update Locomotive Scroll
+  scroller.update();
+  // Update ScrollTrigger
+  ScrollTrigger.refresh();
+});
+

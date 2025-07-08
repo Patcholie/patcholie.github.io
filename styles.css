@@ -65,12 +65,10 @@
 
 html {
   font-size: 16px;
-  scroll-behavior: smooth;
+  scroll-behavior: auto;
 }
 
-html.has-scroll-smooth {
-    overflow: hidden; 
-}
+
 
 html.has-scroll-dragging {
     -webkit-user-select: none;
@@ -1407,3 +1405,27 @@ body::before {
   white-space: nowrap !important;
   border: 0 !important;
 }
+
+.fade-in,
+.slide-up,
+.zoom-in {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1s ease-out;
+}
+
+.zoom-in {
+  transform: scale(0.95);
+}
+
+.animate-in.fade-in,
+.animate-in.slide-up {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.animate-in.zoom-in {
+  opacity: 1;
+  transform: scale(1);
+}
+
