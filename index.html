@@ -37,11 +37,12 @@
     <script src="https://unpkg.com/split-type"></script>
   </head>
   <body>
-    <!-- 
-      FIX: All fixed/overlay elements are moved OUTSIDE of the data-scroll-container.
-      This ensures `position: fixed` works correctly relative to the viewport.
-    -->
-
+  <div class="video-background">
+    <video autoplay loop muted playsinline id="bg-video">
+      <source src="sky_loop_background.mp4" type="video/mp4" />
+      Your browser does not support the video tag.
+    </video>
+  </div>
     <!-- Elite Security Preloader -->
     <div class="preloader" id="preloader">
       <div class="security-gateway">

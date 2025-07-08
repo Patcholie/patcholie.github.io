@@ -145,6 +145,35 @@ body::before {
   }
 }
 
+/* Video Background */
+.video-background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: -2; /* Place it behind the gradient orbs and grid */
+}
+
+#bg-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensures video covers the screen without distortion */
+}
+
+/* Adds a dark overlay on top of the video for text readability */
+.video-background::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(10, 10, 10, 0.75); /* A slightly transparent version of your primary background */
+}
+
+
 /* Professional Cursor System */
 .cursor-system {
   position: fixed;
