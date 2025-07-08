@@ -9,40 +9,70 @@
       content="Aviv Shaked - Elite cybersecurity engineer specializing in network steganography, advanced C++ systems, and revolutionary security solutions."
     />
 
-    <!-- Professional Technical Typography -->
+    <!-- Professional Typography System -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700;800&family=Fira+Code:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&family=Fira+Code:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
 
-    <!-- Icons -->
+    <!-- Professional Icons -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
     />
     
-    <!-- Locomotive scrolling -->
+    <!-- Locomotive Scrolling -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css" />
     
-    <!-- Custom Styles -->
+    <!-- Professional Styles -->
     <link rel="stylesheet" href="styles.css" />
 
-    <!-- GSAP and Advanced Plugins -->
+    <!-- GSAP and Professional Plugins -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/Observer.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
     <script src="https://unpkg.com/split-type"></script>
   </head>
   <body>
-  <div class="video-background">
-    <video autoplay loop muted playsinline id="bg-video">
-      <source src="sky_loop_background.mp4" type="video/mp4" />
-      Your browser does not support the video tag.
-    </video>
-  </div>
+    <!-- Professional Scroll Progress -->
+    <div class="scroll-progress">
+      <div class="progress-line"></div>
+      <div class="progress-indicator">
+        <span class="progress-text">00</span>
+        <span class="progress-label">%</span>
+      </div>
+    </div>
+
+    <!-- Section Navigation Dots -->
+    <div class="section-navigation">
+      <div class="nav-dot active" data-section="0">
+        <span class="dot-label">Hero</span>
+      </div>
+      <div class="nav-dot" data-section="1">
+        <span class="dot-label">Projects</span>
+      </div>
+      <div class="nav-dot" data-section="2">
+        <span class="dot-label">About</span>
+      </div>
+      <div class="nav-dot" data-section="3">
+        <span class="dot-label">Experience</span>
+      </div>
+      <div class="nav-dot" data-section="4">
+        <span class="dot-label">Contact</span>
+      </div>
+    </div>
+
+    <div class="video-background">
+      <video autoplay loop muted playsinline id="bg-video">
+        <source src="sky_loop_background.mp4" type="video/mp4" />
+        Your browser does not support the video tag.
+      </video>
+    </div>
+
     <!-- Elite Security Preloader -->
     <div class="preloader" id="preloader">
       <div class="security-gateway">
@@ -53,9 +83,7 @@
         
         <div class="gateway-container">
           <div class="gateway-line" style="top: 0">
-            <span class="quantum-text"
-            >Initializing Quantum Security Matrix...</span
-            >
+            <span class="quantum-text">Initializing Quantum Security Matrix...</span>
           </div>
           <div class="gateway-line" style="top: 35px">
             <span class="security-text">Scanning dimensional coordinates</span>
@@ -112,9 +140,9 @@
     
     <!-- Background Effects -->
     <div class="bg-effects">
-      <div class="gradient-orb orb-1"></div>
-      <div class="gradient-orb orb-2"></div>
-      <div class="gradient-orb orb-3"></div>
+      <div class="gradient-orb orb-1" data-speed="0.3"></div>
+      <div class="gradient-orb orb-2" data-speed="0.5"></div>
+      <div class="gradient-orb orb-3" data-speed="0.4"></div>
       <div class="grid-overlay"></div>
     </div>
 
@@ -217,9 +245,7 @@
           </div>
           <div class="nav-item">
             <div class="text-reveal">
-              <a href="#projects" class="nav-link" data-target="projects"
-                >Projects</a
-              >
+              <a href="#projects" class="nav-link" data-target="projects">Projects</a>
             </div>
           </div>
           <div class="nav-item">
@@ -229,76 +255,70 @@
           </div>
           <div class="nav-item">
             <div class="text-reveal">
-              <a href="#experience" class="nav-link" data-target="experience"
-                >Experience</a
-              >
+              <a href="#experience" class="nav-link" data-target="experience">Experience</a>
             </div>
           </div>
           <div class="nav-item">
             <div class="text-reveal">
-              <a href="#contact" class="nav-link" data-target="contact"
-                >Contact</a
-              >
+              <a href="#contact" class="nav-link" data-target="contact">Contact</a>
             </div>
           </div>
         </div>
       </nav>
     </div>
     
-    <!-- 
-      This container should ONLY wrap the content that is meant to scroll.
-    -->
+    <!-- Content Container -->
     <div class="container" data-scroll-container>
       <!-- Main Content -->
       <main class="main-content" id="main-content">
         <!-- Hero Section -->
-        <section class="section hero-section" id="hero" data-scroll-section>
+        <section class="section hero-section" id="hero" data-scroll-section data-section-index="0">
           <div class="hero-content">
-            <div class="hero-text">
-              <div class="hero-badge">
-                <span>🛡️</span>
-                <span>Elite Cybersecurity Specialist</span>
+            <div class="hero-text scroll-reactive" data-scroll data-scroll-speed="0.5">
+              <div class="hero-badge scroll-element" data-scroll-offset="0.1">
+                <span class="badge-icon">🛡️</span>
+                <span class="badge-text">Elite Cybersecurity Specialist</span>
               </div>
 
-              <h1 class="hero-title">
+              <h1 class="hero-title scroll-reactive">
                 <span class="title-line">
-                  <span class="title-word">I'm</span>
-                  <span class="title-word">Aviv</span>
-                  <span class="title-word">Shaked</span>
+                  <span class="title-word scroll-word" data-scroll-delay="0">I'm</span>
+                  <span class="title-word scroll-word" data-scroll-delay="0.1">Aviv</span>
+                  <span class="title-word scroll-word" data-scroll-delay="0.2">Shaked</span>
                 </span>
                 <span class="title-line">
-                  <span class="title-word">Cybersecurity</span>
+                  <span class="title-word scroll-word" data-scroll-delay="0.3">Cybersecurity</span>
                 </span>
                 <span class="title-line">
-                  <span class="title-word highlight-text">Engineer</span>
+                  <span class="title-word highlight-text scroll-word" data-scroll-delay="0.4">Engineer</span>
                 </span>
               </h1>
 
-              <p class="hero-description">
-                I specialize in <strong>network steganography</strong> and
-                <strong>advanced C++ systems</strong>, building undetectable
+              <p class="hero-description scroll-element" data-scroll-offset="0.2">
+                I specialize in <strong class="highlight-word">network steganography</strong> and
+                <strong class="highlight-word">advanced C++ systems</strong>, building undetectable
                 security solutions that redefine cybersecurity standards. Based in
                 Haifa, pushing the boundaries of what's possible in digital
                 security.
               </p>
 
-              <div class="hero-actions">
-                <a href="#projects" class="btn btn-primary">
-                  <span>View My Work</span>
-                  <i class="fas fa-arrow-right"></i>
+              <div class="hero-actions scroll-element" data-scroll-offset="0.3">
+                <a href="#projects" class="btn btn-primary scroll-btn" data-btn-index="0">
+                  <span class="btn-text">View My Work</span>
+                  <i class="fas fa-arrow-right btn-icon"></i>
                 </a>
                 <a
                   href="https://drive.google.com/file/d/1cUoF--q94LtUQKox5eGfMYom70GJoIGc/view?usp=sharing"
                   target="_blank"
-                  class="btn btn-secondary"
+                  class="btn btn-secondary scroll-btn" data-btn-index="1"
                 >
-                  <span>Download Resume</span>
-                  <i class="fas fa-download"></i>
+                  <span class="btn-text">Download Resume</span>
+                  <i class="fas fa-download btn-icon"></i>
                 </a>
               </div>
             </div>
 
-            <div class="hero-visual">
+            <div class="hero-visual scroll-reactive" data-scroll data-scroll-speed="-0.3">
               <div class="quantum-terminal">
                 <div class="terminal-header">
                   <div class="terminal-controls">
@@ -317,9 +337,7 @@
                   <div class="code-line">
                     <span class="line-number">001</span>
                     <span class="code-syntax">
-                      <span class="comment"
-                        >// Advanced Quantum Network Steganography</span
-                      >
+                      <span class="comment">// Advanced Quantum Network Steganography</span>
                     </span>
                   </div>
                   <div class="code-line">
@@ -333,66 +351,50 @@
                   <div class="code-line">
                     <span class="line-number">003</span>
                     <span class="code-syntax">
-                      &nbsp;&nbsp;<span class="keyword">private</span
-                      ><span class="operator">:</span>
+                      &nbsp;&nbsp;<span class="keyword">private</span><span class="operator">:</span>
                     </span>
                   </div>
                   <div class="code-line">
                     <span class="line-number">004</span>
                     <span class="code-syntax">
                       &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">std::mutex</span>
-                      <span class="variable">_quantumMutex</span
-                      ><span class="operator">;</span>
+                      <span class="variable">_quantumMutex</span><span class="operator">;</span>
                     </span>
                   </div>
                   <div class="code-line">
                     <span class="line-number">005</span>
                     <span class="code-syntax">
-                      &nbsp;&nbsp;&nbsp;&nbsp;<span class="type"
-                        >CovertChannel</span
-                      >
-                      <span class="variable">_hiddenProtocol</span
-                      ><span class="operator">;</span>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">CovertChannel</span>
+                      <span class="variable">_hiddenProtocol</span><span class="operator">;</span>
                     </span>
                   </div>
                   <div class="code-line">
                     <span class="line-number">006</span>
                     <span class="code-syntax">
-                      &nbsp;&nbsp;&nbsp;&nbsp;<span class="type"
-                        >SteganographyEngine</span
-                      >
-                      <span class="variable">_stegEngine</span
-                      ><span class="operator">;</span>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">SteganographyEngine</span>
+                      <span class="variable">_stegEngine</span><span class="operator">;</span>
                     </span>
                   </div>
                   <div class="code-line">
                     <span class="line-number">007</span>
                     <span class="code-syntax">
-                      &nbsp;&nbsp;<span class="keyword">public</span
-                      ><span class="operator">:</span>
+                      &nbsp;&nbsp;<span class="keyword">public</span><span class="operator">:</span>
                     </span>
                   </div>
                   <div class="code-line">
                     <span class="line-number">008</span>
                     <span class="code-syntax">
                       &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">bool</span>
-                      <span class="function">transmitUndetected</span
-                      ><span class="operator">(</span
-                      ><span class="type">const</span>
-                      <span class="type">Data</span
-                      ><span class="operator">&</span>
-                      <span class="variable">payload</span
-                      ><span class="operator">);</span>
+                      <span class="function">transmitUndetected</span><span class="operator">(</span><span class="type">const</span>
+                      <span class="type">Data</span><span class="operator">&</span>
+                      <span class="variable">payload</span><span class="operator">);</span>
                     </span>
                   </div>
                   <div class="code-line">
                     <span class="line-number">009</span>
                     <span class="code-syntax">
-                      &nbsp;&nbsp;&nbsp;&nbsp;<span class="type"
-                        >SecurityLevel</span
-                      >
-                      <span class="function">establishSecureChannel</span
-                      ><span class="operator">();</span>
+                      &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">SecurityLevel</span>
+                      <span class="function">establishSecureChannel</span><span class="operator">();</span>
                     </span>
                   </div>
                   <div class="code-line">
@@ -409,82 +411,82 @@
         </section>
 
         <!-- Projects Section -->
-        <section class="section" id="projects" data-scroll-section>
-          <div class="section-header">
-            <div class="section-number">01</div>
-            <h2 class="section-title">Featured Projects</h2>
-            <p class="section-subtitle">
+        <section class="section scroll-section" id="projects" data-scroll-section data-section-index="1">
+          <div class="section-header scroll-header">
+            <div class="section-number scroll-number">01</div>
+            <h2 class="section-title scroll-title">Featured Projects</h2>
+            <p class="section-subtitle scroll-subtitle">
               Innovative solutions pushing the boundaries of cybersecurity
             </p>
           </div>
 
-          <div class="projects-grid">
-            <div class="project-card">
-              <div class="project-image">
-                <i class="fas fa-user-secret project-icon"></i>
-                <div class="project-status status-development">
+          <div class="projects-grid scroll-grid">
+            <div class="project-card scroll-card" data-scroll data-scroll-speed="0.2" data-card-index="0">
+              <div class="project-image scroll-image">
+                <i class="fas fa-user-secret project-icon scroll-icon"></i>
+                <div class="project-status status-development scroll-status">
                   In Development
                 </div>
               </div>
-              <div class="project-content">
-                <h3 class="project-title">
+              <div class="project-content scroll-content">
+                <h3 class="project-title scroll-project-title">
                   HitchHiker: Network Steganography Platform
                 </h3>
-                <p class="project-description">
+                <p class="project-description scroll-description">
                   Revolutionary covert communication system enabling completely
                   undetectable data transmission without creating new network
                   packets.
                 </p>
-                <div class="project-tech">
-                  <span class="tech-tag primary">C++20</span>
-                  <span class="tech-tag">Multi-threading</span>
-                  <span class="tech-tag">Docker</span>
-                  <span class="tech-tag">CMake</span>
+                <div class="project-tech scroll-tech">
+                  <span class="tech-tag primary scroll-tag" data-tag-index="0">C++20</span>
+                  <span class="tech-tag scroll-tag" data-tag-index="1">Multi-threading</span>
+                  <span class="tech-tag scroll-tag" data-tag-index="2">Docker</span>
+                  <span class="tech-tag scroll-tag" data-tag-index="3">CMake</span>
                 </div>
               </div>
             </div>
 
-            <div class="project-card">
-              <div class="project-image">
-                <i class="fas fa-gamepad project-icon"></i>
-                <div class="project-status status-completed">Completed</div>
+            <div class="project-card scroll-card" data-scroll data-scroll-speed="0.1" data-card-index="1">
+              <div class="project-image scroll-image">
+                <i class="fas fa-gamepad project-icon scroll-icon"></i>
+                <div class="project-status status-completed scroll-status">Completed</div>
               </div>
-              <div class="project-content">
-                <h3 class="project-title">Multiplayer Trivia Game System</h3>
-                <p class="project-description">
+              <div class="project-content scroll-content">
+                <h3 class="project-title scroll-project-title">Multiplayer Trivia Game System</h3>
+                <p class="project-description scroll-description">
                   High-performance C++ server architecture handling 25+ concurrent
                   players with Unity client integration.
                 </p>
-                <div class="project-tech">
-                  <span class="tech-tag primary">C++17</span>
-                  <span class="tech-tag">Unity</span>
-                  <span class="tech-tag">SQLite3</span>
-                  <span class="tech-tag">RAII</span>
+                <div class="project-tech scroll-tech">
+                  <span class="tech-tag primary scroll-tag" data-tag-index="0">C++17</span>
+                  <span class="tech-tag scroll-tag" data-tag-index="1">Unity</span>
+                  <span class="tech-tag scroll-tag" data-tag-index="2">SQLite3</span>
+                  <span class="tech-tag scroll-tag" data-tag-index="3">RAII</span>
                 </div>
               </div>
             </div>
 
-            <div class="project-card">
-              <div class="project-image">
-                <i class="fas fa-trophy project-icon"></i>
-                <div class="project-status status-completed">
+            <div class="project-card scroll-card" data-scroll data-scroll-speed="0.3" data-card-index="2">
+              <div class="project-image scroll-image">
+                <i class="fas fa-trophy project-icon scroll-icon"></i>
+                <div class="project-status status-completed scroll-status">
                   2nd Place Global
                 </div>
               </div>
-              <div class="project-content">
-                <h3 class="project-title">
+              <div class="project-content scroll-content">
+                <h3 class="project-title scroll-project-title">
                   Analisis: AI Medical Diagnosis Platform
                 </h3>
-                <p class="project-description">
+                <p class="project-description scroll-description">
                   AI-powered medical platform for automated wound detection and
                   treatment recommendations. Achieved 2nd place globally in AI4Y
                   World Competition.
                 </p>
-                <div class="project-tech">
-                  <span class="tech-tag primary">Python</span>
-                  <span class="tech-tag">Computer Vision</span>
-                  <span class="tech-tag">TensorFlow</span>
-                  <span class="tech-tag">Medical AI</span>
+                <div class="project-tech scroll-tech">
+                  <span class="tech-tag primary scroll-tag" data-tag-index="0">Python</span>
+                  <span class="tech-tag scroll-tag" data-tag-index="1">Computer Vision</span>
+                  <span class="tech-tag scroll-tag" data-tag-index="2">TensorFlow</span>
+                  <span class="tech-tag scroll-tag" data-tag-index="3">Medical AI</span>
                 </div>
               </div>
             </div>
@@ -492,133 +494,298 @@
         </section>
 
         <!-- About Section -->
-        <section class="section" id="about" data-scroll-section>
-          <div class="section-header">
-            <div class="section-number">02</div>
-            <h2 class="section-title">About Me</h2>
-            <p class="section-subtitle">
+        <section class="section scroll-section" id="about" data-scroll-section data-section-index="2">
+          <div class="section-header scroll-header">
+            <div class="section-number scroll-number">02</div>
+            <h2 class="section-title scroll-title">About Me</h2>
+            <p class="section-subtitle scroll-subtitle">
               Passionate about building secure, innovative solutions
             </p>
           </div>
 
-          <div style="max-width: 800px; margin: 0 auto; text-align: center">
-            <p
-              style="
-                font-size: 1.2rem;
-                line-height: 1.8;
-                color: var(--color-text-secondary);
-                margin-bottom: 2rem;
-              "
-            >
-              At just 18 years old, I've dedicated myself to mastering the art of
-              cybersecurity and systems programming. My journey began with a
-              fascination for the invisible - the hidden layers of digital
-              communication that most never see.
-            </p>
-            <p
-              style="
-                font-size: 1.2rem;
-                line-height: 1.8;
-                color: var(--color-text-secondary);
-              "
-            >
-              Today, I specialize in
-              <strong style="color: var(--color-accent-primary)"
-                >network steganography</strong
-              >
-              and
-              <strong style="color: var(--color-accent-primary)"
-                >advanced C++ development</strong
-              >, creating solutions that operate in the shadows while maintaining
-              the highest standards of security and performance.
-            </p>
+          <div class="about-content scroll-content-block" data-scroll data-scroll-speed="0.1">
+            <div class="about-grid">
+              <!-- Personal Story Card -->
+              <div class="about-card story-card scroll-card" data-scroll data-scroll-speed="0.2">
+                <div class="card-icon">
+                  <i class="fas fa-user-astronaut"></i>
+                </div>
+                <div class="card-content">
+                  <h3 class="card-title">My Journey</h3>
+                  <p class="card-text">
+                    At just <strong class="highlight-word">18 years old</strong>, I've dedicated myself to mastering the art of
+                    cybersecurity and systems programming. My journey began with a
+                    fascination for the invisible - the hidden layers of digital
+                    communication that most never see.
+                  </p>
+                </div>
+                <div class="card-background">
+                  <div class="floating-element" data-scroll data-scroll-speed="-0.1">🚀</div>
+                </div>
+              </div>
+
+              <!-- Skills Showcase -->
+              <div class="about-card skills-card scroll-card" data-scroll data-scroll-speed="0.15">
+                <div class="card-icon">
+                  <i class="fas fa-code"></i>
+                </div>
+                <div class="card-content">
+                  <h3 class="card-title">Core Expertise</h3>
+                  <div class="skills-grid">
+                    <div class="skill-item" data-scroll data-scroll-speed="0.05">
+                      <div class="skill-icon">
+                        <i class="fab fa-cuttlefish"></i>
+                      </div>
+                      <div class="skill-info">
+                        <span class="skill-name">C++ Systems</span>
+                        <div class="skill-bar">
+                          <div class="skill-progress" data-progress="95"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="skill-item" data-scroll data-scroll-speed="0.08">
+                      <div class="skill-icon">
+                        <i class="fas fa-shield-alt"></i>
+                      </div>
+                      <div class="skill-info">
+                        <span class="skill-name">Cybersecurity</span>
+                        <div class="skill-bar">
+                          <div class="skill-progress" data-progress="90"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="skill-item" data-scroll data-scroll-speed="0.12">
+                      <div class="skill-icon">
+                        <i class="fas fa-user-secret"></i>
+                      </div>
+                      <div class="skill-info">
+                        <span class="skill-name">Steganography</span>
+                        <div class="skill-bar">
+                          <div class="skill-progress" data-progress="88"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-background">
+                  <div class="floating-element" data-scroll data-scroll-speed="0.03">💻</div>
+                </div>
+              </div>
+
+              <!-- Vision Card -->
+              <div class="about-card vision-card scroll-card" data-scroll data-scroll-speed="0.25">
+                <div class="card-icon">
+                  <i class="fas fa-eye"></i>
+                </div>
+                <div class="card-content">
+                  <h3 class="card-title">My Vision</h3>
+                  <p class="card-text">
+                    Today, I specialize in
+                    <strong class="highlight-word">network steganography</strong>
+                    and
+                    <strong class="highlight-word">advanced C++ development</strong>,
+                    creating solutions that operate in the shadows while maintaining
+                    the highest standards of security and performance.
+                  </p>
+                  <div class="vision-stats">
+                    <div class="stat-item" data-scroll data-scroll-speed="0.1">
+                      <div class="stat-number">18</div>
+                      <div class="stat-label">Years Old</div>
+                    </div>
+                    <div class="stat-item" data-scroll data-scroll-speed="0.15">
+                      <div class="stat-number">5+</div>
+                      <div class="stat-label">Years Coding</div>
+                    </div>
+                    <div class="stat-item" data-scroll data-scroll-speed="0.2">
+                      <div class="stat-number">∞</div>
+                      <div class="stat-label">Passion</div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-background">
+                  <div class="floating-element" data-scroll data-scroll-speed="-0.05">🔮</div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
         <!-- Experience Section -->
-        <section class="section" id="experience" data-scroll-section>
-          <div class="section-header">
-            <div class="section-number">03</div>
-            <h2 class="section-title">Experience</h2>
-            <p class="section-subtitle">
+        <section class="section scroll-section" id="experience" data-scroll-section data-section-index="3">
+          <div class="section-header scroll-header">
+            <div class="section-number scroll-number">03</div>
+            <h2 class="section-title scroll-title">Experience</h2>
+            <p class="section-subtitle scroll-subtitle">
               Building innovative solutions and advancing cybersecurity research
             </p>
           </div>
 
-          <div style="max-width: 800px; margin: 0 auto; text-align: center">
-            <p
-              style="
-                font-size: 1.2rem;
-                line-height: 1.8;
-                color: var(--color-text-secondary);
-                margin-bottom: 2rem;
-              "
-            >
-              Currently working as a Product Uploader & Tools Developer at
-              AllBikes, where I develop automated tools and secure data systems
-              using Python automation.
-            </p>
-            <p
-              style="
-                font-size: 1.2rem;
-                line-height: 1.8;
-                color: var(--color-text-secondary);
-              "
-            >
-              Achieved 2nd place globally in the AI4Y World Competition, leading a
-              team to develop an innovative AI-powered medical diagnosis platform.
-            </p>
+          <div class="experience-content scroll-content-block" data-scroll data-scroll-speed="0.1">
+            <div class="experience-timeline">
+              <!-- Current Position -->
+              <div class="experience-card current-role scroll-card" data-scroll data-scroll-speed="0.2">
+                <div class="experience-icon">
+                  <i class="fas fa-briefcase"></i>
+                </div>
+                <div class="experience-period">
+                  <span class="period-badge current">Current</span>
+                  <span class="period-text">2023 - Present</span>
+                </div>
+                <div class="experience-content-inner">
+                  <h3 class="experience-title">Product Uploader & Tools Developer</h3>
+                  <div class="experience-company">
+                    <i class="fas fa-building"></i>
+                    <span>AllBikes</span>
+                  </div>
+                  <p class="experience-description">
+                    Currently working as a <strong class="highlight-word">Product Uploader & Tools Developer</strong> where I develop 
+                    automated tools and secure data systems using Python automation.
+                  </p>
+                  <div class="experience-achievements">
+                    <div class="achievement-item" data-scroll data-scroll-speed="0.05">
+                      <i class="fas fa-robot"></i>
+                      <span>Automated Product Management Systems</span>
+                    </div>
+                    <div class="achievement-item" data-scroll data-scroll-speed="0.08">
+                      <i class="fas fa-shield-alt"></i>
+                      <span>Secure Data Processing Tools</span>
+                    </div>
+                    <div class="achievement-item" data-scroll data-scroll-speed="0.12">
+                      <i class="fab fa-python"></i>
+                      <span>Python Automation Solutions</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="experience-background">
+                  <div class="floating-element work" data-scroll data-scroll-speed="-0.1">⚙️</div>
+                </div>
+              </div>
+
+              <!-- AI Competition Achievement -->
+              <div class="experience-card achievement-role scroll-card" data-scroll data-scroll-speed="0.15">
+                <div class="experience-icon achievement">
+                  <i class="fas fa-trophy"></i>
+                </div>
+                <div class="experience-period">
+                  <span class="period-badge achievement">Global 2nd</span>
+                  <span class="period-text">2023</span>
+                </div>
+                <div class="experience-content-inner">
+                  <h3 class="experience-title">AI4Y World Competition Winner</h3>
+                  <div class="experience-company achievement">
+                    <i class="fas fa-globe"></i>
+                    <span>International Competition</span>
+                  </div>
+                  <p class="experience-description">
+                    Achieved <strong class="highlight-word">2nd place globally</strong> in the AI4Y World Competition, leading a
+                    team to develop an innovative AI-powered medical diagnosis platform.
+                  </p>
+                  <div class="experience-achievements">
+                    <div class="achievement-item" data-scroll data-scroll-speed="0.05">
+                      <i class="fas fa-users"></i>
+                      <span>Led Development Team</span>
+                    </div>
+                    <div class="achievement-item" data-scroll data-scroll-speed="0.08">
+                      <i class="fas fa-brain"></i>
+                      <span>AI Medical Diagnosis Platform</span>
+                    </div>
+                    <div class="achievement-item" data-scroll data-scroll-speed="0.12">
+                      <i class="fas fa-medal"></i>
+                      <span>Global Recognition</span>
+                    </div>
+                  </div>
+                  <div class="competition-stats">
+                    <div class="stat-badge" data-scroll data-scroll-speed="0.1">
+                      <span class="stat-number">2nd</span>
+                      <span class="stat-text">Global Place</span>
+                    </div>
+                    <div class="stat-badge" data-scroll data-scroll-speed="0.15">
+                      <span class="stat-number">500+</span>
+                      <span class="stat-text">Teams Worldwide</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="experience-background">
+                  <div class="floating-element trophy" data-scroll data-scroll-speed="0.05">🏆</div>
+                </div>
+              </div>
+
+              <!-- Skills Development -->
+              <div class="experience-card learning-role scroll-card" data-scroll data-scroll-speed="0.25">
+                <div class="experience-icon learning">
+                  <i class="fas fa-graduation-cap"></i>
+                </div>
+                <div class="experience-period">
+                  <span class="period-badge learning">Ongoing</span>
+                  <span class="period-text">2020 - Present</span>
+                </div>
+                <div class="experience-content-inner">
+                  <h3 class="experience-title">Continuous Learning & Development</h3>
+                  <div class="experience-company learning">
+                    <i class="fas fa-laptop-code"></i>
+                    <span>Self-Directed Learning</span>
+                  </div>
+                  <p class="experience-description">
+                    Continuously expanding knowledge in cybersecurity, advanced programming,
+                    and emerging technologies through hands-on projects and research.
+                  </p>
+                  <div class="learning-areas">
+                    <div class="learning-item" data-scroll data-scroll-speed="0.05">
+                      <span class="learning-tech">Network Security</span>
+                    </div>
+                    <div class="learning-item" data-scroll data-scroll-speed="0.08">
+                      <span class="learning-tech">Advanced C++</span>
+                    </div>
+                    <div class="learning-item" data-scroll data-scroll-speed="0.12">
+                      <span class="learning-tech">Steganography</span>
+                    </div>
+                    <div class="learning-item" data-scroll data-scroll-speed="0.15">
+                      <span class="learning-tech">AI/ML</span>
+                    </div>
+                  </div>
+                </div>
+                <div class="experience-background">
+                  <div class="floating-element learning" data-scroll data-scroll-speed="-0.08">🎓</div>
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
         <!-- Contact Section -->
-        <section class="section" id="contact" data-scroll-section>
-          <div class="section-header">
-            <div class="section-number">04</div>
-            <h2 class="section-title">Get In Touch</h2>
-            <p class="section-subtitle">
+        <section class="section scroll-section" id="contact" data-scroll-section data-section-index="4">
+          <div class="section-header scroll-header">
+            <div class="section-number scroll-number">04</div>
+            <h2 class="section-title scroll-title">Get In Touch</h2>
+            <p class="section-subtitle scroll-subtitle">
               Ready to build something extraordinary? Let's discuss your next
               project
             </p>
           </div>
 
-          <div style="max-width: 600px; margin: 0 auto; text-align: center">
-            <p
-              style="
-                font-size: 1.2rem;
-                line-height: 1.8;
-                color: var(--color-text-secondary);
-                margin-bottom: 3rem;
-              "
-            >
-              Whether you're looking for cybersecurity consulting, custom
+          <div class="contact-content scroll-content-block" data-scroll data-scroll-speed="0.1">
+            <p class="contact-text scroll-text" data-text-index="0">
+              Whether you're looking for <strong class="highlight-word">cybersecurity consulting</strong>, custom
               development, or innovative security solutions, I'm here to help
               bring your vision to life.
             </p>
 
-            <div
-              style="
-                display: flex;
-                gap: 2rem;
-                justify-content: center;
-                flex-wrap: wrap;
-              "
-            >
+            <div class="contact-actions scroll-actions">
               <a
                 href="https://www.linkedin.com/in/aviv-shaked-59a4b7271/"
                 target="_blank"
-                class="btn btn-primary"
+                class="btn btn-primary scroll-btn" data-btn-index="0"
               >
-                <span>Connect on LinkedIn</span>
-                <i class="fab fa-linkedin"></i>
+                <span class="btn-text">Connect on LinkedIn</span>
+                <i class="fab fa-linkedin btn-icon"></i>
               </a>
               <a
                 href="https://github.com/Patcholie"
                 target="_blank"
-                class="btn btn-secondary"
+                class="btn btn-secondary scroll-btn" data-btn-index="1"
               >
-                <span>View GitHub</span>
-                <i class="fab fa-github"></i>
+                <span class="btn-text">View GitHub</span>
+                <i class="fab fa-github btn-icon"></i>
               </a>
             </div>
           </div>
