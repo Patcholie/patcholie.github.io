@@ -1,871 +1,613 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aviv Shaked | Elite Cybersecurity Engineer & Researcher</title>
-    <meta name="description" content="Aviv Shaked - Elite cybersecurity engineer specializing in network steganography, advanced C++ systems, and revolutionary security solutions.">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Aviv Shaked | Elite Cybersecurity Engineer</title>
+    <meta
+      name="description"
+      content="Aviv Shaked - Elite cybersecurity engineer specializing in network steganography, advanced C++ systems, and revolutionary security solutions."
+    />
+
+    <!-- Professional Technical Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&family=Space+Grotesk:wght@300;400;500;600;700;800&family=Fira+Code:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
     <!-- Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <!-- Scrolling -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.css">
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="styles.css" />
 
-
-    <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-    <!-- Preloader -->
+    <!-- GSAP and Advanced Plugins -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+    <script src="https://unpkg.com/split-type"></script>
+  </head>
+  <body>
+    <!-- Elite Security Preloader -->
     <div class="preloader" id="preloader">
-        <div class="preloader-content">
-            <div class="preloader-logo">
-                <div class="logo-container">
-                    <span class="logo-text">AS</span>
-                    <div class="logo-pulse"></div>
-                </div>
-                <h1 class="preloader-title">Aviv Shaked</h1>
-                <p class="preloader-subtitle">Cybersecurity Engineer</p>
-            </div>
-            
-            <div class="loading-progress">
-                <div class="progress-bar"></div>
-                <div class="progress-text">
-                    <span class="progress-percentage">0%</span>
-                    <span class="progress-status">Initializing Security Protocols...</span>
-                </div>
-            </div>
+      <div class="security-gateway">
+        <div class="gateway-header">
+          <span>Elite Security Gateway</span>
+          <span>Access Protocol: Quantum</span>
+        </div>
 
-            <div class="loading-stats">
-                <div class="stat-item">
-                    <span class="stat-number" data-target="99">0</span>
-                    <span class="stat-label">Security Rating</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" data-target="5">0</span>
-                    <span class="stat-label">Major Projects</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number" data-target="3">0</span>
-                    <span class="stat-label">Years Experience</span>
-                </div>
+        <div class="gateway-container">
+          <div class="gateway-line" style="top: 0">
+            <span class="quantum-text"
+              >Initializing Quantum Security Matrix...</span
+            >
+          </div>
+          <div class="gateway-line" style="top: 35px">
+            <span class="security-text">Scanning dimensional coordinates</span>
+            <span class="quantum-text">LOCKED</span>
+          </div>
+          <div class="gateway-line" style="top: 70px">
+            <span class="security-text">Loading steganography modules</span>
+            <span class="quantum-text">COMPLETE</span>
+          </div>
+          <div class="gateway-line" style="top: 105px">
+            <span class="quantum-text">Advanced C++ Systems Online</span>
+          </div>
+          <div class="gateway-line" style="top: 140px">
+            <span class="security-text">Encrypting network channels</span>
+            <span class="quantum-text">SECURE</span>
+          </div>
+
+          <div class="traversal-progress">
+            <span class="progress-label">Traversing</span>
+            <div class="progress-container">
+              <div class="progress-bar" id="progress-bar"></div>
             </div>
+            <span class="quantum-indicator">Dimensional Shift</span>
+          </div>
+
+          <div class="gateway-line" style="top: 220px">
+            <span class="quantum-text">HitchHiker Platform Ready</span>
+          </div>
+          <div class="gateway-line" style="top: 255px">
+            <span class="security-text">Establishing covert channels</span>
+            <span class="quantum-text">UNDETECTABLE</span>
+          </div>
+          <div class="gateway-line" style="top: 290px">
+            <span class="quantum-text">Elite Portfolio Access Granted</span>
+          </div>
+          <div class="gateway-line" style="top: 325px">
+            <span class="security-text">Reality parameters reconfigured</span>
+            <span class="quantum-text">OPTIMIZED</span>
+          </div>
         </div>
-        
-        <div class="neural-network">
-            <div class="node" style="--delay: 0s; --x: 10%; --y: 20%;"></div>
-            <div class="node" style="--delay: 0.5s; --x: 80%; --y: 30%;"></div>
-            <div class="node" style="--delay: 1s; --x: 60%; --y: 70%;"></div>
-            <div class="node" style="--delay: 1.5s; --x: 30%; --y: 80%;"></div>
-            <div class="node" style="--delay: 2s; --x: 90%; --y: 60%;"></div>
-            <div class="connection" data-from="0" data-to="1"></div>
-            <div class="connection" data-from="1" data-to="2"></div>
-            <div class="connection" data-from="2" data-to="3"></div>
-            <div class="connection" data-from="3" data-to="4"></div>
+
+        <div class="gateway-footer">
+          <span>Traversal Sequence Complete</span>
+          <span>Elite Gateway Open</span>
         </div>
+      </div>
     </div>
 
-    <!-- Progress Indicator -->
-    <div data-scroll-container>
-
-    <div class="scroll-progress" data-scroll data-scroll-sticky data-scroll-target="[data-scroll-container]">
-        <div class="scroll-progress-fill"></div>
+    <!-- Professional Cursor System -->
+    <div class="cursor-system">
+      <div class="cursor-dot" id="cursor-dot"></div>
+      <div class="cursor-outline" id="cursor-outline"></div>
     </div>
 
-    <!-- Custom Cursor -->
-    <div class="cursor-dot"></div>
-    <div class="cursor-outline"></div>
-
-    <!-- Global Background -->
-    <div class="global-background" data-scroll data-scroll-sticky data-scroll-target="[data-scroll-container]">
-        <div class="gradient-orb orb-1"></div>
-        <div class="gradient-orb orb-2"></div>
-        <div class="gradient-orb orb-3"></div>
-        <div class="grid-overlay"></div>
+    <!-- Background Effects -->
+    <div class="bg-effects">
+      <div class="gradient-orb orb-1"></div>
+      <div class="gradient-orb orb-2"></div>
+      <div class="gradient-orb orb-3"></div>
+      <div class="grid-overlay"></div>
     </div>
 
-    <!-- Navigation -->
-    <nav class="navigation" id="navigation" data-scroll data-scroll-sticky data-scroll-target="[data-scroll-container]">        <div class="nav-brand">
-            <div class="brand-logo">AS</div>
-            <div class="brand-text">
-                <span class="brand-name">Aviv Shaked</span>
-                <span class="brand-title">Cybersecurity Engineer</span>
+    <!-- Professional Header -->
+    <header class="main-header" id="main-header">
+      <div class="header-grid">
+        <div class="brand-section">
+          <div class="logo-container">
+            <div class="logo-circles">
+              <div class="circle circle-1"></div>
+              <div class="circle circle-2"></div>
             </div>
+          </div>
+          <div class="text-reveal">
+            <a href="#hero" class="brand-text">Aviv Shaked</a>
+          </div>
         </div>
 
-        <div class="nav-menu" id="navMenu">
-            <a href="#home" class="nav-link active" data-section="home">
-                <span class="nav-number">01</span>
-                <span class="nav-text">Home</span>
-            </a>
-            <a href="#about" class="nav-link" data-section="about">
-                <span class="nav-number">02</span>
-                <span class="nav-text">About</span>
-            </a>
-            <a href="#expertise" class="nav-link" data-section="expertise">
-                <span class="nav-number">03</span>
-                <span class="nav-text">Expertise</span>
-            </a>
-            <a href="#experience" class="nav-link" data-section="experience">
-                <span class="nav-number">04</span>
-                <span class="nav-text">Experience</span>
-            </a>
-            <a href="#projects" class="nav-link" data-section="projects">
-                <span class="nav-number">05</span>
-                <span class="nav-text">Projects</span>
-            </a>
-            <a href="#contact" class="nav-link" data-section="contact">
-                <span class="nav-number">06</span>
-                <span class="nav-text">Contact</span>
-            </a>
+        <div class="nav-section">
+          <div class="text-reveal">
+            <button class="nav-toggle" id="nav-toggle">Menu</button>
+          </div>
         </div>
 
-        <div class="nav-social">
-            <a href="https://github.com/Patcholie" target="_blank" class="social-link" aria-label="GitHub">
-                <i class="fab fa-github"></i>
-            </a>
-            <a href="https://www.linkedin.com/in/aviv-shaked-59a4b7271/" target="_blank" class="social-link" aria-label="LinkedIn">
-                <i class="fab fa-linkedin"></i>
-            </a>
-            <a href="https://www.instagram.com/_avivshaked_/" target="_blank" class="social-link" aria-label="Instagram">
-                <i class="fab fa-instagram"></i>
-            </a>
+        <div class="contact-section">
+          <a
+            href="https://github.com/Patcholie"
+            target="_blank"
+            class="social-link"
+            aria-label="GitHub"
+          >
+            <i class="fab fa-github"></i>
+          </a>
+          <a
+            href="https://www.linkedin.com/in/aviv-shaked-59a4b7271/"
+            target="_blank"
+            class="social-link"
+            aria-label="LinkedIn"
+          >
+            <i class="fab fa-linkedin"></i>
+          </a>
+          <a
+            href="https://www.instagram.com/_avivshaked_/"
+            target="_blank"
+            class="social-link"
+            aria-label="Instagram"
+          >
+            <i class="fab fa-instagram"></i>
+          </a>
         </div>
+      </div>
+    </header>
 
-        <button class="nav-toggle" id="navToggle">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-    </nav>
+    <!-- Professional Footer -->
+    <footer class="main-footer" id="main-footer">
+      <div class="footer-grid">
+        <div class="coordinates-section">
+          <div class="text-reveal">
+            <p>32.7767° N, 35.0231° E</p>
+          </div>
+        </div>
+        <div class="status-section">
+          <div class="text-reveal">
+            <p>Press <span class="key-hint">M</span> to toggle menu</p>
+          </div>
+        </div>
+        <div class="info-section">
+          <div class="text-reveal">
+            <p>Est. 2023 • Cybersecurity Elite</p>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Elite Navigation Overlay -->
+    <div class="nav-overlay" id="nav-overlay">
+      <div class="featured-image" id="featured-image"></div>
+
+      <div class="overlay-header">
+        <div class="overlay-grid">
+          <div class="overlay-brand">
+            <div class="text-reveal">
+              <a href="#hero">Aviv Shaked</a>
+            </div>
+          </div>
+          <div class="close-section">
+            <div class="text-reveal">
+              <button class="close-toggle" id="close-toggle">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="nav-menu">
+        <div class="nav-menu-inner">
+          <div class="nav-item">
+            <div class="text-reveal">
+              <a href="#hero" class="nav-link" data-target="hero">Home</a>
+            </div>
+          </div>
+          <div class="nav-item">
+            <div class="text-reveal">
+              <a href="#projects" class="nav-link" data-target="projects"
+                >Projects</a
+              >
+            </div>
+          </div>
+          <div class="nav-item">
+            <div class="text-reveal">
+              <a href="#about" class="nav-link" data-target="about">About</a>
+            </div>
+          </div>
+          <div class="nav-item">
+            <div class="text-reveal">
+              <a href="#experience" class="nav-link" data-target="experience"
+                >Experience</a
+              >
+            </div>
+          </div>
+          <div class="nav-item">
+            <div class="text-reveal">
+              <a href="#contact" class="nav-link" data-target="contact"
+                >Contact</a
+              >
+            </div>
+          </div>
+        </div>
+      </nav>
+    </div>
 
     <!-- Main Content -->
-    <main class="main-content" data-scroll-section>
-        <!-- Hero Section -->
-        <section class="section hero-section" id="home">
-            <div class="container">
-                <div class="hero-content">
-                    <div class="hero-badge">
-                        <span class="badge-icon">🛡️</span>
-                        <span class="badge-text">Elite Cybersecurity Specialist</span>
-                    </div>
-
-                    <h1 class="hero-title">
-                        <span class="title-line title-line-1">I'm Aviv Shaked</span>
-                        <span class="title-line title-line-2">Cybersecurity</span>
-                        <span class="title-line title-line-3">
-                            <span class="highlight-text">Engineer</span>
-                        </span>
-                    </h1>
-
-                    <p class="hero-description">
-                        I specialize in <strong>network steganography</strong> and <strong>advanced C++ systems</strong>, 
-                        building undetectable security solutions that redefine cybersecurity standards. 
-                        Based in Haifa, pushing the boundaries of what's possible in digital security.
-                    </p>
-
-                    <div class="hero-stats">
-                        <div class="stat-card" data-stat="security">
-                            <div class="stat-number">99.9%</div>
-                            <div class="stat-label">Undetected Rate</div>
-                            <div class="stat-bar">
-                                <div class="stat-fill" data-percentage="99.9"></div>
-                            </div>
-                        </div>
-                        <div class="stat-card" data-stat="projects">
-                            <div class="stat-number">5+</div>
-                            <div class="stat-label">Major Projects</div>
-                            <div class="stat-bar">
-                                <div class="stat-fill" data-percentage="85"></div>
-                            </div>
-                        </div>
-                        <div class="stat-card" data-stat="experience">
-                            <div class="stat-number">3+</div>
-                            <div class="stat-label">Years Experience</div>
-                            <div class="stat-bar">
-                                <div class="stat-fill" data-percentage="75"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="hero-actions">
-                        <a href="#projects" class="btn btn-primary">
-                            <span class="btn-text">View My Work</span>
-                            <span class="btn-icon"><i class="fas fa-arrow-right"></i></span>
-                        </a>
-                        <a href="https://drive.google.com/file/d/1cUoF--q94LtUQKox5eGfMYom70GJoIGc/view?usp=sharing" 
-                           target="_blank" class="btn btn-secondary">
-                            <span class="btn-text">Download Resume</span>
-                            <span class="btn-icon"><i class="fas fa-download"></i></span>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="hero-visual">
-                    <div class="terminal-container">
-                        <div class="terminal-header">
-                            <div class="terminal-controls">
-                                <div class="control-dot red"></div>
-                                <div class="control-dot yellow"></div>
-                                <div class="control-dot green"></div>
-                            </div>
-                            <div class="terminal-title">steganography_system.cpp</div>
-                            <div class="terminal-status">
-                                <span class="status-indicator active"></span>
-                                <span class="status-text">SECURE</span>
-                            </div>
-                        </div>
-                        <div class="terminal-body">
-                            <div class="code-line">
-                                <span class="line-number">001</span>
-                                <span class="code-content">
-                                    <span class="comment">// Advanced Network Steganography System</span>
-                                </span>
-                            </div>
-                            <div class="code-line">
-                                <span class="line-number">002</span>
-                                <span class="code-content">
-                                    <span class="keyword">class</span> <span class="class-name">HitchHiker</span> <span class="operator">{</span>
-                                </span>
-                            </div>
-                            <div class="code-line">
-                                <span class="line-number">003</span>
-                                <span class="code-content">
-                                    <span class="indent">  </span><span class="keyword">private</span><span class="operator">:</span>
-                                </span>
-                            </div>
-                            <div class="code-line">
-                                <span class="line-number">004</span>
-                                <span class="code-content">
-                                    <span class="indent">    </span><span class="type">std::mutex</span> <span class="variable">_packetMutex</span><span class="operator">;</span>
-                                </span>
-                            </div>
-                            <div class="code-line">
-                                <span class="line-number">005</span>
-                                <span class="code-content">
-                                    <span class="indent">    </span><span class="type">PacketHandler</span> <span class="variable">_covertChannel</span><span class="operator">;</span>
-                                </span>
-                            </div>
-                            <div class="code-line">
-                                <span class="line-number">006</span>
-                                <span class="code-content">
-                                    <span class="indent">  </span><span class="keyword">public</span><span class="operator">:</span>
-                                </span>
-                            </div>
-                            <div class="code-line">
-                                <span class="line-number">007</span>
-                                <span class="code-content">
-                                    <span class="indent">    </span><span class="type">bool</span> <span class="function">transmitUndetected</span><span class="operator">();</span>
-                                </span>
-                            </div>
-                            <div class="code-line">
-                                <span class="line-number">008</span>
-                                <span class="code-content">
-                                    <span class="operator">};</span>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="terminal-cursor"></div>
-                    </div>
-
-                    <div class="hero-decorations">
-                        <div class="floating-icon" style="--delay: 0s;">🔐</div>
-                        <div class="floating-icon" style="--delay: 1s;">⚡</div>
-                        <div class="floating-icon" style="--delay: 2s;">🛡️</div>
-                    </div>
-                </div>
+    <main class="main-content" id="main-content">
+      <!-- Hero Section -->
+      <section class="section hero-section" id="hero">
+        <div class="hero-content">
+          <div class="hero-text">
+            <div class="hero-badge">
+              <span>🛡️</span>
+              <span>Elite Cybersecurity Specialist</span>
             </div>
 
-            <div class="scroll-indicator">
-                <div class="scroll-line"></div>
-                <span class="scroll-text">Scroll to explore</span>
+            <h1 class="hero-title">
+              <span class="title-line">
+                <span class="title-word">I'm</span>
+                <span class="title-word">Aviv</span>
+                <span class="title-word">Shaked</span>
+              </span>
+              <span class="title-line">
+                <span class="title-word">Cybersecurity</span>
+              </span>
+              <span class="title-line">
+                <span class="title-word highlight-text">Engineer</span>
+              </span>
+            </h1>
+
+            <p class="hero-description">
+              I specialize in <strong>network steganography</strong> and
+              <strong>advanced C++ systems</strong>, building undetectable
+              security solutions that redefine cybersecurity standards. Based in
+              Haifa, pushing the boundaries of what's possible in digital
+              security.
+            </p>
+
+            <div class="hero-actions">
+              <a href="#projects" class="btn btn-primary">
+                <span>View My Work</span>
+                <i class="fas fa-arrow-right"></i>
+              </a>
+              <a
+                href="https://drive.google.com/file/d/1cUoF--q94LtUQKox5eGfMYom70GJoIGc/view?usp=sharing"
+                target="_blank"
+                class="btn btn-secondary"
+              >
+                <span>Download Resume</span>
+                <i class="fas fa-download"></i>
+              </a>
             </div>
-        </section>
+          </div>
 
-        <!-- About Section -->
-        <section class="section about-section" id="about">
-            <div class="container">
-                <div class="section-header">
-                    <div class="section-number">02</div>
-                    <h2 class="section-title">About Me</h2>
-                    <p class="section-subtitle">
-                        Passionate about building secure, innovative solutions
-                    </p>
+          <div class="hero-visual">
+            <div class="quantum-terminal">
+              <div class="terminal-header">
+                <div class="terminal-controls">
+                  <div class="control-dot red"></div>
+                  <div class="control-dot yellow"></div>
+                  <div class="control-dot green"></div>
                 </div>
-
-                <div class="about-content">
-                    <div class="about-text">
-                        <p class="about-paragraph">
-                            At just 18 years old, I've dedicated myself to mastering the art of cybersecurity 
-                            and systems programming. My journey began with a fascination for the invisible - 
-                            the hidden layers of digital communication that most never see.
-                        </p>
-                        <p class="about-paragraph">
-                            Today, I specialize in <strong>network steganography</strong> and 
-                            <strong>advanced C++ development</strong>, creating solutions that operate 
-                            in the shadows while maintaining the highest standards of security and performance.
-                        </p>
-                        <p class="about-paragraph">
-                            Based in Haifa, Israel, I'm constantly pushing the boundaries of what's possible 
-                            in cybersecurity, combining cutting-edge research with practical implementation 
-                            to build the security solutions of tomorrow.
-                        </p>
-
-                        <div class="about-highlights">
-                            <div class="highlight-item">
-                                <i class="fas fa-shield-alt"></i>
-                                <span>Advanced Network Security</span>
-                            </div>
-                            <div class="highlight-item">
-                                <i class="fas fa-code"></i>
-                                <span>C++ Systems Programming</span>
-                            </div>
-                            <div class="highlight-item">
-                                <i class="fas fa-eye-slash"></i>
-                                <span>Steganography Research</span>
-                            </div>
-                            <div class="highlight-item">
-                                <i class="fas fa-robot"></i>
-                                <span>AI & Machine Learning</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="about-visual">
-                        <div class="profile-card">
-                            <div class="profile-image">
-                                <img src="https://avatars.githubusercontent.com/u/116463487?v=4" alt="Aviv Shaked">
-                                <div class="profile-status"></div>
-                            </div>
-                            <div class="profile-info">
-                                <h3>Aviv Shaked</h3>
-                                <p>Cybersecurity Engineer</p>
-                                <div class="profile-location">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span>Haifa, Israel</span>
-                                </div>
-                                <div class="profile-status-text">
-                                    <span class="status-dot"></span>
-                                    <span>Available for Projects</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                <div class="terminal-title">quantum_steganography.cpp</div>
+                <div class="terminal-status">
+                  <span class="status-indicator"></span>
+                  <span class="status-text">SECURE</span>
                 </div>
+              </div>
+
+              <div class="terminal-body">
+                <div class="code-line">
+                  <span class="line-number">001</span>
+                  <span class="code-syntax">
+                    <span class="comment"
+                      >// Advanced Quantum Network Steganography</span
+                    >
+                  </span>
+                </div>
+                <div class="code-line">
+                  <span class="line-number">002</span>
+                  <span class="code-syntax">
+                    <span class="keyword">class</span>
+                    <span class="class-name">HitchHiker</span>
+                    <span class="operator">{</span>
+                  </span>
+                </div>
+                <div class="code-line">
+                  <span class="line-number">003</span>
+                  <span class="code-syntax">
+                    &nbsp;&nbsp;<span class="keyword">private</span
+                    ><span class="operator">:</span>
+                  </span>
+                </div>
+                <div class="code-line">
+                  <span class="line-number">004</span>
+                  <span class="code-syntax">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">std::mutex</span>
+                    <span class="variable">_quantumMutex</span
+                    ><span class="operator">;</span>
+                  </span>
+                </div>
+                <div class="code-line">
+                  <span class="line-number">005</span>
+                  <span class="code-syntax">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="type"
+                      >CovertChannel</span
+                    >
+                    <span class="variable">_hiddenProtocol</span
+                    ><span class="operator">;</span>
+                  </span>
+                </div>
+                <div class="code-line">
+                  <span class="line-number">006</span>
+                  <span class="code-syntax">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="type"
+                      >SteganographyEngine</span
+                    >
+                    <span class="variable">_stegEngine</span
+                    ><span class="operator">;</span>
+                  </span>
+                </div>
+                <div class="code-line">
+                  <span class="line-number">007</span>
+                  <span class="code-syntax">
+                    &nbsp;&nbsp;<span class="keyword">public</span
+                    ><span class="operator">:</span>
+                  </span>
+                </div>
+                <div class="code-line">
+                  <span class="line-number">008</span>
+                  <span class="code-syntax">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="type">bool</span>
+                    <span class="function">transmitUndetected</span
+                    ><span class="operator">(</span
+                    ><span class="type">const</span>
+                    <span class="type">Data</span
+                    ><span class="operator">&</span>
+                    <span class="variable">payload</span
+                    ><span class="operator">);</span>
+                  </span>
+                </div>
+                <div class="code-line">
+                  <span class="line-number">009</span>
+                  <span class="code-syntax">
+                    &nbsp;&nbsp;&nbsp;&nbsp;<span class="type"
+                      >SecurityLevel</span
+                    >
+                    <span class="function">establishSecureChannel</span
+                    ><span class="operator">();</span>
+                  </span>
+                </div>
+                <div class="code-line">
+                  <span class="line-number">010</span>
+                  <span class="code-syntax">
+                    <span class="operator">};</span>
+                  </span>
+                </div>
+                <div class="terminal-cursor"></div>
+              </div>
             </div>
-        </section>
-
-        <!-- Expertise Section -->
-        <section class="section expertise-section" id="expertise">
-            <div class="container">
-                <div class="section-header">
-                    <div class="section-number">03</div>
-                    <h2 class="section-title">Technical Expertise</h2>
-                    <p class="section-subtitle">
-                        Deep specialization across cybersecurity and systems development
-                    </p>
-                </div>
-
-                <div class="expertise-grid">
-                    <div class="expertise-card" data-category="security">
-                        <div class="card-header">
-                            <div class="card-icon">
-                                <i class="fas fa-shield-alt"></i>
-                            </div>
-                            <div class="card-level">Expert</div>
-                        </div>
-                        <h3 class="card-title">Cybersecurity & Network Security</h3>
-                        <p class="card-description">
-                            Advanced network security protocols, penetration testing, and covert communication systems. 
-                            Specializing in undetectable data transmission and security architecture.
-                        </p>
-                        <div class="card-skills">
-                            <span class="skill-tag primary">Network Steganography</span>
-                            <span class="skill-tag">Penetration Testing</span>
-                            <span class="skill-tag">Security Architecture</span>
-                            <span class="skill-tag">Covert Channels</span>
-                        </div>
-                        <div class="card-progress">
-                            <div class="progress-label">Proficiency</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" data-percentage="95"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="expertise-card" data-category="development">
-                        <div class="card-header">
-                            <div class="card-icon">
-                                <i class="fas fa-code"></i>
-                            </div>
-                            <div class="card-level">Expert</div>
-                        </div>
-                        <h3 class="card-title">Advanced C++ Development</h3>
-                        <p class="card-description">
-                            High-performance systems programming with modern C++20 features. 
-                            Expert in memory management, multi-threading, and low-level optimization.
-                        </p>
-                        <div class="card-skills">
-                            <span class="skill-tag primary">C++20</span>
-                            <span class="skill-tag">Multi-threading</span>
-                            <span class="skill-tag">RAII</span>
-                            <span class="skill-tag">Performance Optimization</span>
-                        </div>
-                        <div class="card-progress">
-                            <div class="progress-label">Proficiency</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" data-percentage="92"></div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="expertise-card" data-category="ai">
-                        <div class="card-header">
-                            <div class="card-icon">
-                                <i class="fas fa-brain"></i>
-                            </div>
-                            <div class="card-level">Professional</div>
-                        </div>
-                        <h3 class="card-title">AI & Machine Learning</h3>
-                        <p class="card-description">
-                            Artificial intelligence implementations, computer vision, and intelligent automation. 
-                            Experience in medical AI and competitive machine learning.
-                        </p>
-                        <div class="card-skills">
-                            <span class="skill-tag primary">Python</span>
-                            <span class="skill-tag">Computer Vision</span>
-                            <span class="skill-tag">Neural Networks</span>
-                            <span class="skill-tag">Automation</span>
-                        </div>
-                        <div class="card-progress">
-                            <div class="progress-label">Proficiency</div>
-                            <div class="progress-bar">
-                                <div class="progress-fill" data-percentage="88"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="skills-overview">
-                    <h3 class="skills-title">Technology Stack</h3>
-                    <div class="skills-categories">
-                        <div class="skill-category">
-                            <h4>Languages</h4>
-                            <div class="skill-list">
-                                <span class="skill-item">C++20</span>
-                                <span class="skill-item">Python</span>
-                                <span class="skill-item">JavaScript</span>
-                                <span class="skill-item">Assembly</span>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <h4>Security</h4>
-                            <div class="skill-list">
-                                <span class="skill-item">Network Security</span>
-                                <span class="skill-item">Steganography</span>
-                                <span class="skill-item">Penetration Testing</span>
-                                <span class="skill-item">Cryptography</span>
-                            </div>
-                        </div>
-                        <div class="skill-category">
-                            <h4>Tools & Frameworks</h4>
-                            <div class="skill-list">
-                                <span class="skill-item">Docker</span>
-                                <span class="skill-item">CMake</span>
-                                <span class="skill-item">Unity</span>
-                                <span class="skill-item">TensorFlow</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Experience Section -->
-        <section class="section experience-section" id="experience">
-            <div class="container">
-                <div class="section-header">
-                    <div class="section-number">04</div>
-                    <h2 class="section-title">Professional Experience</h2>
-                    <p class="section-subtitle">
-                        Building innovative solutions and advancing cybersecurity research
-                    </p>
-                </div>
-
-                <div class="timeline">
-                    <div class="timeline-item" data-year="2023-Present">
-                        <div class="timeline-marker"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-header">
-                                <h3 class="timeline-title">Product Uploader & Tools Developer</h3>
-                                <div class="timeline-company">AllBikes</div>
-                                <div class="timeline-period">2023 - Present</div>
-                                <div class="timeline-status active">Current Position</div>
-                            </div>
-                            <p class="timeline-description">
-                                Developing automated tools and secure data systems using Python automation. 
-                                Building scalable upload systems and data processing pipelines that handle 
-                                large-scale product information with high efficiency and security.
-                            </p>
-                            <div class="timeline-achievements">
-                                <div class="achievement-item">
-                                    <i class="fas fa-check"></i>
-                                    <span>Automated product upload processes, reducing manual work by 85%</span>
-                                </div>
-                                <div class="achievement-item">
-                                    <i class="fas fa-check"></i>
-                                    <span>Implemented secure data validation and processing systems</span>
-                                </div>
-                            </div>
-                            <div class="timeline-skills">
-                                <span class="skill-tag">Python</span>
-                                <span class="skill-tag">Automation</span>
-                                <span class="skill-tag">Data Processing</span>
-                                <span class="skill-tag">API Development</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item" data-year="2023-Present">
-                        <div class="timeline-marker"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-header">
-                                <h3 class="timeline-title">Cybersecurity Student & Researcher</h3>
-                                <div class="timeline-company">Cyber Education Center</div>
-                                <div class="timeline-period">2023 - Present</div>
-                                <div class="timeline-status active">Current Studies</div>
-                            </div>
-                            <p class="timeline-description">
-                                Advanced cybersecurity studies focusing on cutting-edge research in network security 
-                                and covert communication systems. Specializing in steganography techniques and 
-                                developing next-generation security solutions.
-                            </p>
-                            <div class="timeline-achievements">
-                                <div class="achievement-item">
-                                    <i class="fas fa-check"></i>
-                                    <span>Research focus on network steganography and covert channels</span>
-                                </div>
-                                <div class="achievement-item">
-                                    <i class="fas fa-check"></i>
-                                    <span>Developing innovative security solutions and protocols</span>
-                                </div>
-                            </div>
-                            <div class="timeline-skills">
-                                <span class="skill-tag">Cybersecurity</span>
-                                <span class="skill-tag">Research</span>
-                                <span class="skill-tag">Network Security</span>
-                                <span class="skill-tag">Steganography</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="timeline-item" data-year="2022-2023">
-                        <div class="timeline-marker"></div>
-                        <div class="timeline-content">
-                            <div class="timeline-header">
-                                <h3 class="timeline-title">Team Captain</h3>
-                                <div class="timeline-company">Analisis - AI4Y World Competition</div>
-                                <div class="timeline-period">2022 - 2023</div>
-                                <div class="timeline-status achievement">2nd Place Globally</div>
-                            </div>
-                            <p class="timeline-description">
-                                Led a team to achieve 2nd place globally in the prestigious AI4Y World Competition. 
-                                Developed an innovative AI-powered medical diagnosis platform using computer vision 
-                                and machine learning for wound detection and treatment recommendations.
-                            </p>
-                            <div class="timeline-achievements">
-                                <div class="achievement-item">
-                                    <i class="fas fa-trophy"></i>
-                                    <span>2nd place globally out of thousands of participants</span>
-                                </div>
-                                <div class="achievement-item">
-                                    <i class="fas fa-check"></i>
-                                    <span>Led cross-functional team of developers and researchers</span>
-                                </div>
-                                <div class="achievement-item">
-                                    <i class="fas fa-check"></i>
-                                    <span>Achieved 95%+ accuracy in medical diagnosis system</span>
-                                </div>
-                            </div>
-                            <div class="timeline-skills">
-                                <span class="skill-tag">AI/ML</span>
-                                <span class="skill-tag">Computer Vision</span>
-                                <span class="skill-tag">Team Leadership</span>
-                                <span class="skill-tag">Medical AI</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Projects Section -->
-        <section class="section projects-section" id="projects">
-            <div class="container">
-                <div class="section-header">
-                    <div class="section-number">05</div>
-                    <h2 class="section-title">Featured Projects</h2>
-                    <p class="section-subtitle">
-                        Innovative solutions pushing the boundaries of cybersecurity
-                    </p>
-                </div>
-
-                <div class="projects-grid">
-                    <div class="project-card featured" data-category="security">
-                        <div class="project-image">
-                            <div class="project-tech-bg">
-                                <i class="fas fa-user-secret"></i>
-                            </div>
-                            <div class="project-status in-development">In Development</div>
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">HitchHiker: Network Steganography Platform</h3>
-                            <p class="project-description">
-                                Revolutionary covert communication system enabling completely undetectable data 
-                                transmission without creating new network packets. Features advanced C++20 
-                                implementation with multi-threading and sophisticated steganography techniques.
-                            </p>
-                            <div class="project-highlights">
-                                <div class="highlight">
-                                    <span class="highlight-label">Detection Rate</span>
-                                    <span class="highlight-value">0%</span>
-                                </div>
-                                <div class="highlight">
-                                    <span class="highlight-label">Performance</span>
-                                    <span class="highlight-value">Multi-threaded</span>
-                                </div>
-                                <div class="highlight">
-                                    <span class="highlight-label">Protocol</span>
-                                    <span class="highlight-value">Custom Binary</span>
-                                </div>
-                            </div>
-                            <div class="project-tech">
-                                <span class="tech-tag primary">C++20</span>
-                                <span class="tech-tag">Multi-threading</span>
-                                <span class="tech-tag">Docker</span>
-                                <span class="tech-tag">CMake</span>
-                                <span class="tech-tag">Network Security</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="project-card" data-category="development">
-                        <div class="project-image">
-                            <div class="project-tech-bg">
-                                <i class="fas fa-gamepad"></i>
-                            </div>
-                            <div class="project-status completed">Completed</div>
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Multiplayer Trivia Game System</h3>
-                            <p class="project-description">
-                                High-performance C++ server architecture handling 25+ concurrent players with 
-                                Unity client integration. Features custom binary protocol and thread-safe design.
-                            </p>
-                            <div class="project-highlights">
-                                <div class="highlight">
-                                    <span class="highlight-label">Capacity</span>
-                                    <span class="highlight-value">25+ Players</span>
-                                </div>
-                                <div class="highlight">
-                                    <span class="highlight-label">Latency</span>
-                                    <span class="highlight-value">&lt;50ms</span>
-                                </div>
-                            </div>
-                            <div class="project-tech">
-                                <span class="tech-tag">C++17</span>
-                                <span class="tech-tag">Unity</span>
-                                <span class="tech-tag">SQLite3</span>
-                                <span class="tech-tag">RAII</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="project-card" data-category="ai">
-                        <div class="project-image">
-                            <div class="project-tech-bg">
-                                <i class="fas fa-trophy"></i>
-                            </div>
-                            <div class="project-status award">World Finalist</div>
-                        </div>
-                        <div class="project-content">
-                            <h3 class="project-title">Analisis: AI Medical Diagnosis Platform</h3>
-                            <p class="project-description">
-                                AI-powered medical platform for automated wound detection and treatment 
-                                recommendations. Achieved 2nd place globally in AI4Y World Competition.
-                            </p>
-                            <div class="project-highlights">
-                                <div class="highlight">
-                                    <span class="highlight-label">Global Rank</span>
-                                    <span class="highlight-value">2nd Place</span>
-                                </div>
-                                <div class="highlight">
-                                    <span class="highlight-label">Accuracy</span>
-                                    <span class="highlight-value">95%+</span>
-                                </div>
-                            </div>
-                            <div class="project-tech">
-                                <span class="tech-tag">Python</span>
-                                <span class="tech-tag">Computer Vision</span>
-                                <span class="tech-tag">TensorFlow</span>
-                                <span class="tech-tag">Medical AI</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="projects-cta">
-                    <p>Interested in seeing more of my work?</p>
-                    <a href="https://github.com/Patcholie" target="_blank" class="btn btn-outline">
-                        <span class="btn-text">View All Projects</span>
-                        <span class="btn-icon"><i class="fab fa-github"></i></span>
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Contact Section -->
-        <section class="section contact-section" id="contact">
-            <div class="container">
-                <div class="section-header">
-                    <div class="section-number">06</div>
-                    <h2 class="section-title">Let's Work Together</h2>
-                    <p class="section-subtitle">
-                        Ready to build something extraordinary? Let's discuss your next project
-                    </p>
-                </div>
-
-                <div class="contact-content">
-                    <div class="contact-info">
-                        <div class="contact-card">
-                            <div class="contact-avatar">
-                                <img src="https://avatars.githubusercontent.com/u/116463487?v=4" alt="Aviv Shaked">
-                                <div class="avatar-status"></div>
-                            </div>
-                            <h3>Aviv Shaked</h3>
-                            <p class="contact-title">Cybersecurity Engineer & Researcher</p>
-                            <p class="contact-description">
-                                18-year-old cybersecurity specialist from Haifa, Israel. 
-                                Passionate about building secure, high-performance systems 
-                                and advancing the field of cybersecurity.
-                            </p>
-                            
-                            <div class="contact-details">
-                                <div class="detail-row">
-                                    <i class="fas fa-map-marker-alt"></i>
-                                    <span>Haifa, Israel</span>
-                                </div>
-                                <div class="detail-row">
-                                    <i class="fas fa-clock"></i>
-                                    <span>GMT+2 (Israel Time)</span>
-                                </div>
-                                <div class="detail-row">
-                                    <i class="fas fa-circle"></i>
-                                    <span class="status-available">Available for Projects</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="contact-methods">
-                            <h4>Get In Touch</h4>
-                            <div class="contact-links">
-                                <a href="https://www.linkedin.com/in/aviv-shaked-59a4b7271/" 
-                                   target="_blank" class="contact-link linkedin">
-                                    <i class="fab fa-linkedin"></i>
-                                    <div class="link-content">
-                                        <span class="link-title">LinkedIn</span>
-                                        <span class="link-desc">Professional Network</span>
-                                    </div>
-                                </a>
-                                <a href="https://github.com/Patcholie" 
-                                   target="_blank" class="contact-link github">
-                                    <i class="fab fa-github"></i>
-                                    <div class="link-content">
-                                        <span class="link-title">GitHub</span>
-                                        <span class="link-desc">Code Repository</span>
-                                    </div>
-                                </a>
-                                <a href="https://www.instagram.com/_avivshaked_/" 
-                                   target="_blank" class="contact-link instagram">
-                                    <i class="fab fa-instagram"></i>
-                                    <div class="link-content">
-                                        <span class="link-title">Instagram</span>
-                                        <span class="link-desc">Personal Updates</span>
-                                    </div>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="contact-cta">
-                        <div class="cta-content">
-                            <h3>Ready to Collaborate?</h3>
-                            <p>
-                                Whether you're looking for cybersecurity consulting, custom development, 
-                                or innovative security solutions, I'm here to help bring your vision to life.
-                            </p>
-                            
-                            <div class="service-list">
-                                <div class="service-item">
-                                    <i class="fas fa-shield-alt"></i>
-                                    <span>Cybersecurity Consulting</span>
-                                </div>
-                                <div class="service-item">
-                                    <i class="fas fa-code"></i>
-                                    <span>Custom C++ Development</span>
-                                </div>
-                                <div class="service-item">
-                                    <i class="fas fa-eye-slash"></i>
-                                    <span>Steganography Solutions</span>
-                                </div>
-                                <div class="service-item">
-                                    <i class="fas fa-brain"></i>
-                                    <span>AI/ML Implementation</span>
-                                </div>
-                            </div>
-
-                            <div class="cta-actions">
-                                <a href="https://www.linkedin.com/in/aviv-shaked-59a4b7271/" 
-                                   target="_blank" class="btn btn-primary">
-                                    <span class="btn-text">Start Conversation</span>
-                                    <span class="btn-icon"><i class="fas fa-paper-plane"></i></span>
-                                </a>
-                                <a href="https://drive.google.com/file/d/1cUoF--q94LtUQKox5eGfMYom70GJoIGc/view?usp=sharing" 
-                                   target="_blank" class="btn btn-outline">
-                                    <span class="btn-text">Download Resume</span>
-                                    <span class="btn-icon"><i class="fas fa-download"></i></span>
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="footer" data-scroll-section>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-info">
-                    <p>&copy; 2024 Aviv Shaked. All rights reserved.</p>
-                    <p>Built with passion for cybersecurity and innovation.</p>
-                </div>
-                <div class="footer-links">
-                    <a href="#privacy">Privacy Policy</a>
-                    <a href="#terms">Terms of Service</a>
-                </div>
-            </div>
+          </div>
         </div>
-    </footer>
-    </div>
+      </section>
 
-    <script src="https://cdn.jsdelivr.net/npm/locomotive-scroll@4.1.4/dist/locomotive-scroll.min.js"></script>
-    <script src="scripts.js"></script>
-</body>
+      <!-- Projects Section -->
+      <section class="section" id="projects">
+        <div class="section-header">
+          <div class="section-number">01</div>
+          <h2 class="section-title">Featured Projects</h2>
+          <p class="section-subtitle">
+            Innovative solutions pushing the boundaries of cybersecurity
+          </p>
+        </div>
+
+        <div class="projects-grid">
+          <div class="project-card">
+            <div class="project-image">
+              <i class="fas fa-user-secret project-icon"></i>
+              <div class="project-status status-development">
+                In Development
+              </div>
+            </div>
+            <div class="project-content">
+              <h3 class="project-title">
+                HitchHiker: Network Steganography Platform
+              </h3>
+              <p class="project-description">
+                Revolutionary covert communication system enabling completely
+                undetectable data transmission without creating new network
+                packets.
+              </p>
+              <div class="project-tech">
+                <span class="tech-tag primary">C++20</span>
+                <span class="tech-tag">Multi-threading</span>
+                <span class="tech-tag">Docker</span>
+                <span class="tech-tag">CMake</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-image">
+              <i class="fas fa-gamepad project-icon"></i>
+              <div class="project-status status-completed">Completed</div>
+            </div>
+            <div class="project-content">
+              <h3 class="project-title">Multiplayer Trivia Game System</h3>
+              <p class="project-description">
+                High-performance C++ server architecture handling 25+ concurrent
+                players with Unity client integration.
+              </p>
+              <div class="project-tech">
+                <span class="tech-tag primary">C++17</span>
+                <span class="tech-tag">Unity</span>
+                <span class="tech-tag">SQLite3</span>
+                <span class="tech-tag">RAII</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card">
+            <div class="project-image">
+              <i class="fas fa-trophy project-icon"></i>
+              <div class="project-status status-completed">
+                2nd Place Global
+              </div>
+            </div>
+            <div class="project-content">
+              <h3 class="project-title">
+                Analisis: AI Medical Diagnosis Platform
+              </h3>
+              <p class="project-description">
+                AI-powered medical platform for automated wound detection and
+                treatment recommendations. Achieved 2nd place globally in AI4Y
+                World Competition.
+              </p>
+              <div class="project-tech">
+                <span class="tech-tag primary">Python</span>
+                <span class="tech-tag">Computer Vision</span>
+                <span class="tech-tag">TensorFlow</span>
+                <span class="tech-tag">Medical AI</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Section -->
+      <section class="section" id="about">
+        <div class="section-header">
+          <div class="section-number">02</div>
+          <h2 class="section-title">About Me</h2>
+          <p class="section-subtitle">
+            Passionate about building secure, innovative solutions
+          </p>
+        </div>
+
+        <div style="max-width: 800px; margin: 0 auto; text-align: center">
+          <p
+            style="
+              font-size: 1.2rem;
+              line-height: 1.8;
+              color: var(--color-text-secondary);
+              margin-bottom: 2rem;
+            "
+          >
+            At just 18 years old, I've dedicated myself to mastering the art of
+            cybersecurity and systems programming. My journey began with a
+            fascination for the invisible - the hidden layers of digital
+            communication that most never see.
+          </p>
+          <p
+            style="
+              font-size: 1.2rem;
+              line-height: 1.8;
+              color: var(--color-text-secondary);
+            "
+          >
+            Today, I specialize in
+            <strong style="color: var(--color-accent-primary)"
+              >network steganography</strong
+            >
+            and
+            <strong style="color: var(--color-accent-primary)"
+              >advanced C++ development</strong
+            >, creating solutions that operate in the shadows while maintaining
+            the highest standards of security and performance.
+          </p>
+        </div>
+      </section>
+
+      <!-- Experience Section -->
+      <section class="section" id="experience">
+        <div class="section-header">
+          <div class="section-number">03</div>
+          <h2 class="section-title">Experience</h2>
+          <p class="section-subtitle">
+            Building innovative solutions and advancing cybersecurity research
+          </p>
+        </div>
+
+        <div style="max-width: 800px; margin: 0 auto; text-align: center">
+          <p
+            style="
+              font-size: 1.2rem;
+              line-height: 1.8;
+              color: var(--color-text-secondary);
+              margin-bottom: 2rem;
+            "
+          >
+            Currently working as a Product Uploader & Tools Developer at
+            AllBikes, where I develop automated tools and secure data systems
+            using Python automation.
+          </p>
+          <p
+            style="
+              font-size: 1.2rem;
+              line-height: 1.8;
+              color: var(--color-text-secondary);
+            "
+          >
+            Achieved 2nd place globally in the AI4Y World Competition, leading a
+            team to develop an innovative AI-powered medical diagnosis platform.
+          </p>
+        </div>
+      </section>
+
+      <!-- Contact Section -->
+      <section class="section" id="contact">
+        <div class="section-header">
+          <div class="section-number">04</div>
+          <h2 class="section-title">Get In Touch</h2>
+          <p class="section-subtitle">
+            Ready to build something extraordinary? Let's discuss your next
+            project
+          </p>
+        </div>
+
+        <div style="max-width: 600px; margin: 0 auto; text-align: center">
+          <p
+            style="
+              font-size: 1.2rem;
+              line-height: 1.8;
+              color: var(--color-text-secondary);
+              margin-bottom: 3rem;
+            "
+          >
+            Whether you're looking for cybersecurity consulting, custom
+            development, or innovative security solutions, I'm here to help
+            bring your vision to life.
+          </p>
+
+          <div
+            style="
+              display: flex;
+              gap: 2rem;
+              justify-content: center;
+              flex-wrap: wrap;
+            "
+          >
+            <a
+              href="https://www.linkedin.com/in/aviv-shaked-59a4b7271/"
+              target="_blank"
+              class="btn btn-primary"
+            >
+              <span>Connect on LinkedIn</span>
+              <i class="fab fa-linkedin"></i>
+            </a>
+            <a
+              href="https://github.com/Patcholie"
+              target="_blank"
+              class="btn btn-secondary"
+            >
+              <span>View GitHub</span>
+              <i class="fab fa-github"></i>
+            </a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </body>
+  <script src="scripts.js"></script>
 </html>
