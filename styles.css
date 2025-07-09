@@ -1,49 +1,44 @@
 :root {
-  /* Enhanced Professional Ocean Color System */
-  --color-bg-primary: #0A1525;
-  --color-bg-secondary: #1B2F47;
-  --color-bg-tertiary: #2A4A68;
-  --color-bg-quaternary: #3A5A78;
-  --color-bg-surface: #152133;
-  --color-overlay: #050A11;
+  /* Premium Monochrome + Gold Theme */
+  --color-bg-primary: #0d0d0d;           /* Jet black */
+  --color-bg-secondary: #131313;         /* Slight lift */
+  --color-bg-tertiary: #1a1a1a;          /* Dark surface */
+  --color-bg-quaternary: #222222;        /* Subtle layer */
+  --color-bg-surface: #1c1c1c;           /* Card surface */
+  --color-overlay: #000000;              /* Backdrop */
 
-  /* Crystal Clear Text Hierarchy */
-  --color-text-primary: #FFFFFF;
-  --color-text-secondary: #E2E8F0;
-  --color-text-tertiary: #CBD5E1;
-  --color-text-quaternary: #94A3B8;
-  --color-text-muted: #64748B;
-  --color-overlay-text: #F1F5F9;
+  --color-text-primary: #ffffff;         /* Crisp white */
+  --color-text-secondary: #d4d4d4;       /* Muted white */
+  --color-text-tertiary: #a0a0a0;        /* Grey */
+  --color-text-quaternary: #707070;      /* Dimmer grey */
+  --color-text-muted: #555555;           /* Disabled */
+  --color-overlay-text: #f8f8f8;
 
-  /* Professional Refined Accent System */
-  --color-accent-primary: #E6C068;
-  --color-accent-secondary: #7DD3FC;
-  --color-accent-tertiary: #F1F5F9;
-  --color-accent-quaternary: #B8860B;
-  --color-accent-warning: #F59E0B;
-  --color-accent-error: #EF4444;
-  --color-accent-success: #00D4AA;
+  --color-accent-primary: #e6c068;       /* Golden highlight */
+  --color-accent-secondary: #bfa354;     /* Deep gold */
+  --color-accent-tertiary: #f5f5f5;      /* Light silver */
+  --color-accent-quaternary: #ffe48f;    /* Pale gold */
+  --color-accent-warning: #f5b942;       /* Warm warning */
+  --color-accent-error: #ff5f5f;         /* Subtle red */
+  --color-accent-success: #8bcf91;       /* Desaturated green */
 
-  /* Enhanced Glass Morphism System */
-  --glass-bg: rgba(27, 47, 71, 0.35);
-  --glass-bg-hover: rgba(42, 74, 104, 0.45);
-  --glass-bg-active: rgba(58, 90, 120, 0.55);
-  --glass-border: rgba(255, 255, 255, 0.12);
-  --glass-border-hover: rgba(230, 192, 104, 0.4);
-  --glass-border-active: rgba(230, 192, 104, 0.6);
-  --glass-shadow: 0 8px 32px rgba(10, 21, 37, 0.4);
-  --glass-shadow-hover: 0 12px 40px rgba(10, 21, 37, 0.6);
-  --glass-shadow-active: 0 16px 48px rgba(10, 21, 37, 0.8);
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-bg-hover: rgba(255, 255, 255, 0.05);
+  --glass-bg-active: rgba(255, 255, 255, 0.07);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-border-hover: rgba(230, 192, 104, 0.25);
+  --glass-border-active: rgba(230, 192, 104, 0.5);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  --glass-shadow-hover: 0 12px 40px rgba(0, 0, 0, 0.6);
+  --glass-shadow-active: 0 16px 48px rgba(0, 0, 0, 0.7);
   --glass-blur: blur(20px) saturate(120%);
   --glass-blur-intense: blur(25px) saturate(140%);
 
-  /* Professional Typography Stack */
   --font-primary: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
   --font-display: "Space Grotesk", "Inter", "SF Pro Display", system-ui, sans-serif;
   --font-mono: "JetBrains Mono", "SF Mono", "Consolas", "Monaco", monospace;
   --font-code: "Fira Code", "JetBrains Mono", "SF Mono", monospace;
 
-  /* Enhanced Spacing System */
   --grid-padding: 2rem;
   --grid-gap: 1.5rem;
   --space-xs: 0.25rem;
@@ -55,7 +50,6 @@
   --space-3xl: 4rem;
   --space-4xl: 6rem;
 
-  /* Professional Border Radius System */
   --radius-none: 0;
   --radius-sm: 2px;
   --radius-md: 4px;
@@ -63,7 +57,6 @@
   --radius-xl: 8px;
   --radius-2xl: 12px;
 
-  /* Enhanced Animation System */
   --transition-sharp: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --transition-professional: cubic-bezier(0.4, 0, 0.2, 1);
   --transition-glass: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -72,6 +65,7 @@
   --ease-in-out-sharp: cubic-bezier(0.445, 0.05, 0.55, 0.95);
   --ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
 
 /* Performance Foundation */
 * {
@@ -1574,15 +1568,14 @@ body {
 
 .project-card {
   background: var(--glass-bg);
-  border: 1px solid var(--glass-border);
+  border: 1px solid rgba(255, 255, 255, 0.05);
   border-radius: var(--radius-lg);
   overflow: hidden;
   backdrop-filter: var(--glass-blur);
   transition: var(--transition-glass);
   cursor: pointer;
   position: relative;
-  will-change: transform;
-  box-shadow: var(--glass-shadow);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
 .project-card:hover {
@@ -1631,7 +1624,7 @@ body {
 
 .status-completed {
   color: var(--color-accent-success);
-  border-color: rgba(0, 212, 170, 0.3);
+  border-color: rgba(162, 243, 157, 0.3);
 }
 
 .project-content {

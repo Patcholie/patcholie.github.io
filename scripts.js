@@ -394,7 +394,6 @@ class SecurityPreloader {
     new HeroAnimations();
     new TerminalAnimations();
     new NavigationSystem();
-    new ScrollAnimationSystem();
     new ParallaxSystem();
     new ReactiveScrollSystem();
     new VisualElementsSystem(); // Add this new system
