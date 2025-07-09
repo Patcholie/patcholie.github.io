@@ -1,7 +1,7 @@
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger, TextPlugin, Observer);
 
-// Elite State Management - RESTORED
+// Elite State Management - 
 const AppState = {
   mouseX: 0,
   mouseY: 0,
@@ -16,10 +16,10 @@ const AppState = {
   lastScrollTime: 0,
 };
 
-// Performance optimized scroll container - RESTORED
+// Performance optimized scroll container - 
 const container = document.querySelector(".container");
 
-// Enhanced Locomotive Scroll Configuration - RESTORED
+// Enhanced Locomotive Scroll Configuration - 
 const scroller = new LocomotiveScroll({
   el: container,
   smooth: true,
@@ -37,7 +37,7 @@ const scroller = new LocomotiveScroll({
   },
 });
 
-// Enhanced ScrollTrigger Integration - RESTORED
+// Enhanced ScrollTrigger Integration - 
 scroller.on("scroll", (args) => {
   ScrollTrigger.update();
   AppState.scrollProgress = args.scroll.y / (args.limit.y || 1);
@@ -68,7 +68,7 @@ ScrollTrigger.scrollerProxy(container, {
 
 ScrollTrigger.addEventListener("refresh", () => scroller.update());
 
-// Professional Scroll Progress System - RESTORED
+// Professional Scroll Progress System - 
 class ScrollProgressSystem {
   constructor() {
     this.progressLine = document.querySelector(".progress-line");
@@ -107,7 +107,7 @@ class ScrollProgressSystem {
   }
 }
 
-// Professional Section Navigation System - RESTORED
+// Professional Section Navigation System - 
 class SectionNavigationSystem {
   constructor() {
     this.navDots = document.querySelectorAll(".nav-dot");
@@ -172,7 +172,7 @@ class SectionNavigationSystem {
   }
 }
 
-// Professional Cursor System - RESTORED WITH TRAILS
+// Professional Cursor System -  WITH TRAILS
 class EliteCursor {
   constructor() {
     if (window.innerWidth <= 768) return;
@@ -290,7 +290,7 @@ class EliteCursor {
   }
 }
 
-// Enhanced Preloader System - RESTORED ORIGINAL
+// Enhanced Preloader System -  ORIGINAL
 class SecurityPreloader {
   constructor() {
     this.preloader = document.getElementById("preloader");
@@ -452,7 +452,7 @@ class SecurityPreloader {
   }
 }
 
-// Enhanced Reactive Scroll System - RESTORED
+// Enhanced Reactive Scroll System - 
 class ReactiveScrollSystem {
   constructor() {
     this.initializeElementVisibility();
@@ -734,7 +734,7 @@ class ReactiveScrollSystem {
   }
 }
 
-// Enhanced Professional Parallax System - RESTORED
+// Enhanced Professional Parallax System - 
 class ParallaxSystem {
   constructor() {
     this.initBackgroundParallax();
@@ -784,9 +784,9 @@ class ParallaxSystem {
         scrub: true,
         onUpdate: (self) => {
           const progress = self.progress;
-          const scale = 1 + progress * 0.15;
-          const y = progress * 80;
-          const opacity = 0.8 + Math.sin(progress * Math.PI) * 0.2;
+          const scale = 1 + progress * 0.30;
+          const y = progress * 120;
+          const opacity = 0.7 + Math.sin(progress * Math.PI) * 0.2;
 
           gsap.set(video, {
             scale: scale,
@@ -983,7 +983,7 @@ class ParallaxSystem {
   }
 }
 
-// Enhanced Hero Animations - RESTORED
+// Enhanced Hero Animations - 
 class HeroAnimations {
   constructor() {
     this.initElements();
@@ -1158,7 +1158,7 @@ class TerminalAnimations {
   }
 }
 
-// Enhanced Navigation System with Menu Highlighting - RESTORED
+// Enhanced Navigation System with Menu Highlighting - 
 class NavigationSystem {
   constructor() {
     this.initElements();
@@ -1372,7 +1372,7 @@ class NavigationSystem {
   }
 }
 
-// Enhanced Visual Elements System - RESTORED
+// Enhanced Visual Elements System - 
 class VisualElementsSystem {
   constructor() {
     this.initSkillBars();
@@ -1591,7 +1591,7 @@ class VisualElementsSystem {
   }
 }
 
-// Global utility functions - RESTORED
+// Global utility functions - 
 function updateScrollProgress() {
   if (window.scrollProgressSystem) {
     window.scrollProgressSystem.update(AppState.scrollProgress);
@@ -1604,7 +1604,7 @@ function updateSectionNavigation(scrollY) {
   }
 }
 
-// Performance optimization: Debounced scroll end detection - RESTORED
+// Performance optimization: Debounced scroll end detection - 
 function detectScrollEnd() {
   const now = Date.now();
   if (now - AppState.lastScrollTime > 150) {
@@ -1613,7 +1613,7 @@ function detectScrollEnd() {
   requestAnimationFrame(detectScrollEnd);
 }
 
-// Initialize Application - RESTORED ALL FEATURES
+// Initialize Application -  ALL FEATURES
 document.addEventListener("DOMContentLoaded", () => {
   // Initialize cursor system
   new EliteCursor();
@@ -1629,7 +1629,7 @@ document.addEventListener("DOMContentLoaded", () => {
   detectScrollEnd();
 });
 
-// Enhanced resize handler with debouncing - RESTORED
+// Enhanced resize handler with debouncing - 
 let resizeTimeout;
 window.addEventListener("resize", () => {
   clearTimeout(resizeTimeout);
@@ -1639,7 +1639,7 @@ window.addEventListener("resize", () => {
   }, 250);
 });
 
-// Performance-optimized load handler - RESTORED
+// Performance-optimized load handler - 
 window.addEventListener("load", function () {
   setTimeout(() => {
     scroller.update();
@@ -1647,7 +1647,7 @@ window.addEventListener("load", function () {
   }, 100);
 });
 
-// Handle visibility change for performance - RESTORED
+// Handle visibility change for performance - 
 document.addEventListener("visibilitychange", function () {
   if (document.hidden) {
     gsap.globalTimeline.pause();
