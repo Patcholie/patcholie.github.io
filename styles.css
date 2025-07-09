@@ -62,6 +62,10 @@
   --radius-xl: 8px;
   --radius-2xl: 12px;
 
+  --transition-smooth: cubic-bezier(0.25, 0.1, 0.25, 1);
+  --transition-elegant: cubic-bezier(0.23, 1, 0.32, 1);
+  --transition-gentle: cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-float: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --transition-sharp: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --transition-professional: cubic-bezier(0.4, 0, 0.2, 1);
   --transition-glass: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
@@ -69,6 +73,11 @@
   --ease-out-sharp: cubic-bezier(0.25, 0.46, 0.45, 0.94);
   --ease-in-out-sharp: cubic-bezier(0.445, 0.05, 0.55, 0.95);
   --ease-out-back: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+
+  --duration-slow: 800ms;
+  --duration-slower: 1200ms;
+  --duration-slowest: 1800ms;
+
 }
 
 /* Enhanced Reset and Base Styles */
@@ -566,7 +575,7 @@ body {
   backdrop-filter: var(--glass-blur);
   opacity: 0;
   transform: translateY(-100%);
-  transition: all var(--transition-slow);
+  transition: all var(--duration-slower) var(--transition-elegant);
 }
 
 .header-container {
@@ -694,7 +703,7 @@ body {
   backdrop-filter: var(--glass-blur);
   opacity: 0;
   transform: translateY(100%);
-  transition: all var(--transition-slow);
+  transition: all var(--duration-slower) var(--transition-elegant);
 }
 
 .footer-container {
@@ -941,8 +950,8 @@ body {
 
 /* Enhanced Main Content */
 .main-content {
-  opacity: 0;
-  transition: opacity var(--transition-slow);
+  transform: translateY(100vh);
+  transition: all var(--duration-slowest) var(--transition-elegant);
 }
 
 .container {
@@ -1024,6 +1033,9 @@ body {
   color: var(--color-accent-primary);
   margin-bottom: var(--space-xl);
   backdrop-filter: var(--glass-blur);
+  opacity: 0;                    /* Start invisible */
+  transform: scale(0) rotate(-180deg);
+  transition: all var(--duration-slower) var(--transition-elegant);
 }
 
 .hero-title {
@@ -1034,10 +1046,12 @@ body {
   color: var(--color-text-primary);
   margin-bottom: var(--space-xl);
   letter-spacing: -0.03em;
+  overflow: hidden; /* For word reveals */
 }
 
 .title-line {
   display: block;
+  overflow: hidden; /* Hide words initially */
 }
 
 .highlight-text {
@@ -1053,6 +1067,7 @@ body {
   color: var(--color-text-secondary);
   margin-bottom: var(--space-2xl);
   max-width: 520px;
+  transition: all var(--duration-slower) var(--transition-elegant);
 }
 
 .hero-description strong {
@@ -1064,9 +1079,11 @@ body {
   display: flex;
   gap: var(--space-lg);
   flex-wrap: wrap;
+  transition: all var(--duration-slower) var(--transition-elegant);
 }
 
-/* Enhanced Terminal - Real Window Look - RESTORED */
+
+/* Quantum terminal styling to float */
 .quantum-terminal {
   background: var(--color-bg-secondary);
   border: 1px solid var(--glass-border);
@@ -1076,9 +1093,10 @@ body {
     0 20px 40px rgba(10, 21, 37, 0.6),
     0 0 0 1px rgba(255, 255, 255, 0.05),
     inset 0 1px 0 rgba(255, 255, 255, 0.1);
-  will-change: transform;
-  transition: var(--transition-glass);
+  will-change: transform, box-shadow;
+  transition: all var(--duration-slow) var(--transition-elegant);
   position: relative;
+  transform-style: preserve-3d;
 }
 
 .quantum-terminal::before {
@@ -1090,14 +1108,11 @@ body {
   bottom: 0;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.02) 0%, transparent 50%);
   pointer-events: none;
+  transition: opacity var(--duration-slow) var(--transition-smooth);
 }
 
-.quantum-terminal:hover {
-  box-shadow: 
-    0 25px 50px rgba(10, 21, 37, 0.8),
-    0 0 0 1px rgba(212, 175, 55, 0.2),
-    inset 0 1px 0 rgba(255, 255, 255, 0.15);
-  transform: translateY(-4px);
+.quantum-terminal:hover::before {
+  opacity: 0.5;
 }
 
 .terminal-header {
@@ -1240,9 +1255,9 @@ body {
   display: flex;
   align-items: center;
   margin-bottom: 0.5rem;
-  opacity: 1;
-  transform: translateX(0);
-  transition: all 0.3s ease;
+  opacity: 0;                    /* Start invisible */
+  transform: translateX(-30px);  /* Start from left */
+  transition: all var(--duration-slow) var(--transition-smooth);
   padding: 0.2rem 0.5rem;
   border-radius: var(--radius-sm);
   will-change: transform, opacity;
@@ -1309,11 +1324,12 @@ body {
   font-weight: 500;
   font-size: 0.875rem;
   text-decoration: none;
-  transition: all var(--transition-normal);
+  transition: all var(--duration-slow) var(--transition-elegant);
   border: 1px solid transparent;
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  transform: translateY(0);
 }
 
 .btn::before {
@@ -1325,6 +1341,11 @@ body {
   height: 100%;
   background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
   transition: left var(--transition-normal);
+}
+
+.btn:hover {
+  transform: translateY(-3px);
+  transition: all var(--duration-slow) var(--transition-float);
 }
 
 .btn:hover::before {
@@ -1388,14 +1409,15 @@ body {
   border-radius: var(--radius-lg);
   overflow: hidden;
   backdrop-filter: var(--glass-blur);
-  transition: all var(--transition-normal);
+  transition: all var(--duration-slow) var(--transition-elegant);
   box-shadow: var(--glass-shadow);
+  opacity: 1;                    /* Keep visible by default */
+  transform: translateY(0);      /* Start in position */
 }
 
 .project-card:hover {
-  transform: translateY(-4px);
-  box-shadow: var(--glass-shadow-hover);
-  border-color: var(--glass-border-hover);
+  transform: translateY(-8px) scale(1.01);
+  transition: all var(--duration-slow) var(--transition-float);
 }
 
 .project-header {
@@ -2032,6 +2054,40 @@ body {
   gap: var(--space-lg);
   justify-content: center;
   flex-wrap: wrap;
+}
+
+/* Scroll animations */
+.scroll-animate-up {
+  opacity: 0;
+  transform: translateY(50px);
+  transition: all var(--duration-slower) var(--transition-elegant);
+}
+
+.scroll-animate-up.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.scroll-animate-left {
+  opacity: 0;
+  transform: translateX(-50px);
+  transition: all var(--duration-slower) var(--transition-elegant);
+}
+
+.scroll-animate-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.scroll-animate-scale {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all var(--duration-slower) var(--transition-elegant);
+}
+
+.scroll-animate-scale.visible {
+  opacity: 1;
+  transform: scale(1);
 }
 
 /* Enhanced Responsive Design */

@@ -302,102 +302,119 @@ class SecurityPreloader {
     this.animate();
   }
 
-  animate() {
-    const tl = gsap.timeline({
-      onComplete: () => this.complete(),
-    });
+animate() {
+  const tl = gsap.timeline({
+    onComplete: () => this.complete(),
+  });
 
-    tl.to(this.gatewayLines, {
-      opacity: 1,
-      x: 0,
-      duration: 0.8,
-      stagger: 0.12,
-      ease: "power3.out",
-    });
+  // Slower line appearances with more elegant stagger
+  tl.to(this.gatewayLines, {
+    opacity: 1,
+    x: 0,
+    duration: 0.9,       
+    stagger: 0.18,        
+    ease: "power2.out",   // Smoother easing
+  });
 
-    tl.to(this.progressBar, {
-      width: "35%",
-      duration: 1.5,
-      ease: "power2.inOut",
-    }, 0.5);
+  // Much slower progress bar animation
+  tl.to(this.progressBar, {
+    width: "25%",
+    duration: 1.8,       
+    ease: "power1.inOut",
+  }, 1.0);
 
-    tl.to(this.progressBar, {
-      width: "70%",
-      duration: 1.2,
-      ease: "power2.inOut",
-    }, 2);
+  tl.to(this.progressBar, {
+    width: "60%",
+    duration: 1.4,        
+    ease: "power1.inOut",
+  }, 3.0);
 
-    tl.to(this.progressBar, {
-      width: "100%",
-      duration: 1,
-      ease: "power2.inOut",
-    }, 3.5);
+  tl.to(this.progressBar, {
+    width: "100%",
+    duration: 1.2,        
+    ease: "power1.inOut",
+  }, 5.5);
 
-    tl.to(this.gatewayLines, {
-      x: 3,
-      duration: 0.05,
-      yoyo: true,
-      repeat: 3,
-      stagger: 0.01,
-    }, 2.5);
+  // Subtle glitch effects - less jarring
+  tl.to(this.gatewayLines, {
+    x: 1,                 // Reduced from 3
+    duration: 0.03,
+    yoyo: true,
+    repeat: 1,            // Reduced from 3
+    stagger: 0.005,
+  }, 4.0);
 
-    tl.to(this.gatewayLines, {
-      opacity: 0.7,
-      duration: 0.03,
-      yoyo: true,
-      repeat: 5,
-      stagger: 0.005,
-    }, 4);
-  }
+  tl.to(this.gatewayLines, {
+    opacity: 0.9,         // Less dramatic
+    duration: 0.02,
+    yoyo: true,
+    repeat: 2,            // Reduced from 5
+    stagger: 0.003,
+  }, 6.5);
+}
 
-  complete() {
-    gsap.to(this.preloader, {
-      clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
-      duration: 0.8,
-      ease: "power3.inOut",
-      onComplete: () => {
-        this.preloader.style.display = "none";
-        AppState.isLoaded = true;
-        this.initMainContent();
-      },
-    });
-  }
+// smoother exit transition
+complete() {
+  gsap.to(this.preloader, {
+    clipPath: "polygon(0% 0%, 100% 0%, 100% 0%, 0% 0%)",
+    duration: 1.0,        
+    ease: "power2.inOut", // Smoother easing
+    onComplete: () => {
+      this.preloader.style.display = "none";
+      AppState.isLoaded = true;
+      this.initMainContent();
+    },
+  });
+}
 
-  initMainContent() {
-    const mainContent = document.getElementById("main-content");
-    const header = document.getElementById("main-header");
-    const footer = document.getElementById("main-footer");
+// Much more gradual content appearance
+initMainContent() {
+  const mainContent = document.getElementById("main-content");
+  const header = document.getElementById("main-header");
+  const footer = document.getElementById("main-footer");
 
-    gsap.to(mainContent, {
-      opacity: 1,
-      duration: 1,
-      ease: "power2.out",
-    });
+gsap.fromTo(mainContent, {
+  y: "100vh",
+  opacity: 0
+}, {
+  y: 0,
+  opacity: 1,
+  duration: 1.2,
+  ease: "power2.out",
+});
 
-    gsap.to(header, {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      delay: 0.3,
-      ease: "power3.out",
-    });
+// Header slides down from top
+gsap.fromTo(header, {
+  y: "-100%",
+  opacity: 0
+}, {
+  y: 0,
+  opacity: 1,
+  duration: 1.0,
+  delay: 0.6,
+  ease: "back.out(1.2)",
+});
 
-    gsap.to(footer, {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      delay: 0.5,
-      ease: "power3.out",
-    });
+// Footer slides up from bottom
+gsap.fromTo(footer, {
+  y: "100%",
+  opacity: 0
+}, {
+  y: 0,
+  opacity: 1,
+  duration: 1.0,
+  delay: 0.9,
+  ease: "back.out(1.2)",
+});
 
-    // Initialize all enhanced systems
-    new HeroAnimations();
-    new TerminalAnimations();
-    new NavigationSystem();
-    new ParallaxSystem();
-    new ReactiveScrollSystem();
-    new VisualElementsSystem();
-  }
+  // Initialize systems with delays for smoother experience
+  setTimeout(() => new HeroAnimations(), 800);
+  setTimeout(() => new TerminalAnimations(), 1200);
+  setTimeout(() => new NavigationSystem(), 1600);
+  setTimeout(() => new ParallaxSystem(), 2000);
+  setTimeout(() => new ReactiveScrollSystem(), 2400);
+  setTimeout(() => new VisualElementsSystem(), 2800);
+}
 }
 
 // Enhanced Reactive Scroll System - RESTORED
@@ -943,98 +960,139 @@ class HeroAnimations {
     });
   }
 
-  animate() {
-    const tl = gsap.timeline({ delay: 0.8 });
+animate() {
+  const tl = gsap.timeline({ delay: 0.8 }); // Increased delay
 
-    tl.to(this.badge, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: "power3.out",
-    });
+// Scale + rotate entrance for badge
+gsap.fromTo(this.badge, {
+  scale: 0,
+  rotation: -180,
+  opacity: 0
+}, {
+  scale: 1,
+  rotation: 0,
+  opacity: 1,
+  duration: 0.9,
+  ease: "back.out(1.7)",
+});
+  // Much slower title word reveals
+  tl.to(this.titleWords, {
+    y: "0%",
+    duration: 1.2,        
+    stagger: 0.12,        
+    ease: "power2.out",
+  }, 0.8);
 
-    tl.to(this.titleWords, {
-      y: "0%",
-      duration: 1.2,
-      stagger: 0.08,
-      ease: "power3.out",
-    }, 0.4);
-
-    tl.to([this.description, this.actions], {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      stagger: 0.2,
-      ease: "power3.out",
-    }, 1.2);
-  }
+  // Slower description and actions
+  tl.to([this.description, this.actions], {
+    opacity: 1,
+    y: 0,
+    duration: 0.9,       
+    stagger: 0.25,        
+    ease: "power2.out",
+  }, 2.0);
 }
-
-// Enhanced Terminal Animations - RESTORED
+}
 class TerminalAnimations {
   constructor() {
+    this.terminal = document.querySelector(".quantum-terminal");
     this.codeLines = document.querySelectorAll(".code-line");
     this.animate();
+    this.initFloatingEffect();
   }
 
   animate() {
+    // Slower code line reveals
     gsap.to(this.codeLines, {
       opacity: 1,
       x: 0,
-      duration: 0.6,
-      stagger: 0.08,
-      delay: 2.5,
-      ease: "power2.out",
+      duration: 1.0,       // Increased from 0.6
+      stagger: 0.15,       // Increased from 0.08
+      delay: 1.0,          // Increased from 2.5
+      ease: "power1.out",
     });
 
     const dots = document.querySelectorAll(".control-dot");
     dots.forEach((dot, index) => {
       dot.addEventListener("click", () => {
         switch (index) {
-          case 0:
-            this.minimizeEffect();
-            break;
-          case 1:
-            this.scrambleEffect();
-            break;
-          case 2:
-            this.glowEffect();
-            break;
+          case 0: this.minimizeEffect(); break;
+          case 1: this.scrambleEffect(); break;
+          case 2: this.glowEffect(); break;
         }
       });
     });
   }
 
+  // NEW: Continuous floating effect for terminal
+  initFloatingEffect() {
+    if (!this.terminal) return;
+
+    // Gentle floating animation
+    gsap.to(this.terminal, {
+      y: "+=8",
+      duration: 4,
+      yoyo: true,
+      repeat: -1,
+      ease: "sine.inOut"
+    });
+
+    // Subtle rotation float
+    gsap.to(this.terminal, {
+      rotationZ: "+=0.5",
+      duration: 6,
+      yoyo: true,
+      repeat: -1,
+      ease: "sine.inOut"
+    });
+
+    // Gentle scale breathing
+    gsap.to(this.terminal, {
+      scale: 1.01,
+      duration: 5,
+      yoyo: true,
+      repeat: -1,
+      ease: "sine.inOut"
+    });
+
+    // Subtle glow pulse
+    gsap.to(this.terminal, {
+      boxShadow: "0 25px 60px rgba(212, 175, 55, 0.15)",
+      duration: 3,
+      yoyo: true,
+      repeat: -1,
+      ease: "sine.inOut"
+    });
+  }
+
   minimizeEffect() {
-    const terminal = document.querySelector(".quantum-terminal");
-    gsap.to(terminal, {
-      scale: 0.98,
-      duration: 0.2,
+    gsap.to(this.terminal, {
+      scale: 0.99,
+      duration: 0.3,
       yoyo: true,
       repeat: 1,
-      ease: "power2.inOut",
+      ease: "power1.inOut",
     });
   }
 
   scrambleEffect() {
     gsap.to(this.codeLines, {
-      x: Math.random() * 4 - 2,
-      duration: 0.05,
+      x: Math.random() * 2 - 1,  // Reduced movement
+      duration: 0.04,
       yoyo: true,
-      repeat: 7,
-      stagger: 0.01,
+      repeat: 3,                 // Reduced from 7
+      stagger: 0.008,
       ease: "none",
     });
   }
 
   glowEffect() {
-    const terminal = document.querySelector(".quantum-terminal");
-    gsap.to(terminal, {
-      boxShadow: "0 0 60px rgba(212, 175, 55, 0.6)",
-      duration: 0.3,
+    gsap.to(this.terminal, {
+      boxShadow: "0 0 40px rgba(212, 175, 55, 0.4)",
+      duration: 0.5,
       yoyo: true,
       repeat: 1,
-      ease: "power2.inOut",
+      ease: "power1.inOut",
     });
   }
 }
