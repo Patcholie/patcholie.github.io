@@ -1,7 +1,7 @@
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger, TextPlugin, Observer);
 
-// Elite State Management
+// Elite State Management - RESTORED
 const AppState = {
   mouseX: 0,
   mouseY: 0,
@@ -16,10 +16,10 @@ const AppState = {
   lastScrollTime: 0
 };
 
-// Performance optimized scroll container
+// Performance optimized scroll container - RESTORED
 const container = document.querySelector(".container");
 
-// Enhanced Locomotive Scroll Configuration
+// Enhanced Locomotive Scroll Configuration - RESTORED
 const scroller = new LocomotiveScroll({
   el: container,
   smooth: true,
@@ -37,7 +37,7 @@ const scroller = new LocomotiveScroll({
   }
 });
 
-// Enhanced ScrollTrigger Integration
+// Enhanced ScrollTrigger Integration - RESTORED
 scroller.on("scroll", (args) => {
   ScrollTrigger.update();
   AppState.scrollProgress = args.scroll.y / (args.limit.y || 1);
@@ -68,7 +68,7 @@ ScrollTrigger.scrollerProxy(container, {
 
 ScrollTrigger.addEventListener("refresh", () => scroller.update());
 
-// Professional Scroll Progress System
+// Professional Scroll Progress System - RESTORED
 class ScrollProgressSystem {
   constructor() {
     this.progressLine = document.querySelector('.progress-line');
@@ -107,7 +107,7 @@ class ScrollProgressSystem {
   }
 }
 
-// Professional Section Navigation System
+// Professional Section Navigation System - RESTORED
 class SectionNavigationSystem {
   constructor() {
     this.navDots = document.querySelectorAll('.nav-dot');
@@ -169,7 +169,7 @@ class SectionNavigationSystem {
   }
 }
 
-// Professional Cursor System
+// Professional Cursor System - RESTORED WITH TRAILS
 class EliteCursor {
   constructor() {
     if (window.innerWidth <= 768) return;
@@ -198,7 +198,7 @@ class EliteCursor {
       trail.style.width = `${size}px`;
       trail.style.height = `${size}px`;
       trail.style.opacity = opacity;
-      trail.style.background = `rgba(0, 255, 136, ${opacity})`;
+      trail.style.background = `rgba(212, 175, 55, ${opacity})`;
       trail.style.position = "absolute";
       trail.style.borderRadius = "50%";
       trail.style.pointerEvents = "none";
@@ -287,7 +287,7 @@ class EliteCursor {
   }
 }
 
-// Enhanced Preloader System
+// Enhanced Preloader System - RESTORED ORIGINAL
 class SecurityPreloader {
   constructor() {
     this.preloader = document.getElementById("preloader");
@@ -396,11 +396,11 @@ class SecurityPreloader {
     new NavigationSystem();
     new ParallaxSystem();
     new ReactiveScrollSystem();
-    new VisualElementsSystem(); // Add this new system
+    new VisualElementsSystem();
   }
 }
 
-// Enhanced Reactive Scroll System
+// Enhanced Reactive Scroll System - RESTORED
 class ReactiveScrollSystem {
   constructor() {
     this.initializeElementVisibility();
@@ -466,31 +466,6 @@ class ReactiveScrollSystem {
       });
     });
 
-    // Scroll words individual reactivity
-    const scrollWords = document.querySelectorAll('.scroll-word');
-    scrollWords.forEach((word, index) => {
-      ScrollTrigger.create({
-        scroller: container,
-        trigger: word,
-        start: "top 80%",
-        end: "bottom 20%",
-        scrub: 1,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const centerProgress = Math.abs(progress - 0.5) * 2;
-          const scale = 1 + (1 - centerProgress) * 0.03;
-          const rotation = (progress - 0.5) * 2;
-          
-          gsap.set(word, {
-            scale: scale,
-            rotationZ: rotation,
-            y: (progress - 0.5) * 10,
-            textShadow: `0 0 ${(1 - centerProgress) * 20}px rgba(0, 255, 136, 0.3)`
-          });
-        }
-      });
-    });
-
     // Section numbers dynamic scaling
     const sectionNumbers = document.querySelectorAll('.scroll-number');
     sectionNumbers.forEach((number) => {
@@ -514,7 +489,7 @@ class ReactiveScrollSystem {
   }
 
   initCardMagnetism() {
-    const cards = document.querySelectorAll('.scroll-card');
+    const cards = document.querySelectorAll('.project-card');
     
     cards.forEach((card, index) => {
       // Enhanced magnetic effect
@@ -537,35 +512,9 @@ class ReactiveScrollSystem {
           gsap.set(card, {
             scale: scale,
             rotationY: rotationY,
-            boxShadow: `0 ${5 + magnetism * 20}px ${30 + magnetism * 20}px rgba(0, 255, 136, ${glow})`,
+            boxShadow: `0 ${5 + magnetism * 20}px ${30 + magnetism * 20}px rgba(212, 175, 55, ${glow})`,
             z: magnetism * 30
           });
-
-          // Card content reactivity
-          const icon = card.querySelector('.scroll-icon');
-          const title = card.querySelector('.scroll-project-title');
-          const description = card.querySelector('.scroll-description');
-          
-          if (icon) {
-            gsap.set(icon, {
-              scale: 1 + magnetism * 0.1,
-              rotationY: rotationY * 0.5,
-              filter: `brightness(${1 + magnetism * 0.3})`
-            });
-          }
-          
-          if (title) {
-            gsap.set(title, {
-              x: magnetism * 8,
-              textShadow: `0 0 ${magnetism * 15}px rgba(0, 255, 136, 0.4)`
-            });
-          }
-          
-          if (description) {
-            gsap.set(description, {
-              x: magnetism * 5
-            });
-          }
 
           // Update card class for CSS interactions
           if (magnetism > 0.5) {
@@ -574,30 +523,6 @@ class ReactiveScrollSystem {
             card.classList.remove('magnetic');
           }
         }
-      });
-
-      // Tech tags stagger animation
-      const techTags = card.querySelectorAll('.scroll-tag');
-      techTags.forEach((tag, tagIndex) => {
-        ScrollTrigger.create({
-          scroller: container,
-          trigger: card,
-          start: "top 70%",
-          end: "bottom 30%",
-          scrub: 1,
-          onUpdate: (self) => {
-            const progress = self.progress;
-            const delay = tagIndex * 0.1;
-            const adjustedProgress = Math.max(0, progress - delay);
-            const scale = 1 + adjustedProgress * 0.08;
-            const y = (1 - adjustedProgress) * 10;
-            
-            gsap.set(tag, {
-              scale: scale,
-              y: -y
-            });
-          }
-        });
       });
     });
   }
@@ -614,77 +539,17 @@ class ReactiveScrollSystem {
         onEnter: () => {
           gsap.to(word, {
             color: 'var(--color-accent-primary)',
-            textShadow: '0 0 10px rgba(0, 255, 136, 0.3)',
+            textShadow: '0 0 10px rgba(212, 175, 55, 0.3)',
             duration: 0.6,
             ease: "power2.out"
           });
-        },
-        onLeave: () => {
-          gsap.to(word, {
-            color: 'var(--color-accent-primary)',
-            textShadow: '0 0 5px rgba(0, 255, 136, 0.1)',
-            duration: 0.4,
-            ease: "power2.out"
-          });
-        },
-        onEnterBack: () => {
-          gsap.to(word, {
-            color: 'var(--color-accent-primary)',
-            textShadow: '0 0 10px rgba(0, 255, 136, 0.3)',
-            duration: 0.6,
-            ease: "power2.out"
-          });
-        }
-      });
-    });
-
-    // Text blocks scroll animation
-    const textBlocks = document.querySelectorAll('.scroll-text');
-    textBlocks.forEach((text, index) => {
-      const textIndex = parseInt(text.dataset.textIndex) || 0;
-      
-      ScrollTrigger.create({
-        scroller: container,
-        trigger: text,
-        start: "top 85%",
-        end: "bottom 15%",
-        onEnter: () => {
-          gsap.to(text, {
-            y: 0,
-            scale: 1,
-            duration: 0.8,
-            delay: textIndex * 0.2,
-            ease: "power3.out"
-          });
-          text.classList.add('animate-in');
-          text.classList.remove('animate-out');
-        },
-        onLeave: () => {
-          gsap.to(text, {
-            y: -20,
-            scale: 0.98,
-            duration: 0.4,
-            ease: "power2.in"
-          });
-          text.classList.add('animate-out');
-          text.classList.remove('animate-in');
-        },
-        onEnterBack: () => {
-          gsap.to(text, {
-            y: 0,
-            scale: 1,
-            duration: 0.6,
-            ease: "power2.out"
-          });
-          text.classList.add('animate-in');
-          text.classList.remove('animate-out');
         }
       });
     });
   }
 
   initButtonReactions() {
-    const scrollButtons = document.querySelectorAll('.scroll-btn');
+    const scrollButtons = document.querySelectorAll('.btn');
     
     scrollButtons.forEach((button) => {
       const btnText = button.querySelector('.btn-text');
@@ -705,7 +570,7 @@ class ReactiveScrollSystem {
           
           gsap.set(button, {
             scale: scale,
-            boxShadow: `0 ${5 + glow * 15}px ${20 + glow * 20}px rgba(0, 255, 136, ${glow * 0.3})`
+            boxShadow: `0 ${5 + glow * 15}px ${20 + glow * 20}px rgba(212, 175, 55, ${glow * 0.3})`
           });
         }
       });
@@ -760,18 +625,10 @@ class ReactiveScrollSystem {
   }
 
   initIconAnimations() {
-    const scrollIcons = document.querySelectorAll('.scroll-icon');
+    const scrollIcons = document.querySelectorAll('.project-icon');
     
     scrollIcons.forEach((icon) => {
-      // Continuous subtle animation
-      gsap.to(icon, {
-        rotationY: 360,
-        duration: 20,
-        ease: "none",
-        repeat: -1
-      });
-
-      // Scroll-based enhancement
+      // Scroll-based enhancement (NO SPINNING)
       ScrollTrigger.create({
         scroller: container,
         trigger: icon,
@@ -786,37 +643,15 @@ class ReactiveScrollSystem {
           gsap.set(icon, {
             scale: scale,
             filter: `brightness(${brightness})`,
-            textShadow: `0 0 ${progress * 20}px rgba(0, 255, 136, 0.5)`
+            textShadow: `0 0 ${progress * 20}px rgba(212, 175, 55, 0.5)`
           });
         }
       });
     });
-
-    // Badge icon special animation
-    const badgeIcon = document.querySelector('.badge-icon');
-    if (badgeIcon) {
-      ScrollTrigger.create({
-        scroller: container,
-        trigger: badgeIcon,
-        start: "top 80%",
-        end: "bottom 20%",
-        scrub: 1,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const rotation = progress * 360;
-          const scale = 1 + Math.sin(progress * Math.PI) * 0.1;
-          
-          gsap.set(badgeIcon, {
-            rotation: rotation,
-            scale: scale
-          });
-        }
-      });
-    }
   }
 
   initSectionStates() {
-    const sections = document.querySelectorAll('.scroll-section');
+    const sections = document.querySelectorAll('.section');
     
     sections.forEach((section) => {
       ScrollTrigger.create({
@@ -839,168 +674,9 @@ class ReactiveScrollSystem {
       });
     });
   }
-
-  initSectionAnimations() {
-    const sections = document.querySelectorAll(".section");
-
-    sections.forEach((section, index) => {
-      const sectionHeader = section.querySelector(".section-header");
-      const sectionContent = section.querySelector(
-        '.projects-grid, .about-content, .experience-content, .contact-content, .hero-content'
-      );
-
-      if (sectionHeader) {
-        ScrollTrigger.create({
-          scroller: container,
-          trigger: section,
-          start: "top 80%",
-          end: "bottom 20%",
-          onEnter: () => {
-            gsap.to(sectionHeader, {
-              opacity: 1,
-              y: 0,
-              duration: 1.2,
-              ease: "power3.out",
-            });
-          },
-          onLeave: () => {
-            gsap.to(sectionHeader, {
-              opacity: 0.7,
-              y: -20,
-              duration: 0.6,
-              ease: "power2.in",
-            });
-          },
-          onEnterBack: () => {
-            gsap.to(sectionHeader, {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: "power2.out",
-            });
-          }
-        });
-      }
-
-      if (sectionContent) {
-        ScrollTrigger.create({
-          scroller: container,
-          trigger: section,
-          start: "top 70%",
-          end: "bottom 30%",
-          onEnter: () => {
-            gsap.to(sectionContent, {
-              opacity: 1,
-              y: 0,
-              duration: 1.4,
-              delay: 0.2,
-              ease: "power3.out",
-            });
-          },
-          onLeave: () => {
-            gsap.to(sectionContent, {
-              opacity: 0.8,
-              y: -10,
-              duration: 0.6,
-              ease: "power2.in",
-            });
-          },
-          onEnterBack: () => {
-            gsap.to(sectionContent, {
-              opacity: 1,
-              y: 0,
-              duration: 1,
-              ease: "power2.out",
-            });
-          }
-        });
-      }
-    });
-  }
-
-  initElementAnimations() {
-    // Project cards individual animation
-    const projectCards = document.querySelectorAll(".project-card");
-    projectCards.forEach((card, index) => {
-      ScrollTrigger.create({
-        scroller: container,
-        trigger: card,
-        start: "top 85%",
-        onEnter: () => {
-          gsap.to(card, {
-            opacity: 1,
-            y: 0,
-            scale: 1,
-            duration: 0.8,
-            delay: index * 0.1,
-            ease: "back.out(1.7)",
-          });
-        }
-      });
-
-      // Continuous hover-like effect while in view
-      ScrollTrigger.create({
-        scroller: container,
-        trigger: card,
-        start: "top 60%",
-        end: "bottom 40%",
-        scrub: 1,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const centerProgress = Math.abs(progress - 0.5) * 2;
-          const scale = 1 + (1 - centerProgress) * 0.02;
-          
-          gsap.set(card, {
-            scale: scale,
-            rotationY: (progress - 0.5) * 5
-          });
-        }
-      });
-    });
-
-    // Tech tags animation
-    const techTags = document.querySelectorAll(".tech-tag");
-    techTags.forEach((tag, index) => {
-      ScrollTrigger.create({
-        scroller: container,
-        trigger: tag,
-        start: "top 90%",
-        onEnter: () => {
-          gsap.to(tag, {
-            opacity: 1,
-            scale: 1,
-            duration: 0.4,
-            delay: index * 0.05,
-            ease: "back.out(1.7)",
-          });
-        }
-      });
-    });
-  }
-
-  initTextAnimations() {
-    // Animated text reveal for descriptions
-    const textElements = document.querySelectorAll('.hero-description, .about-text, .experience-text, .contact-text, .project-description');
-    
-    textElements.forEach((element) => {
-      ScrollTrigger.create({
-        scroller: container,
-        trigger: element,
-        start: "top 80%",
-        onEnter: () => {
-          gsap.to(element, {
-            opacity: 1,
-            y: 0,
-            duration: 1,
-            ease: "power2.out",
-          });
-        }
-      });
-    });
-  }
 }
 
-// Enhanced Professional Parallax System
+// Enhanced Professional Parallax System - RESTORED
 class ParallaxSystem {
   constructor() {
     this.initBackgroundParallax();
@@ -1132,16 +808,16 @@ class ParallaxSystem {
           gsap.set(terminal, {
             rotationY: (progress - 0.5) * 8,
             scale: 1 + (1 - centerProgress) * 0.08,
-            boxShadow: `0 0 ${(1 - centerProgress) * 40}px rgba(0, 255, 136, 0.3)`
+            boxShadow: `0 0 ${(1 - centerProgress) * 40}px rgba(212, 175, 55, 0.3)`
           });
         }
       });
     }
 
     // Enhanced project cards parallax - MORE NOTICEABLE
-    const projectCards = document.querySelectorAll('.scroll-card');
+    const projectCards = document.querySelectorAll('.project-card');
     projectCards.forEach((card, index) => {
-      const speed = 0.15 + (index * 0.08); // Increased speed
+      const speed = 0.15 + (index * 0.08);
       
       ScrollTrigger.create({
         scroller: container,
@@ -1151,9 +827,9 @@ class ParallaxSystem {
         scrub: 1,
         onUpdate: (self) => {
           const progress = self.progress;
-          const y = (progress - 0.5) * 80 * speed; // Increased movement
-          const rotationY = (progress - 0.5) * 15; // Increased rotation
-          const scale = 1 + Math.sin(progress * Math.PI) * 0.04; // Increased scale
+          const y = (progress - 0.5) * 80 * speed;
+          const rotationY = (progress - 0.5) * 15;
+          const scale = 1 + Math.sin(progress * Math.PI) * 0.04;
           
           gsap.set(card, {
             y: y,
@@ -1166,8 +842,8 @@ class ParallaxSystem {
   }
 
   initTextParallax() {
-    // Enhanced section titles parallax - MORE NOTICEABLE
-    const sectionTitles = document.querySelectorAll('.scroll-title');
+    // Enhanced section titles parallax
+    const sectionTitles = document.querySelectorAll('.section-title');
     sectionTitles.forEach((title) => {
       ScrollTrigger.create({
         scroller: container,
@@ -1177,8 +853,8 @@ class ParallaxSystem {
         scrub: 1,
         onUpdate: (self) => {
           const progress = self.progress;
-          const y = (progress - 0.5) * 50; // Increased movement
-          const scale = 1 + Math.sin(progress * Math.PI) * 0.05; // Increased scale
+          const y = (progress - 0.5) * 50;
+          const scale = 1 + Math.sin(progress * Math.PI) * 0.05;
           
           gsap.set(title, {
             y: y,
@@ -1187,80 +863,13 @@ class ParallaxSystem {
         }
       });
     });
-
-    // Enhanced text blocks parallax - MORE NOTICEABLE
-    const textBlocks = document.querySelectorAll('.scroll-text, .card-text, .experience-description');
-    textBlocks.forEach((text, index) => {
-      const speed = 0.08 + (index % 3) * 0.04; // Increased speed
-      
-      ScrollTrigger.create({
-        scroller: container,
-        trigger: text,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 1,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const y = (progress - 0.5) * 30 * speed; // Increased movement
-          
-          gsap.set(text, {
-            y: y
-          });
-        }
-      });
-    });
   }
 
   initInteractiveParallax() {
-    // Enhanced icons parallax - MORE NOTICEABLE
-    const scrollIcons = document.querySelectorAll('.scroll-icon, .card-icon, .experience-icon');
-    scrollIcons.forEach((icon, index) => {
-      ScrollTrigger.create({
-        scroller: container,
-        trigger: icon,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 1,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const rotationY = progress * 200; // Increased rotation
-          const scale = 1 + Math.sin(progress * Math.PI * 2) * 0.15; // Increased scale
-          
-          gsap.set(icon, {
-            rotationY: rotationY,
-            scale: scale
-          });
-        }
-      });
-    });
-
-    // Enhanced buttons parallax - MORE NOTICEABLE
-    const scrollButtons = document.querySelectorAll('.scroll-btn');
-    scrollButtons.forEach((button, index) => {
-      ScrollTrigger.create({
-        scroller: container,
-        trigger: button,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 1,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const centerDistance = Math.abs(progress - 0.5) * 2;
-          const scale = 1 + (1 - centerDistance) * 0.06; // Increased scale
-          const y = (progress - 0.5) * 25; // Increased movement
-          
-          gsap.set(button, {
-            y: y,
-            scale: scale
-          });
-        }
-      });
-    });
-
-    // Enhanced floating elements - MORE NOTICEABLE
+    // Enhanced floating elements
     const floatingElements = document.querySelectorAll('.floating-element');
     floatingElements.forEach((element, index) => {
-      const floatSpeed = 0.05 + (index % 4) * 0.03; // Increased speed
+      const floatSpeed = 0.05 + (index % 4) * 0.03;
       
       ScrollTrigger.create({
         scroller: container,
@@ -1270,10 +879,10 @@ class ParallaxSystem {
         scrub: 1,
         onUpdate: (self) => {
           const progress = self.progress;
-          const y = Math.sin(progress * Math.PI * 3) * 15 * floatSpeed; // Increased movement
-          const x = Math.cos(progress * Math.PI * 2) * 10 * floatSpeed; // Added x movement
-          const rotation = Math.sin(progress * Math.PI * 2) * 15; // Increased rotation
-          const scale = 1 + Math.sin(progress * Math.PI * 4) * 0.3; // Added scale
+          const y = Math.sin(progress * Math.PI * 3) * 15 * floatSpeed;
+          const x = Math.cos(progress * Math.PI * 2) * 10 * floatSpeed;
+          const rotation = Math.sin(progress * Math.PI * 2) * 15;
+          const scale = 1 + Math.sin(progress * Math.PI * 4) * 0.3;
           
           gsap.set(element, {
             x: x,
@@ -1287,7 +896,7 @@ class ParallaxSystem {
   }
 
   initSectionSpecificParallax() {
-    // About section cards - Enhanced parallax
+    // About section cards
     const aboutCards = document.querySelectorAll('.about-card');
     aboutCards.forEach((card, index) => {
       ScrollTrigger.create({
@@ -1299,9 +908,9 @@ class ParallaxSystem {
         onUpdate: (self) => {
           const progress = self.progress;
           const direction = index % 2 === 0 ? 1 : -1;
-          const y = (progress - 0.5) * 25 * direction; // Reduced movement for professionalism
-          const rotationZ = (progress - 0.5) * 2 * direction; // Reduced rotation
-          const scale = 1 + Math.sin(progress * Math.PI) * 0.02; // Subtle scale
+          const y = (progress - 0.5) * 25 * direction;
+          const rotationZ = (progress - 0.5) * 2 * direction;
+          const scale = 1 + Math.sin(progress * Math.PI) * 0.02;
           
           gsap.set(card, {
             y: y,
@@ -1311,101 +920,10 @@ class ParallaxSystem {
         }
       });
     });
-
-    // Experience cards - Enhanced professional parallax
-    const experienceCards = document.querySelectorAll('.experience-card');
-    experienceCards.forEach((card, index) => {
-      ScrollTrigger.create({
-        scroller: container,
-        trigger: card,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 1,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const y = (progress - 0.5) * 20; // Consistent upward movement
-          const rotationY = (progress - 0.5) * 3; // Subtle 3D effect
-          const scale = 1 + Math.sin(progress * Math.PI) * 0.02;
-          
-          gsap.set(card, {
-            y: y,
-            rotationY: rotationY,
-            scale: scale
-          });
-        }
-      });
-    });
-
-    // Skill items - Individual parallax
-    const skillItems = document.querySelectorAll('.skill-item');
-    skillItems.forEach((skill, index) => {
-      ScrollTrigger.create({
-        scroller: container,
-        trigger: skill,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 1,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const y = (progress - 0.5) * 15; // Subtle movement
-          const x = Math.sin(progress * Math.PI * 2) * 3; // Gentle wave
-          
-          gsap.set(skill, {
-            x: x,
-            y: y
-          });
-        }
-      });
-    });
-
-    // Achievement items parallax
-    const achievementItems = document.querySelectorAll('.achievement-item');
-    achievementItems.forEach((item, index) => {
-      ScrollTrigger.create({
-        scroller: container,
-        trigger: item,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 1,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const x = (progress - 0.5) * 8;
-          const y = (progress - 0.5) * 5;
-          
-          gsap.set(item, {
-            x: x,
-            y: y
-          });
-        }
-      });
-    });
-
-    // Stat badges parallax
-    const statBadges = document.querySelectorAll('.stat-badge');
-    statBadges.forEach((badge, index) => {
-      ScrollTrigger.create({
-        scroller: container,
-        trigger: badge,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: 1,
-        onUpdate: (self) => {
-          const progress = self.progress;
-          const direction = index % 2 === 0 ? 1 : -1;
-          const y = (progress - 0.5) * 10 * direction;
-          const rotation = (progress - 0.5) * 5 * direction;
-          
-          gsap.set(badge, {
-            y: y,
-            rotationZ: rotation
-          });
-        }
-      });
-    });
   }
 }
 
-// Enhanced Hero Animations
+// Enhanced Hero Animations - RESTORED
 class HeroAnimations {
   constructor() {
     this.initElements();
@@ -1419,7 +937,6 @@ class HeroAnimations {
     this.actions = document.querySelector(".hero-actions");
 
     gsap.set(this.titleWords, { y: "100%" });
-    // Remove initial hidden state for other elements
     gsap.set([this.badge, this.description, this.actions], {
       opacity: 1,
       y: 0,
@@ -1453,7 +970,7 @@ class HeroAnimations {
   }
 }
 
-// Enhanced Terminal Animations
+// Enhanced Terminal Animations - RESTORED
 class TerminalAnimations {
   constructor() {
     this.codeLines = document.querySelectorAll(".code-line");
@@ -1513,7 +1030,7 @@ class TerminalAnimations {
   glowEffect() {
     const terminal = document.querySelector(".quantum-terminal");
     gsap.to(terminal, {
-      boxShadow: "0 0 60px rgba(0, 255, 136, 0.6)",
+      boxShadow: "0 0 60px rgba(212, 175, 55, 0.6)",
       duration: 0.3,
       yoyo: true,
       repeat: 1,
@@ -1522,7 +1039,7 @@ class TerminalAnimations {
   }
 }
 
-// Enhanced Navigation System with Menu Highlighting
+// Enhanced Navigation System with Menu Highlighting - RESTORED
 class NavigationSystem {
   constructor() {
     this.initElements();
@@ -1711,14 +1228,13 @@ class NavigationSystem {
   }
 }
 
-// Enhanced Visual Elements System
+// Enhanced Visual Elements System - RESTORED
 class VisualElementsSystem {
   constructor() {
     this.initSkillBars();
     this.initAchievementAnimations();
     this.initCardEnhancements();
     this.initFloatingElements();
-    this.initTimelineEffects();
   }
 
   initSkillBars() {
@@ -1739,7 +1255,6 @@ class VisualElementsSystem {
             ease: "power3.out"
           });
           
-          // Add sparkle effect
           this.addSparkleEffect(bar);
         }
       });
@@ -1821,7 +1336,6 @@ class VisualElementsSystem {
         const icon = item.querySelector('i');
         if (icon) {
           gsap.to(icon, {
-            rotationZ: 360,
             scale: 1.2,
             duration: 0.6,
             ease: "back.out(1.7)"
@@ -1840,7 +1354,6 @@ class VisualElementsSystem {
         const icon = item.querySelector('i');
         if (icon) {
           gsap.to(icon, {
-            rotationZ: 0,
             scale: 1,
             duration: 0.4,
             ease: "power2.out"
@@ -1848,32 +1361,10 @@ class VisualElementsSystem {
         }
       });
     });
-
-    // Stat badges animation
-    const statBadges = document.querySelectorAll('.stat-badge');
-    statBadges.forEach((badge, index) => {
-      ScrollTrigger.create({
-        scroller: container,
-        trigger: badge,
-        start: "top 80%",
-        onEnter: () => {
-          gsap.fromTo(badge, {
-            scale: 0,
-            rotationZ: -180
-          }, {
-            scale: 1,
-            rotationZ: 0,
-            duration: 0.8,
-            delay: index * 0.2,
-            ease: "back.out(1.7)"
-          });
-        }
-      });
-    });
   }
 
   initCardEnhancements() {
-    const allCards = document.querySelectorAll('.about-card, .experience-card');
+    const allCards = document.querySelectorAll('.about-card, .experience-card, .project-card');
     
     allCards.forEach((card) => {
       // Enhanced card entry animation
@@ -1905,7 +1396,7 @@ class VisualElementsSystem {
           ease: "power2.out"
         });
 
-        const icon = card.querySelector('.card-icon, .experience-icon');
+        const icon = card.querySelector('.card-icon, .experience-icon, .project-icon');
         if (icon) {
           gsap.to(icon, {
             rotationY: 180,
@@ -1935,7 +1426,7 @@ class VisualElementsSystem {
           ease: "power2.out"
         });
 
-        const icon = card.querySelector('.card-icon, .experience-icon');
+        const icon = card.querySelector('.card-icon, .experience-icon, .project-icon');
         if (icon) {
           gsap.to(icon, {
             rotationY: 0,
@@ -1980,101 +1471,11 @@ class VisualElementsSystem {
         ease: "sine.inOut",
         delay: Math.random() * 2
       });
-
-      gsap.to(element, {
-        rotationZ: "+=20",
-        duration: 6,
-        yoyo: true,
-        repeat: -1,
-        ease: "sine.inOut",
-        delay: Math.random() * 3
-      });
-    });
-  }
-
-  initTimelineEffects() {
-    // Enhanced experience cards animation without problematic timeline
-    const experienceCards = document.querySelectorAll('.experience-card');
-    
-    experienceCards.forEach((card, index) => {
-      ScrollTrigger.create({
-        scroller: container,
-        trigger: card,
-        start: "top 85%",
-        onEnter: () => {
-          gsap.fromTo(card, {
-            y: 30,
-            opacity: 0,
-            scale: 0.95
-          }, {
-            y: 0,
-            opacity: 1,
-            scale: 1,
-            duration: 0.8,
-            delay: index * 0.15,
-            ease: "power3.out"
-          });
-        }
-      });
-    });
-
-    // Learning tags animation
-    const learningTags = document.querySelectorAll('.learning-tech');
-    learningTags.forEach((tag, index) => {
-      ScrollTrigger.create({
-        scroller: container,
-        trigger: tag,
-        start: "top 90%",
-        onEnter: () => {
-          gsap.fromTo(tag.parentElement, {
-            scale: 0,
-            rotationZ: Math.random() * 360
-          }, {
-            scale: 1,
-            rotationZ: 0,
-            duration: 0.6,
-            delay: index * 0.1,
-            ease: "back.out(1.7)"
-          });
-        }
-      });
-
-      // Continuous subtle animation
-      gsap.to(tag, {
-        rotationZ: "+=1",
-        duration: 8,
-        yoyo: true,
-        repeat: -1,
-        ease: "sine.inOut",
-        delay: index * 0.2
-      });
-    });
-
-    // Experience achievement items enhanced animation
-    const achievementItems = document.querySelectorAll('.achievement-item');
-    achievementItems.forEach((item, index) => {
-      ScrollTrigger.create({
-        scroller: container,
-        trigger: item,
-        start: "top 90%",
-        onEnter: () => {
-          gsap.fromTo(item, {
-            x: -20,
-            opacity: 0
-          }, {
-            x: 0,
-            opacity: 1,
-            duration: 0.6,
-            delay: index * 0.08,
-            ease: "power2.out"
-          });
-        }
-      });
     });
   }
 }
 
-// Global utility functions
+// Global utility functions - RESTORED
 function updateScrollProgress() {
   if (window.scrollProgressSystem) {
     window.scrollProgressSystem.update(AppState.scrollProgress);
@@ -2087,7 +1488,7 @@ function updateSectionNavigation(scrollY) {
   }
 }
 
-// Performance optimization: Debounced scroll end detection
+// Performance optimization: Debounced scroll end detection - RESTORED
 function detectScrollEnd() {
   const now = Date.now();
   if (now - AppState.lastScrollTime > 150) {
@@ -2096,7 +1497,7 @@ function detectScrollEnd() {
   requestAnimationFrame(detectScrollEnd);
 }
 
-// Initialize Application
+// Initialize Application - RESTORED ALL FEATURES
 document.addEventListener("DOMContentLoaded", () => {
   // Initialize cursor system
   new EliteCursor();
@@ -2112,7 +1513,7 @@ document.addEventListener("DOMContentLoaded", () => {
   detectScrollEnd();
 });
 
-// Enhanced resize handler with debouncing
+// Enhanced resize handler with debouncing - RESTORED
 let resizeTimeout;
 window.addEventListener("resize", () => {
   clearTimeout(resizeTimeout);
@@ -2122,7 +1523,7 @@ window.addEventListener("resize", () => {
   }, 250);
 });
 
-// Performance-optimized load handler
+// Performance-optimized load handler - RESTORED
 window.addEventListener("load", function () {
   setTimeout(() => {
     scroller.update();
@@ -2130,13 +1531,11 @@ window.addEventListener("load", function () {
   }, 100);
 });
 
-// Handle visibility change for performance
+// Handle visibility change for performance - RESTORED
 document.addEventListener('visibilitychange', function() {
   if (document.hidden) {
-    // Pause animations when tab is not visible
     gsap.globalTimeline.pause();
   } else {
-    // Resume animations when tab becomes visible
     gsap.globalTimeline.resume();
     scroller.update();
   }

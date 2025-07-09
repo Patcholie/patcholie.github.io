@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&family=Space+Grotesk:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@100;200;300;400;500;600;700;800&family=Fira+Code:wght@300;400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
       rel="stylesheet"
     />
 
@@ -66,14 +66,15 @@
       </div>
     </div>
 
+    <!-- VIDEO BACKGROUND - RESTORED -->
     <div class="video-background">
       <video autoplay loop muted playsinline id="bg-video">
-        <source src="ocean_loop_background.mp4" type="video/mp4" />
+        <source src="ocean_background.mp4" type="video/mp4" />
         Your browser does not support the video tag.
       </video>
     </div>
 
-    <!-- Elite Security Preloader -->
+    <!-- Elite Security Preloader - RESTORED ORIGINAL -->
     <div class="preloader" id="preloader">
       <div class="security-gateway">
         <div class="gateway-header">
@@ -140,56 +141,40 @@
     
     <!-- Background Effects -->
     <div class="bg-effects">
-      <div class="gradient-orb orb-1" data-speed="0.3"></div>
-      <div class="gradient-orb orb-2" data-speed="0.5"></div>
-      <div class="gradient-orb orb-3" data-speed="0.4"></div>
+      <div class="gradient-orb orb-1"></div>
+      <div class="gradient-orb orb-2"></div>
+      <div class="gradient-orb orb-3"></div>
       <div class="grid-overlay"></div>
     </div>
 
     <!-- Professional Header -->
     <header class="main-header" id="main-header">
-      <div class="header-grid">
+      <div class="header-container">
         <div class="brand-section">
           <div class="logo-container">
-            <div class="logo-circles">
-              <div class="circle circle-1"></div>
-              <div class="circle circle-2"></div>
-            </div>
+            <div class="logo">AS</div>
           </div>
-          <div class="text-reveal">
-            <a href="#hero" class="brand-text">Aviv Shaked</a>
+          <div class="brand-text">
+            <a href="#hero">Aviv Shaked</a>
           </div>
         </div>
 
-        <div class="nav-section">
-          <div class="text-reveal">
-            <button class="nav-toggle" id="nav-toggle">Menu</button>
-          </div>
-        </div>
+        <nav class="nav-section">
+          <button class="nav-toggle" id="nav-toggle">
+            <span class="nav-toggle-line"></span>
+            <span class="nav-toggle-line"></span>
+            <span class="nav-toggle-line"></span>
+          </button>
+        </nav>
 
         <div class="contact-section">
-          <a
-            href="https://github.com/Patcholie"
-            target="_blank"
-            class="social-link"
-            aria-label="GitHub"
-          >
+          <a href="https://github.com/Patcholie" target="_blank" class="social-link">
             <i class="fab fa-github"></i>
           </a>
-          <a
-            href="https://www.linkedin.com/in/aviv-shaked-59a4b7271/"
-            target="_blank"
-            class="social-link"
-            aria-label="LinkedIn"
-          >
+          <a href="https://www.linkedin.com/in/aviv-shaked-59a4b7271/" target="_blank" class="social-link">
             <i class="fab fa-linkedin"></i>
           </a>
-          <a
-            href="https://www.instagram.com/_avivshaked_/"
-            target="_blank"
-            class="social-link"
-            aria-label="Instagram"
-          >
+          <a href="https://www.instagram.com/_avivshaked_/" target="_blank" class="social-link">
             <i class="fab fa-instagram"></i>
           </a>
         </div>
@@ -198,26 +183,19 @@
 
     <!-- Professional Footer -->
     <footer class="main-footer" id="main-footer">
-      <div class="footer-grid">
-        <div class="coordinates-section">
-          <div class="text-reveal">
-            <p>32.8139° N, 34.9962° E</p>
-          </div>
+      <div class="footer-container">
+        <div class="footer-info">
+          <span>© 2024 Aviv Shaked</span>
+          <span>•</span>
+          <span>Cybersecurity Engineer</span>
         </div>
-        <div class="status-section">
-          <div class="text-reveal">
-            <p>Press <span class="key-hint">M</span> to toggle menu</p>
-          </div>
-        </div>
-        <div class="info-section">
-          <div class="text-reveal">
-            <p>Est. 2023 • Cybersecurity Elite</p>
-          </div>
+        <div class="footer-location">
+          <span>Haifa, Israel</span>
         </div>
       </div>
     </footer>
 
-    <!-- Elite Navigation Overlay -->
+    <!-- Enhanced Navigation Overlay - RESTORED -->
     <div class="nav-overlay" id="nav-overlay">
       <div class="featured-image" id="featured-image"></div>
 
@@ -272,45 +250,38 @@
       <!-- Main Content -->
       <main class="main-content" id="main-content">
         <!-- Hero Section -->
-        <section class="section hero-section" id="hero" data-scroll-section data-section-index="0">
+        <section class="section hero-section" id="hero" data-section-index="0">
           <div class="hero-content">
-            <div class="hero-text scroll-reactive" data-scroll data-scroll-speed="0.5">
-              <div class="hero-badge scroll-element" data-scroll-offset="0.1">
+            <div class="hero-text">
+              <div class="hero-badge">
                 <span class="badge-icon">🛡️</span>
-                <span class="badge-text">Cybersecurity developer</span>
+                <span class="badge-text">Cybersecurity Specialist</span>
               </div>
 
-              <h1 class="hero-title scroll-reactive">
+              <h1 class="hero-title">
+                <span class="title-line">Aviv Shaked</span>
                 <span class="title-line">
-                  <span class="title-word scroll-word" data-scroll-delay="0">I'm</span>
-                  <span class="title-word scroll-word" data-scroll-delay="0.1">Aviv</span>
-                  <span class="title-word scroll-word" data-scroll-delay="0.2">Shaked</span>
+                  <span class="highlight-text">Cybersecurity</span>
                 </span>
-                <span class="title-line">
-                  <span class="title-word scroll-word" data-scroll-delay="0.3">Cybersecurity</span>
-                </span>
-                <span class="title-line">
-                  <span class="title-word highlight-text scroll-word" data-scroll-delay="0.4">Engineer</span>
-                </span>
+                <span class="title-line">Engineer</span>
               </h1>
 
-              <p class="hero-description scroll-element" data-scroll-offset="0.2">
-                I specialize in <strong class="highlight-word">network steganography</strong> and
-                <strong class="highlight-word">advanced C++ systems</strong>, building undetectable
-                security solutions that redefine cybersecurity standards. Based in
-                Haifa, pushing the boundaries of what's possible in digital
-                security.
+              <p class="hero-description">
+                Specializing in <strong>network steganography</strong> and
+                <strong>advanced C++ systems</strong>, I develop cutting-edge
+                security solutions that push the boundaries of digital protection.
+                Based in Haifa, Israel.
               </p>
 
-              <div class="hero-actions scroll-element" data-scroll-offset="0.3">
-                <a href="#projects" class="btn btn-primary scroll-btn" data-btn-index="0">
+              <div class="hero-actions">
+                <a href="#projects" class="btn btn-primary">
                   <span class="btn-text">View My Work</span>
                   <i class="fas fa-arrow-right btn-icon"></i>
                 </a>
                 <a
                   href="https://drive.google.com/file/d/1cUoF--q94LtUQKox5eGfMYom70GJoIGc/view?usp=sharing"
                   target="_blank"
-                  class="btn btn-secondary scroll-btn" data-btn-index="1"
+                  class="btn btn-secondary"
                 >
                   <span class="btn-text">Download Resume</span>
                   <i class="fas fa-download btn-icon"></i>
@@ -411,82 +382,87 @@
         </section>
 
         <!-- Projects Section -->
-        <section class="section scroll-section" id="projects" data-scroll-section data-section-index="1">
-          <div class="section-header scroll-header">
-            <div class="section-number scroll-number">01</div>
-            <h2 class="section-title scroll-title">Featured Projects</h2>
-            <p class="section-subtitle scroll-subtitle">
+        <section class="section projects-section" id="projects" data-section-index="1">
+          <div class="section-header">
+            <div class="section-number">01</div>
+            <h2 class="section-title">Featured Projects</h2>
+            <p class="section-subtitle">
               Innovative solutions pushing the boundaries of cybersecurity
             </p>
           </div>
 
-          <div class="projects-grid scroll-grid">
-            <div class="project-card scroll-card" data-scroll data-scroll-speed="0.2" data-card-index="0">
-              <div class="project-image scroll-image">
-                <i class="fas fa-user-secret project-icon scroll-icon"></i>
-                <div class="project-status status-development scroll-status">
+          <div class="projects-grid">
+            <div class="project-card">
+              <div class="project-header">
+                <div class="project-icon">
+                  <i class="fas fa-user-secret"></i>
+                </div>
+                <div class="project-status in-development">
                   In Development
                 </div>
               </div>
-              <div class="project-content scroll-content">
-                <h3 class="project-title scroll-project-title">
+              <div class="project-content">
+                <h3 class="project-title">
                   HitchHiker: Network Steganography Platform
                 </h3>
-                <p class="project-description scroll-description">
+                <p class="project-description">
                   Revolutionary covert communication system enabling completely
                   undetectable data transmission without creating new network
                   packets.
                 </p>
-                <div class="project-tech scroll-tech">
-                  <span class="tech-tag primary scroll-tag" data-tag-index="0">C++20</span>
-                  <span class="tech-tag scroll-tag" data-tag-index="1">Multi-threading</span>
-                  <span class="tech-tag scroll-tag" data-tag-index="2">Docker</span>
-                  <span class="tech-tag scroll-tag" data-tag-index="3">CMake</span>
+                <div class="project-tech">
+                  <span class="tech-tag primary">C++20</span>
+                  <span class="tech-tag">Multi-threading</span>
+                  <span class="tech-tag">Docker</span>
+                  <span class="tech-tag">CMake</span>
                 </div>
               </div>
             </div>
 
-            <div class="project-card scroll-card" data-scroll data-scroll-speed="0.1" data-card-index="1">
-              <div class="project-image scroll-image">
-                <i class="fas fa-gamepad project-icon scroll-icon"></i>
-                <div class="project-status status-completed scroll-status">Completed</div>
+            <div class="project-card">
+              <div class="project-header">
+                <div class="project-icon">
+                  <i class="fas fa-gamepad"></i>
+                </div>
+                <div class="project-status completed">Completed</div>
               </div>
-              <div class="project-content scroll-content">
-                <h3 class="project-title scroll-project-title">Multiplayer Trivia Game System</h3>
-                <p class="project-description scroll-description">
+              <div class="project-content">
+                <h3 class="project-title">Multiplayer Trivia Game System</h3>
+                <p class="project-description">
                   High-performance C++ server architecture handling 25+ concurrent
                   players with Unity client integration.
                 </p>
-                <div class="project-tech scroll-tech">
-                  <span class="tech-tag primary scroll-tag" data-tag-index="0">C++17</span>
-                  <span class="tech-tag scroll-tag" data-tag-index="1">Unity</span>
-                  <span class="tech-tag scroll-tag" data-tag-index="2">SQLite3</span>
-                  <span class="tech-tag scroll-tag" data-tag-index="3">RAII</span>
+                <div class="project-tech">
+                  <span class="tech-tag primary">C++17</span>
+                  <span class="tech-tag">Unity</span>
+                  <span class="tech-tag">SQLite3</span>
+                  <span class="tech-tag">RAII</span>
                 </div>
               </div>
             </div>
 
-            <div class="project-card scroll-card" data-scroll data-scroll-speed="0.3" data-card-index="2">
-              <div class="project-image scroll-image">
-                <i class="fas fa-trophy project-icon scroll-icon"></i>
-                <div class="project-status status-completed scroll-status">
+            <div class="project-card">
+              <div class="project-header">
+                <div class="project-icon">
+                  <i class="fas fa-trophy"></i>
+                </div>
+                <div class="project-status award">
                   2nd Place Global
                 </div>
               </div>
-              <div class="project-content scroll-content">
-                <h3 class="project-title scroll-project-title">
+              <div class="project-content">
+                <h3 class="project-title">
                   Analisis: AI Medical Diagnosis Platform
                 </h3>
-                <p class="project-description scroll-description">
+                <p class="project-description">
                   AI-powered medical platform for automated wound detection and
-                  treatment recommendations. Achieved 2nd place globally in AI4Y
-                  World Competition.
+                  treatment recommendations. Achieved 2nd place globally.
                 </p>
-                <div class="project-tech scroll-tech">
-                  <span class="tech-tag primary scroll-tag" data-tag-index="0">Python</span>
-                  <span class="tech-tag scroll-tag" data-tag-index="1">Computer Vision</span>
-                  <span class="tech-tag scroll-tag" data-tag-index="2">TensorFlow</span>
-                  <span class="tech-tag scroll-tag" data-tag-index="3">Medical AI</span>
+                <div class="project-tech">
+                  <span class="tech-tag primary">Python</span>
+                  <span class="tech-tag">Computer Vision</span>
+                  <span class="tech-tag">TensorFlow</span>
+                  <span class="tech-tag">Medical AI</span>
                 </div>
               </div>
             </div>
@@ -494,116 +470,76 @@
         </section>
 
         <!-- About Section -->
-        <section class="section scroll-section" id="about" data-scroll-section data-section-index="2">
-          <div class="section-header scroll-header">
-            <div class="section-number scroll-number">02</div>
-            <h2 class="section-title scroll-title">About Me</h2>
-            <p class="section-subtitle scroll-subtitle">
+        <section class="section about-section" id="about" data-section-index="2">
+          <div class="section-header">
+            <div class="section-number">02</div>
+            <h2 class="section-title">About Me</h2>
+            <p class="section-subtitle">
               Passionate about building secure, innovative solutions
             </p>
           </div>
 
-          <div class="about-content scroll-content-block" data-scroll data-scroll-speed="0.1">
+          <div class="about-content">
             <div class="about-grid">
-              <!-- Personal Story Card -->
-              <div class="about-card story-card scroll-card" data-scroll data-scroll-speed="0.2">
-                <div class="card-icon">
-                  <i class="fas fa-user-astronaut"></i>
-                </div>
-                <div class="card-content">
-                  <h3 class="card-title">My Journey</h3>
-                  <p class="card-text">
-                    At just <strong class="highlight-word">18 years old</strong>, I've dedicated myself to mastering the art of
-                    cybersecurity and systems programming. My journey began with a
-                    fascination for the invisible - the hidden layers of digital
-                    communication that most never see.
-                  </p>
-                </div>
-                <div class="card-background">
-                  <div class="floating-element" data-scroll data-scroll-speed="-0.1">🚀</div>
-                </div>
-              </div>
-
-              <!-- Skills Showcase -->
-              <div class="about-card skills-card scroll-card" data-scroll data-scroll-speed="0.15">
+              <div class="about-card">
                 <div class="card-icon">
                   <i class="fas fa-code"></i>
                 </div>
                 <div class="card-content">
-                  <h3 class="card-title">Core Expertise</h3>
-                  <div class="skills-grid">
-                    <div class="skill-item" data-scroll data-scroll-speed="0.05">
-                      <div class="skill-icon">
-                        <i class="fab fa-cuttlefish"></i>
-                      </div>
-                      <div class="skill-info">
-                        <span class="skill-name">C++ Systems</span>
-                        <div class="skill-bar">
-                          <div class="skill-progress" data-progress="95"></div>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="skill-item" data-scroll data-scroll-speed="0.08">
-                      <div class="skill-icon">
-                        <i class="fas fa-shield-alt"></i>
-                      </div>
-                      <div class="skill-info">
-                        <span class="skill-name">Cybersecurity</span>
-                        <div class="skill-bar">
-                          <div class="skill-progress" data-progress="90"></div>
-                        </div>
+                  <h3 class="card-title">Technical Expertise</h3>
+                  <p class="card-description">
+                    At 18 years old, I specialize in advanced C++ development 
+                    and network steganography, creating solutions that operate 
+                    invisibly while maintaining the highest security standards.
+                  </p>
+                  <div class="skills-list">
+                    <div class="skill-item">
+                      <span class="skill-name">C++ Systems Programming</span>
+                      <div class="skill-level">
+                        <div class="skill-progress" style="width: 95%"></div>
                       </div>
                     </div>
-                    <div class="skill-item" data-scroll data-scroll-speed="0.12">
-                      <div class="skill-icon">
-                        <i class="fas fa-user-secret"></i>
+                    <div class="skill-item">
+                      <span class="skill-name">Network Security</span>
+                      <div class="skill-level">
+                        <div class="skill-progress" style="width: 90%"></div>
                       </div>
-                      <div class="skill-info">
-                        <span class="skill-name">Steganography</span>
-                        <div class="skill-bar">
-                          <div class="skill-progress" data-progress="88"></div>
-                        </div>
+                    </div>
+                    <div class="skill-item">
+                      <span class="skill-name">Steganography</span>
+                      <div class="skill-level">
+                        <div class="skill-progress" style="width: 88%"></div>
                       </div>
                     </div>
                   </div>
-                </div>
-                <div class="card-background">
-                  <div class="floating-element" data-scroll data-scroll-speed="0.03">💻</div>
                 </div>
               </div>
 
-              <!-- Vision Card -->
-              <div class="about-card vision-card scroll-card" data-scroll data-scroll-speed="0.25">
+              <div class="about-card">
                 <div class="card-icon">
-                  <i class="fas fa-eye"></i>
+                  <i class="fas fa-lightbulb"></i>
                 </div>
                 <div class="card-content">
-                  <h3 class="card-title">My Vision</h3>
-                  <p class="card-text">
-                    Today, I specialize in
-                    <strong class="highlight-word">network steganography</strong>
-                    and
-                    <strong class="highlight-word">advanced C++ development</strong>,
-                    creating solutions that operate in the shadows while maintaining
-                    the highest standards of security and performance.
+                  <h3 class="card-title">Innovation Focus</h3>
+                  <p class="card-description">
+                    My work focuses on developing cutting-edge cybersecurity 
+                    solutions that redefine digital protection standards, with 
+                    a particular emphasis on covert communication systems.
                   </p>
-                  <div class="vision-stats">
-                    <div class="stat-item" data-scroll data-scroll-speed="0.1">
-                      <div class="stat-number">18</div>
-                      <div class="stat-label">Years Old</div>
+                  <div class="achievement-stats">
+                    <div class="stat-item">
+                      <div class="stat-value">5+</div>
+                      <div class="stat-label">Years Experience</div>
                     </div>
-                    <div class="stat-item" data-scroll data-scroll-speed="0.15">
-                      <div class="stat-number">5+</div>
-                      <div class="stat-label">Years Coding</div>
+                    <div class="stat-item">
+                      <div class="stat-value">10+</div>
+                      <div class="stat-label">Projects Completed</div>
                     </div>
-                    <div class="stat-item" data-scroll data-scroll-speed="0.2">
-                      <div class="stat-number">∞</div>
-                      <div class="stat-label">Passion</div>
+                    <div class="stat-item">
+                      <div class="stat-value">2nd</div>
+                      <div class="stat-label">Global Ranking</div>
                     </div>
                   </div>
-                </div>
-                <div class="card-background">
-                  <div class="floating-element" data-scroll data-scroll-speed="-0.05">🔮</div>
                 </div>
               </div>
             </div>
@@ -611,141 +547,69 @@
         </section>
 
         <!-- Experience Section -->
-        <section class="section scroll-section" id="experience" data-scroll-section data-section-index="3">
-          <div class="section-header scroll-header">
-            <div class="section-number scroll-number">03</div>
-            <h2 class="section-title scroll-title">Experience</h2>
-            <p class="section-subtitle scroll-subtitle">
+        <section class="section experience-section" id="experience" data-section-index="3">
+          <div class="section-header">
+            <div class="section-number">03</div>
+            <h2 class="section-title">Experience</h2>
+            <p class="section-subtitle">
               Building innovative solutions and advancing cybersecurity research
             </p>
           </div>
 
-          <div class="experience-content scroll-content-block" data-scroll data-scroll-speed="0.1">
-            <div class="experience-timeline">
-              <!-- Current Position -->
-              <div class="experience-card current-role scroll-card" data-scroll data-scroll-speed="0.2">
-                <div class="experience-icon">
-                  <i class="fas fa-briefcase"></i>
+          <div class="experience-timeline">
+            <div class="experience-item">
+              <div class="experience-date">2023 - Present</div>
+              <div class="experience-content">
+                <div class="experience-role">
+                  <h3 class="role-title">Product Uploader & Tools Developer</h3>
+                  <div class="company-name">AllBikes</div>
                 </div>
-                <div class="experience-period">
-                  <span class="period-badge current">Current</span>
-                  <span class="period-text">2023 - Present</span>
-                </div>
-                <div class="experience-content-inner">
-                  <h3 class="experience-title">Product Uploader & Tools Developer</h3>
-                  <div class="experience-company">
-                    <i class="fas fa-building"></i>
-                    <span>AllBikes</span>
-                  </div>
-                  <p class="experience-description">
-                    Currently working as a <strong class="highlight-word">Product Uploader & Tools Developer</strong> where I develop 
-                    automated tools and secure data systems using Python automation.
-                  </p>
-                  <div class="experience-achievements">
-                    <div class="achievement-item" data-scroll data-scroll-speed="0.05">
-                      <i class="fas fa-robot"></i>
-                      <span>Automated Product Management Systems</span>
-                    </div>
-                    <div class="achievement-item" data-scroll data-scroll-speed="0.08">
-                      <i class="fas fa-shield-alt"></i>
-                      <span>Secure Data Processing Tools</span>
-                    </div>
-                    <div class="achievement-item" data-scroll data-scroll-speed="0.12">
-                      <i class="fab fa-python"></i>
-                      <span>Python Automation Solutions</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="experience-background">
-                  <div class="floating-element work" data-scroll data-scroll-speed="-0.1">⚙️</div>
+                <p class="role-description">
+                  Developing automated tools and secure data systems using Python 
+                  automation for product management and data processing.
+                </p>
+                <div class="role-achievements">
+                  <span class="achievement">Automated Product Management</span>
+                  <span class="achievement">Secure Data Processing</span>
+                  <span class="achievement">Python Automation</span>
                 </div>
               </div>
+            </div>
 
-              <!-- AI Competition Achievement -->
-              <div class="experience-card achievement-role scroll-card" data-scroll data-scroll-speed="0.15">
-                <div class="experience-icon achievement">
-                  <i class="fas fa-trophy"></i>
+            <div class="experience-item">
+              <div class="experience-date">2023</div>
+              <div class="experience-content">
+                <div class="experience-role">
+                  <h3 class="role-title">AI4Y World Competition</h3>
+                  <div class="company-name">Global Competition - 2nd Place</div>
                 </div>
-                <div class="experience-period">
-                  <span class="period-badge achievement">Global 2nd</span>
-                  <span class="period-text">2023</span>
-                </div>
-                <div class="experience-content-inner">
-                  <h3 class="experience-title">AI4Y World Competition Winner</h3>
-                  <div class="experience-company achievement">
-                    <i class="fas fa-globe"></i>
-                    <span>International Competition</span>
-                  </div>
-                  <p class="experience-description">
-                    Achieved <strong class="highlight-word">2nd place globally</strong> in the AI4Y World Competition, leading a
-                    team to develop an innovative AI-powered medical diagnosis platform.
-                  </p>
-                  <div class="experience-achievements">
-                    <div class="achievement-item" data-scroll data-scroll-speed="0.05">
-                      <i class="fas fa-users"></i>
-                      <span>Led Development Team</span>
-                    </div>
-                    <div class="achievement-item" data-scroll data-scroll-speed="0.08">
-                      <i class="fas fa-brain"></i>
-                      <span>AI Medical Diagnosis Platform</span>
-                    </div>
-                    <div class="achievement-item" data-scroll data-scroll-speed="0.12">
-                      <i class="fas fa-medal"></i>
-                      <span>Global Recognition</span>
-                    </div>
-                  </div>
-                  <div class="competition-stats">
-                    <div class="stat-badge" data-scroll data-scroll-speed="0.1">
-                      <span class="stat-number">2nd</span>
-                      <span class="stat-text">Global Place</span>
-                    </div>
-                    <div class="stat-badge" data-scroll data-scroll-speed="0.15">
-                      <span class="stat-number">500+</span>
-                      <span class="stat-text">Teams Worldwide</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="experience-background">
-                  <div class="floating-element trophy" data-scroll data-scroll-speed="0.05">🏆</div>
+                <p class="role-description">
+                  Led a team to develop an AI-powered medical diagnosis platform, 
+                  achieving 2nd place globally among 500+ international teams.
+                </p>
+                <div class="role-achievements">
+                  <span class="achievement">Team Leadership</span>
+                  <span class="achievement">AI Development</span>
+                  <span class="achievement">Medical Technology</span>
                 </div>
               </div>
+            </div>
 
-              <!-- Skills Development -->
-              <div class="experience-card learning-role scroll-card" data-scroll data-scroll-speed="0.25">
-                <div class="experience-icon learning">
-                  <i class="fas fa-graduation-cap"></i>
+            <div class="experience-item">
+              <div class="experience-date">2020 - Present</div>
+              <div class="experience-content">
+                <div class="experience-role">
+                  <h3 class="role-title">Independent Research</h3>
+                  <div class="company-name">Cybersecurity & Systems Development</div>
                 </div>
-                <div class="experience-period">
-                  <span class="period-badge learning">Ongoing</span>
-                  <span class="period-text">2020 - Present</span>
-                </div>
-                <div class="experience-content-inner">
-                  <h3 class="experience-title">Continuous Learning & Development</h3>
-                  <div class="experience-company learning">
-                    <i class="fas fa-laptop-code"></i>
-                    <span>Self-Directed Learning</span>
-                  </div>
-                  <p class="experience-description">
-                    Continuously expanding knowledge in cybersecurity, advanced programming,
-                    and emerging technologies through hands-on projects and research.
-                  </p>
-                  <div class="learning-areas">
-                    <div class="learning-item" data-scroll data-scroll-speed="0.05">
-                      <span class="learning-tech">Network Security</span>
-                    </div>
-                    <div class="learning-item" data-scroll data-scroll-speed="0.08">
-                      <span class="learning-tech">Advanced C++</span>
-                    </div>
-                    <div class="learning-item" data-scroll data-scroll-speed="0.12">
-                      <span class="learning-tech">Steganography</span>
-                    </div>
-                    <div class="learning-item" data-scroll data-scroll-speed="0.15">
-                      <span class="learning-tech">AI/ML</span>
-                    </div>
-                  </div>
-                </div>
-                <div class="experience-background">
-                  <div class="floating-element learning" data-scroll data-scroll-speed="-0.08">🎓</div>
+                <p class="role-description">
+                  Conducting advanced research in network steganography and 
+                  developing innovative cybersecurity solutions.
+                </p>
+                <div class="role-achievements">
+                  <span class="achievement">Network Steganography</span>
+                  <span class="achievement">C++ Systems</span>
+                  <span class="achievement">Security Research</span>
                 </div>
               </div>
             </div>
@@ -753,36 +617,51 @@
         </section>
 
         <!-- Contact Section -->
-        <section class="section scroll-section" id="contact" data-scroll-section data-section-index="4">
-          <div class="section-header scroll-header">
-            <div class="section-number scroll-number">04</div>
-            <h2 class="section-title scroll-title">Get In Touch</h2>
-            <p class="section-subtitle scroll-subtitle">
-              Ready to meet me? Let's discuss our next opportunity
+        <section class="section contact-section" id="contact" data-section-index="4">
+          <div class="section-header">
+            <div class="section-number">04</div>
+            <h2 class="section-title">Get In Touch</h2>
+            <p class="section-subtitle">
+              Ready to collaborate? Let's discuss your next cybersecurity challenge
             </p>
           </div>
 
-          <div class="contact-content scroll-content-block" data-scroll data-scroll-speed="0.1">
-            <p class="contact-text scroll-text" data-text-index="0">
-              Whether you're looking for a<strong class="highlight-word">cybersecurity developer</strong>, custom
-              development, or innovative security solutions, I'm here to help
-              bring your vision to life , with strong dedication!
-            </p>
+          <div class="contact-content">
+            <div class="contact-info">
+              <p class="contact-text">
+                Whether you're looking for a <strong>cybersecurity specialist</strong>, 
+                custom development solutions, or innovative security consulting, 
+                I'm here to help bring your vision to life.
+              </p>
 
-            <div class="contact-actions scroll-actions">
-              <a
-                href="https://www.linkedin.com/in/aviv-shaked-59a4b7271/"
-                target="_blank"
-                class="btn btn-primary scroll-btn" data-btn-index="0"
-              >
+              <div class="contact-methods">
+                <div class="contact-method">
+                  <div class="method-icon">
+                    <i class="fas fa-envelope"></i>
+                  </div>
+                  <div class="method-info">
+                    <h4>Email</h4>
+                    <p>professional@avivshaked.com</p>
+                  </div>
+                </div>
+                <div class="contact-method">
+                  <div class="method-icon">
+                    <i class="fas fa-map-marker-alt"></i>
+                  </div>
+                  <div class="method-info">
+                    <h4>Location</h4>
+                    <p>Haifa, Israel</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="contact-actions">
+              <a href="https://www.linkedin.com/in/aviv-shaked-59a4b7271/" target="_blank" class="btn btn-primary">
                 <span class="btn-text">Connect on LinkedIn</span>
                 <i class="fab fa-linkedin btn-icon"></i>
               </a>
-              <a
-                href="https://github.com/Patcholie"
-                target="_blank"
-                class="btn btn-secondary scroll-btn" data-btn-index="1"
-              >
+              <a href="https://github.com/Patcholie" target="_blank" class="btn btn-secondary">
                 <span class="btn-text">View GitHub</span>
                 <i class="fab fa-github btn-icon"></i>
               </a>
