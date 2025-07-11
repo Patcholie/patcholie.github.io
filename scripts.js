@@ -1825,36 +1825,33 @@ class MobileLocomotiveScroll {
   }
   
   setupMobileScroll() {
-    // Destroy existing scroller if mobile
+    // Disable Locomotive Scroll completely on mobile for better performance
     if (AppState.isMobile && window.scroller) {
       window.scroller.destroy();
+      window.scroller = null;
     }
     
-    // Create mobile-optimized scroll configuration
+    // Use native mobile scrolling instead
     if (AppState.isMobile) {
-      const mobileScrollConfig = {
-        el: container,
-        smooth: true,
-        multiplier: 0.8, // Slower scroll for better mobile control
-        class: "is-revealed",
-        scrollbarContainer: false,
-        scrollFromAnywhere: true, // Better for mobile
-        getDirection: true,
-        getSpeed: true,
-        smartphone: {
-          smooth: true,
-          multiplier: 0.6 // Even slower on phones
-        },
-        tablet: {
-          smooth: true,
-          multiplier: 0.7
-        },
-        // Reduce CPU usage on mobile
-        lerp: 0.1,
-        touchMultiplier: 2
-      };
+      // Enable smooth native scrolling
+      document.documentElement.style.scrollBehavior = 'smooth';
       
-      window.scroller = new LocomotiveScroll(mobileScrollConfig);
+      // Create a simple scroll proxy for compatibility
+      window.scroller = {
+        scrollTo: (target, options = {}) => {
+          if (typeof target === 'string') {
+            target = document.querySelector(target);
+          }
+          if (target) {
+            target.scrollIntoView({ 
+              behavior: 'smooth', 
+              block: 'start' 
+            });
+          }
+        },
+        update: () => {},
+        destroy: () => {}
+      };
     }
   }
 }
@@ -2381,6 +2378,7 @@ const originalDOMContentLoaded = () => {
     new MobileAnimationSystem();
     new MobilePerformanceOptimizer();
     new MobileOrientationHandler();
+    new MobileFooterController();
     
     // Setup mobile utilities
     MobileUtils.preventBounceScrolling();
@@ -2420,6 +2418,62 @@ if (AppState.isMobile || AppState.isTouchDevice) {
 // MOBILE CSS CUSTOM PROPERTIES
 // =================================
 
+// =================================
+// MOBILE FOOTER AUTO-HIDE SYSTEM
+// =================================
+
+class MobileFooterController {
+  constructor() {
+    if (!AppState.isMobile) return;
+    
+    this.footer = document.getElementById('main-footer');
+    this.sections = document.querySelectorAll('.section');
+    this.lastSection = this.sections[this.sections.length - 1];
+    this.isFooterVisible = false;
+    
+    this.init();
+  }
+  
+  init() {
+    // Create intersection observer for last section
+    const observerOptions = {
+      root: null,
+      rootMargin: '-20% 0px -20% 0px',
+      threshold: 0.3
+    };
+    
+    this.observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.target === this.lastSection) {
+          if (entry.isIntersecting && !this.isFooterVisible) {
+            this.showFooter();
+          } else if (!entry.isIntersecting && this.isFooterVisible) {
+            this.hideFooter();
+          }
+        }
+      });
+    }, observerOptions);
+    
+    if (this.lastSection) {
+      this.observer.observe(this.lastSection);
+    }
+  }
+  
+  showFooter() {
+    if (this.footer) {
+      this.footer.classList.add('show-footer');
+      this.isFooterVisible = true;
+    }
+  }
+  
+  hideFooter() {
+    if (this.footer) {
+      this.footer.classList.remove('show-footer');
+      this.isFooterVisible = false;
+    }
+  }
+}
+
 // Set mobile-specific CSS custom properties
 if (AppState.isMobile) {
   document.documentElement.style.setProperty('--mobile-vh', `${window.innerHeight}px`);
@@ -2430,6 +2484,8 @@ if (AppState.isMobile) {
   });
 }
 
+
 // Export mobile detection for external use
 window.MobileDetection = MobileDetection;
 window.AppState = AppState;
+
