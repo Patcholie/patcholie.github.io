@@ -672,10 +672,9 @@ strong { font-weight: 600; }
 
 .skill-block__header {
   display: flex;
-  justify-content: space-between;
-  align-items: baseline;
+  flex-direction: column;
+  gap: 4px;
   margin-bottom: 12px;
-  gap: 0.8rem;
 }
 
 .skill-block__name {
@@ -683,13 +682,13 @@ strong { font-weight: 600; }
   font-weight: 600;
   color: var(--fg);
   letter-spacing: -0.01em;
+  line-height: 1.2;
 }
 
 .skill-block__level {
   color: var(--fg-3);
-  font-size: 0.6rem;
+  font-size: 0.58rem;
   white-space: nowrap;
-  flex-shrink: 0;
 }
 
 .skill-block__bar {
