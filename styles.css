@@ -87,17 +87,19 @@ strong { font-weight: 600; }
   height: auto;
   transform: translate(-50%, -50%);
   object-fit: cover;
-  /* Desaturated + very dark so it's atmospheric, not distracting */
-  filter: grayscale(100%) brightness(0.18) contrast(1.1);
+  /* Monochrome, blurred, atmospheric — not distracting */
+  filter: grayscale(100%) brightness(0.5) contrast(1.15) blur(3px);
+  /* Single transform — scale up to hide blur edge bleed */
+  transform: translate(-50%, -50%) scale(1.06);
 }
 
 .video-bg__overlay {
   position: absolute;
   inset: 0;
-  /* Layered dark overlay: pure dark at edges, slightly lighter center */
+  /* Dark vignette — heavier at edges so text stays readable */
   background:
-    radial-gradient(ellipse at 60% 40%, rgba(10,10,10,0.55) 0%, rgba(10,10,10,0.88) 70%),
-    linear-gradient(180deg, rgba(10,10,10,0.6) 0%, rgba(10,10,10,0.4) 50%, rgba(10,10,10,0.85) 100%);
+    radial-gradient(ellipse at 50% 40%, rgba(10,10,10,0.45) 0%, rgba(10,10,10,0.82) 100%),
+    linear-gradient(180deg, rgba(10,10,10,0.75) 0%, rgba(10,10,10,0.3) 40%, rgba(10,10,10,0.75) 100%);
 }
 
 /* ═══════════════════════════════════════════════════════════
