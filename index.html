@@ -185,10 +185,10 @@
           <h3 class="project__title">HitchHiker</h3>
           <p class="project__sub mono">Network Steganography Platform · Co-developed with Daniel Varkin</p>
           <p class="project__desc">
-            A platform for covert communication via pure network steganography. Messages are encrypted, fragmented, and embedded into unused fields of existing network traffic - no new packets are ever generated. Data rides what's already moving. Undetectable by design. Full crypto pipeline: ECDH secp256r1 → ChaCha20 → HKDF-SHA256 → Argon2id. Three independent CMake targets (<span class="inline-mono">lib / server / client</span>) behind a unified HitchHikerAPI. Deployed on AWS EC2 via Docker.
+            A platform for covert communication via pure network steganography. Messages are encrypted, fragmented, and embedded into unused fields of existing network traffic - no new packets are ever generated. Data rides what's already moving. Undetectable by design. Full crypto pipeline (Key Exchange, Encryption, Hash, Checksum). Three independent CMake targets (<span class="inline-mono">lib / server / client</span>) behind a unified HitchHikerAPI. Deployed on AWS EC2 via Docker.
           </p>
           <div class="project__stack mono">
-            C++20 · Crypto++ · libnetfilter_queue · iptables · FTXUI v5 · Redis · SQLiteCpp · spdlog · tomlplusplus · Docker · OpenVPN · AWS EC2
+            C++20 · Crypto++ · libnetfilter_queue · iptables · FTXUI v5 · Redis · SQLiteCpp · spdlog · tomlplusplus · Docker · AWS EC2
           </div>
         </div>
         <div class="project__hover-line"></div>
