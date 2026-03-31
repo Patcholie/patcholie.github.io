@@ -1,606 +1,350 @@
-// Mobile Detection
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
-const isTouch = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
-
-// Performance throttling
-let ticking = false;
-let scrollTimeoutId = null;
-
-// Global state
-let isLoading = true;
-let currentSection = 'home';
-let parallaxElements = [];
-
-// Loading Screen
-document.body.classList.add('loading');
-
-window.addEventListener('load', () => {
-    setTimeout(() => {
-        document.getElementById('loadingScreen').classList.add('hidden');
-        document.body.classList.remove('loading');
-        isLoading = false;
-        
-        // Reset scroll position
-        const content = document.querySelector('.content');
-        if (content) {
-            content.scrollTop = 0;
-        } else {
-            window.scrollTo(0, 0);
-        }
-        
-        // Initialize after loading
-        initializeAnimations();
-    }, 2800);
-});
-
-// Initialize all animations and interactions
-function initializeAnimations() {
-    createParticles();
-    initializeParallax();
-    setupScrollAnimations();
-    setupMobileNavigation();
-    setupInteractiveElements();
-    
-    if (!isMobile && !isTouch) {
-        setupCursorEffects();
-    }
-}
-
-// Enhanced Particle System
-function createParticles() {
-    const container = document.getElementById('particles');
-    const particleCount = isMobile ? 25 : 50; // Reduce particles on mobile
-    
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
-        particle.style.left = Math.random() * 100 + 'vw';
-        particle.style.animationDelay = Math.random() * 20 + 's';
-        particle.style.animationDuration = (15 + Math.random() * 10) + 's';
-        particle.style.opacity = isMobile ? 0.2 : 0.3; // Subtle on mobile
-        container.appendChild(particle);
-    }
-}
-
-// Simplified Parallax System
-function initializeParallax() {
-    parallaxElements = document.querySelectorAll('.parallax-element');
-    
-    // Initialize parallax elements with simple, smooth properties
-    parallaxElements.forEach((element) => {
-        const speed = parseFloat(element.dataset.speed) || 0.5;
-        const direction = element.dataset.direction || 'up';
-        
-        element.parallaxData = {
-            speed,
-            direction,
-            originalTransform: element.style.transform || ''
-        };
-        
-        // Smooth transition for non-scroll interactions only
-        element.style.transition = 'opacity 0.3s ease, transform 0.1s linear';
-        element.style.willChange = 'transform, opacity';
-    });
-}
-
-// Smooth intersection observer for reveals
-function initializeAdvancedObserver() {
-    const observerOptions = {
-        threshold: [0, 0.2, 0.5, 0.8, 1],
-        rootMargin: '50px 0px 50px 0px'
-    };
-
-    const smoothObserver = new IntersectionObserver((entries) => {
-        entries.forEach((entry) => {
-            const element = entry.target;
-            
-            if (entry.isIntersecting) {
-                element.classList.add('reveal');
-                
-                // Smooth staggered animation for child elements
-                if (element.classList.contains('card') || element.classList.contains('list-item')) {
-                    const siblings = [...element.parentElement.children];
-                    const index = siblings.indexOf(element);
-                    element.style.transitionDelay = `${index * 0.05}s`; // Reduced delay for smoothness
-                }
-            } else if (!isMobile) {
-                element.classList.remove('reveal');
-                element.style.transitionDelay = '';
-            }
-        });
-    }, observerOptions);
-
-    // Observe all animatable elements
-    const elementsToObserve = document.querySelectorAll('.content-section, .card, .list-item');
-    elementsToObserve.forEach(el => smoothObserver.observe(el));
-}
-
-// Mouse-based parallax for desktop only
-function updateMouseParallax() {
-    if (isMobile || isTouch) return;
-    
-    const parallaxBg = document.getElementById('parallaxBg');
-    let targetX = 0, targetY = 0;
-    let currentX = 0, currentY = 0;
-
-    document.addEventListener('mousemove', (e) => {
-        const centerX = window.innerWidth / 2;
-        const centerY = window.innerHeight / 2;
-
-        targetX = (e.clientX - centerX) / centerX;
-        targetY = (e.clientY - centerY) / centerY;
-    });
-
-    function animateMouseParallax() {
-        currentX += (targetX - currentX) * 0.05;
-        currentY += (targetY - currentY) * 0.05;
-
-        const maxTranslate = 15;
-        const translateX = currentX * maxTranslate;
-        const translateY = currentY * maxTranslate;
-
-        if (parallaxBg) {
-            parallaxBg.style.transform = `translate(${translateX}px, ${translateY}px) scale(1.02)`;
-        }
-
-        requestAnimationFrame(animateMouseParallax);
-    }
-    animateMouseParallax();
-}
-
-// Smooth background movement
-function updateSmoothBackgroundParallax(scrollProgress) {
-    const parallaxBg = document.getElementById('parallaxBg');
-    if (!parallaxBg || isMobile) return;
-    
-    // Very subtle, smooth movement
-    const moveY = scrollProgress * 20; // Slow, smooth movement
-    const scale = 1 + scrollProgress * 0.02; // Very subtle scaling
-    
-    parallaxBg.style.transform = `translateY(${moveY}px) scale(${scale})`;
-}
-
-
-// Enhanced Cursor System (Desktop Only)
-function setupCursorEffects() {
-    const cursorSmall = document.querySelector('.cursor--small');
-    const cursorLarge = document.querySelector('.cursor--large');
-
-    if (!cursorSmall || !cursorLarge) return;
-
-    let mouseX = 0;
-    let mouseY = 0;
-    let largeCursorX = 0;
-    let largeCursorY = 0;
-    let isHovering = false;
-    let hoverTarget = null;
-
-    // Mouse movement tracking
-    document.addEventListener('mousemove', (e) => {
-        mouseX = e.clientX;
-        mouseY = e.clientY;
-        
-        cursorSmall.style.left = mouseX + 'px';
-        cursorSmall.style.top = mouseY + 'px';
-    });
-
-    // Animate large cursor
-    function animateLargeCursor() {
-        if (isHovering && hoverTarget) {
-            const rect = hoverTarget.getBoundingClientRect();
-            const targetX = rect.left + rect.width / 2;
-            const targetY = rect.top + rect.height / 2;
-            
-            largeCursorX += (targetX - largeCursorX) * 0.25;
-            largeCursorY += (targetY - largeCursorY) * 0.25;
-        } else {
-            largeCursorX += (mouseX - largeCursorX) * 0.15;
-            largeCursorY += (mouseY - largeCursorY) * 0.15;
-        }
-        
-        cursorLarge.style.left = largeCursorX + 'px';
-        cursorLarge.style.top = largeCursorY + 'px';
-        
-        requestAnimationFrame(animateLargeCursor);
-    }
-    animateLargeCursor();
-
-    // Interactive elements
-    const interactiveElements = document.querySelectorAll('a, button, .card, .list-item, .sidebar-item, .traffic-light, .hero-visual, .card-icon, .list-icon, .profile-avatar, .tag, .code-window, .code-dot, .code-line');
-
-    interactiveElements.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            isHovering = true;
-            hoverTarget = el;
-            cursorLarge.classList.add('morphed', 'interactive');
-            cursorSmall.classList.add('hovered');
-
-            const rect = el.getBoundingClientRect();
-            const computedStyle = window.getComputedStyle(el);
-
-            cursorLarge.style.borderRadius = computedStyle.borderRadius || '12px';
-            cursorLarge.style.width = rect.width + 'px';
-            cursorLarge.style.height = rect.height + 'px';
-            cursorLarge.style.transition = 'width 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), height 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), border-radius 0.4s ease';
-        });
-
-        el.addEventListener('mouseleave', () => {
-            isHovering = false;
-            hoverTarget = null;
-            cursorLarge.classList.remove('morphed', 'interactive');
-            cursorSmall.classList.remove('hovered');
-
-            cursorLarge.style.width = '32px';
-            cursorLarge.style.height = '32px';
-            cursorLarge.style.borderRadius = '50%';
-        });
-    });
-
-    // Magnetic elements
-    const magneticElements = document.querySelectorAll('.magnetic-btn');
-    magneticElements.forEach(el => {
-        el.addEventListener('mouseenter', () => {
-            cursorLarge.classList.add('magnetic');
-        });
-        
-        el.addEventListener('mouseleave', () => {
-            cursorLarge.classList.remove('magnetic');
-        });
-    });
-
-    /* ───────── click pulse (inner dot) ───────── */
-    document.addEventListener('mousedown', () => {
-        cursorSmall.classList.remove('clicked');  // restart if mid‑animation
-        void cursorSmall.offsetWidth;             // force reflow so keyframes replay
-        cursorSmall.classList.add('clicked');
-    });
-    
-    /* remove .clicked after the keyframe finishes so the
-       dot returns to its proper idle size (small or hovered) */
-    cursorSmall.addEventListener('animationend', (e) => {
-        if (e.animationName === 'cursorClick') {
-            cursorSmall.classList.remove('clicked');
-        }
-    });
-
-}
-
-// Interactive Elements Setup
-function setupInteractiveElements() {
-    // Code window interactions
-    const codeDots = document.querySelectorAll('.code-dot');
-    const codeWindow = document.querySelector('.code-window');
-    const codeLines = document.querySelectorAll('.code-line');
-
-    codeDots.forEach((dot, index) => {
-        const clickHandler = () => {
-            if (index === 0) {
-                // Red dot - minimize effect
-                if (codeWindow) {
-                    codeWindow.style.transform = 'scale(0.95) rotate(-2deg)';
-                    setTimeout(() => {
-                        codeWindow.style.transform = 'scale(1) rotate(0deg)';
-                    }, 300);
-                }
-            } else if (index === 1) {
-                // Yellow dot - typewriter effect
-                codeLines.forEach((line, lineIndex) => {
-                    line.style.opacity = '0';
-                    setTimeout(() => {
-                        line.style.opacity = '1';
-                        line.style.animation = 'slideInCode 0.2s ease forwards';
-                    }, lineIndex * 100);
-                });
-            } else {
-                // Green dot - glow effect
-                if (codeWindow) {
-                    codeWindow.style.boxShadow = '0 0 40px rgba(59, 130, 246, 0.4), 0 20px 60px rgba(0, 0, 0, 0.6)';
-                    setTimeout(() => {
-                        codeWindow.style.boxShadow = '';
-                    }, 1000);
-                }
-            }
-        };
-
-        if (isMobile || isTouch) {
-            dot.addEventListener('touchend', clickHandler);
-        } else {
-            dot.addEventListener('click', clickHandler);
-        }
-    });
-
-    // Enhanced code line interactions
-    codeLines.forEach(line => {
-        const hoverHandler = () => {
-            line.style.background = 'rgba(59, 130, 246, 0.05)';
-            line.style.borderLeft = '3px solid var(--accent-primary)';
-            line.style.paddingLeft = '8px';
-        };
-        
-        const leaveHandler = () => {
-            line.style.background = '';
-            line.style.borderLeft = '';
-            line.style.paddingLeft = '';
-        };
-
-        if (isMobile || isTouch) {
-            line.addEventListener('touchstart', hoverHandler);
-            line.addEventListener('touchend', leaveHandler);
-        } else {
-            line.addEventListener('mouseenter', hoverHandler);
-            line.addEventListener('mouseleave', leaveHandler);
-        }
-    });
-}
-
-// Mobile Navigation
-function setupMobileNavigation() {
-    const mobileNavToggle = document.getElementById('mobileNavToggle');
-    const sidebar = document.getElementById('sidebar');
-    
-    if (mobileNavToggle && sidebar) {
-        const toggleNavigation = () => {
-            mobileNavToggle.classList.toggle('active');
-            sidebar.classList.toggle('active');
-            
-            // Prevent background scrolling when nav is open
-            if (sidebar.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
-            } else {
-                document.body.style.overflow = '';
-            }
-        };
-
-        mobileNavToggle.addEventListener('click', toggleNavigation);
-        mobileNavToggle.addEventListener('touchend', (e) => {
-            e.preventDefault();
-            toggleNavigation();
-        });
-
-        // Close navigation when clicking on sidebar items
-        const sidebarItems = sidebar.querySelectorAll('.sidebar-item');
-        sidebarItems.forEach(item => {
-            item.addEventListener('click', () => {
-                if (window.innerWidth <= 768) {
-                    mobileNavToggle.classList.remove('active');
-                    sidebar.classList.remove('active');
-                    document.body.style.overflow = '';
-                }
-            });
-        });
-
-        // Close navigation when clicking outside
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768 && 
-                sidebar.classList.contains('active') && 
-                !sidebar.contains(e.target) && 
-                !mobileNavToggle.contains(e.target)) {
-                mobileNavToggle.classList.remove('active');
-                sidebar.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        });
-    }
-}
-
-// Smooth Scroll Animations Setup
-function setupScrollAnimations() {
-    // Scroll progress indicator with smooth glow
-    function updateScrollProgress() {
-        const content = document.querySelector('.content');
-        const scrollProgress = document.getElementById('scrollProgress');
-        
-        if (content && scrollProgress) {
-            const scrollTop = content.scrollTop;
-            const scrollHeight = content.scrollHeight - content.clientHeight;
-            const progress = Math.min((scrollTop / scrollHeight) * 100, 100);
-            scrollProgress.style.width = progress + '%';
-        }
-    }
-
-    // Smooth combined scroll listener
-    const content = document.querySelector('.content');
-    
-    const scrollHandler = () => {
-        if (!ticking) {
-            requestAnimationFrame(() => {
-                updateScrollProgress();
-                updateActiveNav();
-                ticking = false;
-            });
-            ticking = true;
-        }
-    };
-
-    if (content) {
-        content.addEventListener('scroll', scrollHandler, { passive: true });
-        
-        // Smooth scroll behavior
-        content.style.scrollBehavior = 'smooth';
-        content.style.webkitOverflowScrolling = 'touch';
-    } else {
-        window.addEventListener('scroll', scrollHandler, { passive: true });
-    }
-    
-    // Initialize the smooth observer
-    initializeAdvancedObserver();
-}
-
-// Remove mouse parallax to prevent background jumping
-function updateMouseParallax() {
-    // Disabled to prevent jumping background
-    return;
-}
-
-// Active Navigation Highlighting
-function updateActiveNav() {
-    const navItems = document.querySelectorAll('.sidebar-item');
-    const sections = document.querySelectorAll('.content-section');
-    let current = '';
-
-    sections.forEach(section => {
-        const sectionTop = section.getBoundingClientRect().top;
-        const sectionHeight = section.offsetHeight;
-        const viewportMiddle = window.innerHeight / 2;
-
-        if (sectionTop <= viewportMiddle && sectionTop + sectionHeight > viewportMiddle) {
-            current = section.getAttribute('id');
-        }
-    });
-    
-    if (current !== currentSection) {
-        currentSection = current;
-        navItems.forEach(item => {
-            item.classList.remove('active');
-            if (item.getAttribute('href') === `#${current}`) {
-                item.classList.add('active');
-            }
-        });
-    }
-}
-
-// Smooth scrolling for navigation
-function setupSmoothScrolling() {
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function (e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                const content = document.querySelector('.content');
-                const targetTop = target.offsetTop - 100; // Account for header
-                
-                if (content) {
-                    content.scrollTo({
-                        top: targetTop,
-                        behavior: 'smooth'
-                    });
-                } else {
-                    window.scrollTo({
-                        top: targetTop,
-                        behavior: 'smooth'
-                    });
-                }
-            }
-        });
-    });
-}
-
-// Touch interactions for mobile
-function setupTouchInteractions() {
-    if (!isMobile && !isTouch) return;
-
-    // Add touch feedback to interactive elements
-    const touchElements = document.querySelectorAll('.btn, .card, .list-item, .sidebar-item, .tag');
-    
-    touchElements.forEach(element => {
-        element.addEventListener('touchstart', () => {
-            element.style.transform = 'scale(0.98)';
-        }, { passive: true });
-        
-        element.addEventListener('touchend', () => {
-            setTimeout(() => {
-                element.style.transform = '';
-            }, 150);
-        }, { passive: true });
-        
-        element.addEventListener('touchcancel', () => {
-            element.style.transform = '';
-        }, { passive: true });
-    });
-}
-
-// Keyboard navigation
-function setupKeyboardNavigation() {
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Tab') {
-            document.body.classList.add('keyboard-nav');
-        }
-        
-        // ESC key to close mobile navigation
-        if (e.key === 'Escape') {
-            const sidebar = document.getElementById('sidebar');
-            const mobileNavToggle = document.getElementById('mobileNavToggle');
-            
-            if (sidebar && sidebar.classList.contains('active')) {
-                mobileNavToggle.classList.remove('active');
-                sidebar.classList.remove('active');
-                document.body.style.overflow = '';
-            }
-        }
-    });
-
-    document.addEventListener('mousedown', () => {
-        document.body.classList.remove('keyboard-nav');
-    });
-}
-
-// Window resize handler
-function handleResize() {
-    // Close mobile navigation on resize to desktop
-    if (window.innerWidth > 768) {
-        const sidebar = document.getElementById('sidebar');
-        const mobileNavToggle = document.getElementById('mobileNavToggle');
-        
-        if (sidebar && mobileNavToggle) {
-            mobileNavToggle.classList.remove('active');
-            sidebar.classList.remove('active');
-            document.body.style.overflow = '';
-        }
-    }
-    
-    // Reinitialize parallax elements
-    if (parallaxElements.length > 0) {
-        initializeParallax();
-    }
-}
-
-// Performance optimizations
-function optimizePerformance() {
-    // Reduce motion for users who prefer it
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-        document.documentElement.style.setProperty('--transition-fast', '0.01ms');
-        document.documentElement.style.setProperty('--transition-smooth', '0.01ms');
-        document.documentElement.style.setProperty('--transition-gentle', '0.01ms');
-        
-        // Disable parallax for reduced motion
-        parallaxElements.forEach(element => {
-            element.style.transform = 'none';
-        });
-        return;
-    }
-    }
-
-// Initialize everything when DOM is ready
+/* ═══════════════════════════════════════════════════════════
+   INIT — wait for GSAP + Lenis (deferred scripts)
+═══════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
-    setupSmoothScrolling();
-    setupTouchInteractions();
-    setupKeyboardNavigation();
-    optimizePerformance();
-    });
-
-// Handle window resize
-window.addEventListener('resize', () => {
-    clearTimeout(scrollTimeoutId);
-    scrollTimeoutId = setTimeout(handleResize, 100);
+  const wait = (fn) => {
+    if (typeof gsap !== 'undefined' && typeof Lenis !== 'undefined') {
+      fn();
+    } else {
+      requestAnimationFrame(() => wait(fn));
+    }
+  };
+  wait(init);
 });
 
-// Prevent context menu on long press for mobile
-if (isMobile || isTouch) {
-    document.addEventListener('contextmenu', (e) => {
-        e.preventDefault();
-    });
+function init() {
+  gsap.registerPlugin(ScrollTrigger);
+  setupLenis();
+  setupCursor();
+  setupNav();
+  setupHeroTitle();
+  setupHeroPhoto();
+  setupScrollReveal();
+  setupSkillBars();
+  setupProjectHover();
 }
 
-// Error handling
-window.addEventListener('error', (e) => {
-    console.warn('Non-critical error:', e.error);
-    // Continue with degraded functionality rather than breaking
-});
+/* ═══════════════════════════════════════════════════════════
+   LENIS SMOOTH SCROLL
+═══════════════════════════════════════════════════════════ */
+function setupLenis() {
+  const lenis = new Lenis({
+    duration: 1.15,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    smoothWheel: true,
+    wheelMultiplier: 0.88,
+    touchMultiplier: 1.8,
+  });
 
-// Export for potential external use
-window.PortfolioApp = {
-    isMobile,
-    isTouch,
-    updateActiveNav,
-    currentSection: () => currentSection
-};
+  lenis.on('scroll', ScrollTrigger.update);
+
+  gsap.ticker.add((time) => {
+    lenis.raf(time * 1000);
+  });
+
+  gsap.ticker.lagSmoothing(0);
+
+  window._lenis = lenis;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   CURSOR
+═══════════════════════════════════════════════════════════ */
+function setupCursor() {
+  const isTouch = window.matchMedia('(hover: none)').matches;
+  if (isTouch) return;
+
+  const cursor = document.getElementById('cursor');
+  if (!cursor) return;
+
+  const dot  = cursor.querySelector('.cursor__dot');
+  const ring = cursor.querySelector('.cursor__ring');
+
+  let mouseX = -200, mouseY = -200;
+  let ringX  = -200, ringY  = -200;
+  let visible = false;
+
+  window.addEventListener('mousemove', (e) => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+    if (!visible) {
+      visible = true;
+      gsap.to(cursor, { opacity: 1, duration: 0.3 });
+    }
+  });
+
+  window.addEventListener('mouseleave', () => {
+    gsap.to(cursor, { opacity: 0, duration: 0.3 });
+    visible = false;
+  });
+
+  gsap.ticker.add(() => {
+    gsap.set(dot, { x: mouseX, y: mouseY });
+    ringX += (mouseX - ringX) * 0.11;
+    ringY += (mouseY - ringY) * 0.11;
+    gsap.set(ring, { x: ringX, y: ringY });
+  });
+
+  // States
+  document.querySelectorAll('.project, .skill-block, .about__photo-frame, .timeline__item').forEach((el) => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
+  });
+
+  document.querySelectorAll('a, button').forEach((el) => {
+    el.addEventListener('mouseenter', () => { cursor.classList.remove('cursor--hover'); cursor.classList.add('cursor--link'); });
+    el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--link'));
+  });
+
+  // Start hidden
+  gsap.set(cursor, { opacity: 0 });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   NAV
+═══════════════════════════════════════════════════════════ */
+function setupNav() {
+  const nav = document.getElementById('nav');
+  if (!nav) return;
+
+  ScrollTrigger.create({
+    start: 'top -60',
+    onEnter:     () => nav.classList.add('scrolled'),
+    onLeaveBack: () => nav.classList.remove('scrolled'),
+  });
+
+  // Smooth scroll anchor links
+  nav.querySelectorAll('a[href^="#"]').forEach((link) => {
+    link.addEventListener('click', (e) => {
+      const href = link.getAttribute('href');
+      const target = document.querySelector(href);
+      if (!target) return;
+      e.preventDefault();
+      if (window._lenis) {
+        window._lenis.scrollTo(target, { offset: -70, duration: 1.35 });
+      }
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HERO TITLE — character split + stagger
+═══════════════════════════════════════════════════════════ */
+function setupHeroTitle() {
+  const lines = document.querySelectorAll('.hero__line[data-split]');
+
+  lines.forEach((line) => {
+    const text = line.textContent.trim();
+    line.innerHTML = text.split('').map((char) =>
+      char === ' '
+        ? '<span class="char" style="display:inline-block;width:0.28em"> </span>'
+        : `<span class="char" style="display:inline-block;transform:translateY(115%)">${char}</span>`
+    ).join('');
+  });
+
+  const chars = document.querySelectorAll('.hero__line .char');
+
+  gsap.to(chars, {
+    y: 0,
+    duration: 1.05,
+    ease: 'expo.out',
+    stagger: 0.038,
+    delay: 0.1,
+  });
+
+  gsap.from('.hero__label', {
+    opacity: 0, y: 10,
+    duration: 0.8, ease: 'expo.out', delay: 0.25,
+  });
+  gsap.from('.hero__bottom', {
+    opacity: 0, y: 18,
+    duration: 0.9, ease: 'expo.out', delay: 0.65,
+  });
+  gsap.from('.hero__scroll-hint', {
+    opacity: 0,
+    duration: 0.7, ease: 'none', delay: 1.1,
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   HERO PHOTO
+═══════════════════════════════════════════════════════════ */
+function setupHeroPhoto() {
+  const photo = document.getElementById('heroPhoto');
+  if (!photo) return;
+
+  gsap.to(photo, {
+    opacity: 1,
+    duration: 1.4,
+    ease: 'expo.out',
+    delay: 0.55,
+  });
+
+  // Subtle vertical drift on scroll
+  gsap.to('.hero__photo-wrap', {
+    y: '-6%',
+    ease: 'none',
+    scrollTrigger: {
+      trigger: '.hero',
+      start: 'top top',
+      end: 'bottom top',
+      scrub: 1.5,
+    },
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCROLL REVEAL
+═══════════════════════════════════════════════════════════ */
+function setupScrollReveal() {
+  // Section titles — slide up reveal
+  document.querySelectorAll('.section__title[data-split]').forEach((title) => {
+    const text = title.textContent.trim();
+    title.innerHTML = `<span style="display:block;overflow:hidden"><span style="display:block;transform:translateY(100%)">${text}</span></span>`;
+
+    ScrollTrigger.create({
+      trigger: title,
+      start: 'top 87%',
+      onEnter: () => {
+        gsap.to(title.querySelector('span span'), {
+          y: 0, duration: 0.95, ease: 'expo.out',
+        });
+      },
+      once: true,
+    });
+  });
+
+  // Contact CTA — two lines
+  const contactCta = document.querySelector('.contact__cta[data-split]');
+  if (contactCta) {
+    const lines = contactCta.innerHTML.split('<br>');
+    contactCta.innerHTML = lines.map((line) =>
+      `<span style="display:block;overflow:hidden"><span style="display:block;transform:translateY(105%)">${line}</span></span>`
+    ).join('');
+
+    ScrollTrigger.create({
+      trigger: contactCta,
+      start: 'top 87%',
+      onEnter: () => {
+        gsap.to(contactCta.querySelectorAll('span span'), {
+          y: 0, duration: 1.05, ease: 'expo.out', stagger: 0.09,
+        });
+      },
+      once: true,
+    });
+  }
+
+  // Projects
+  gsap.utils.toArray('.project').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, y: 24,
+      duration: 0.75, ease: 'expo.out',
+      scrollTrigger: { trigger: el, start: 'top 90%', once: true },
+      delay: i * 0.06,
+    });
+  });
+
+  // Skill blocks
+  gsap.utils.toArray('.skill-block').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, y: 16,
+      duration: 0.65, ease: 'expo.out',
+      scrollTrigger: { trigger: el, start: 'top 92%', once: true },
+      delay: (i % 3) * 0.07,
+    });
+  });
+
+  // Timeline items
+  gsap.utils.toArray('.timeline__item').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, y: 20,
+      duration: 0.75, ease: 'expo.out',
+      scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+      delay: i * 0.08,
+    });
+  });
+
+  // About
+  gsap.from('.about__photo-frame', {
+    opacity: 0, x: -24,
+    duration: 0.95, ease: 'expo.out',
+    scrollTrigger: { trigger: '.about__grid', start: 'top 82%', once: true },
+  });
+
+  gsap.utils.toArray('.about__text-col > *').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, y: 18,
+      duration: 0.75, ease: 'expo.out',
+      delay: i * 0.08,
+      scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+    });
+  });
+
+  gsap.utils.toArray('.award').forEach((el, i) => {
+    gsap.from(el, {
+      opacity: 0, x: -14,
+      duration: 0.6, ease: 'expo.out',
+      delay: i * 0.08,
+      scrollTrigger: { trigger: el, start: 'top 92%', once: true },
+    });
+  });
+
+  // Contact pieces
+  gsap.from('.contact__email', {
+    opacity: 0, y: 14,
+    duration: 0.75, ease: 'expo.out',
+    scrollTrigger: { trigger: '.contact__email', start: 'top 90%', once: true },
+  });
+
+  gsap.from('.contact__links', {
+    opacity: 0, y: 10,
+    duration: 0.65, ease: 'expo.out',
+    scrollTrigger: { trigger: '.contact__links', start: 'top 93%', once: true },
+  });
+
+  // Section headers
+  gsap.utils.toArray('.section__header').forEach((el) => {
+    gsap.from(el, {
+      opacity: 0, y: 14,
+      duration: 0.65, ease: 'expo.out',
+      scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SKILL BARS
+═══════════════════════════════════════════════════════════ */
+function setupSkillBars() {
+  document.querySelectorAll('.skill-block__fill').forEach((bar) => {
+    const target = bar.dataset.width || '70';
+    ScrollTrigger.create({
+      trigger: bar,
+      start: 'top 90%',
+      onEnter: () => {
+        gsap.to(bar, {
+          width: target + '%',
+          duration: 1.5, ease: 'expo.out', delay: 0.15,
+        });
+      },
+      once: true,
+    });
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   PROJECT HOVER — title nudge
+═══════════════════════════════════════════════════════════ */
+function setupProjectHover() {
+  document.querySelectorAll('.project').forEach((project) => {
+    const title = project.querySelector('.project__title');
+    if (!title) return;
+
+    project.addEventListener('mouseenter', () => {
+      gsap.to(title, { x: 7, duration: 0.38, ease: 'expo.out' });
+    });
+    project.addEventListener('mouseleave', () => {
+      gsap.to(title, { x: 0, duration: 0.5, ease: 'expo.out' });
+    });
+  });
+}
