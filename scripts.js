@@ -1,14 +1,30 @@
 /* ═══════════════════════════════════════════════════════════
    INIT — wait for GSAP + Lenis (deferred scripts)
+   Falls back gracefully after ~3s if CDNs are blocked.
 ═══════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
+  let attempts = 0;
+
   const wait = (fn) => {
+    attempts++;
+
     if (typeof gsap !== 'undefined' && typeof Lenis !== 'undefined') {
+      // Libs loaded — remove loading class and run
+      document.body.classList.remove('js-loading');
       fn();
+    } else if (attempts > 180) {
+      // ~3 seconds elapsed, libs didn't load (slow network / firewall)
+      // Gracefully show content that would otherwise stay hidden
+      document.body.classList.remove('js-loading');
+      const photo = document.getElementById('heroPhoto');
+      if (photo) photo.style.cssText = 'opacity:1;transition:opacity 0.6s ease';
+      // chars never got translateY applied since setupHeroTitle() never ran
+      // so they're already visible — no action needed
     } else {
       requestAnimationFrame(() => wait(fn));
     }
   };
+
   wait(init);
 });
 
@@ -16,6 +32,7 @@ function init() {
   gsap.registerPlugin(ScrollTrigger);
   setupLenis();
   setupCursor();
+  setupMobileNav();
   setupNav();
   setupHeroTitle();
   setupHeroPhoto();
@@ -85,19 +102,69 @@ function setupCursor() {
     gsap.set(ring, { x: ringX, y: ringY });
   });
 
-  // States
+  // Hover states
   document.querySelectorAll('.project, .skill-block, .about__photo-frame, .timeline__item').forEach((el) => {
     el.addEventListener('mouseenter', () => cursor.classList.add('cursor--hover'));
     el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--hover'));
   });
 
   document.querySelectorAll('a, button').forEach((el) => {
-    el.addEventListener('mouseenter', () => { cursor.classList.remove('cursor--hover'); cursor.classList.add('cursor--link'); });
+    el.addEventListener('mouseenter', () => {
+      cursor.classList.remove('cursor--hover');
+      cursor.classList.add('cursor--link');
+    });
     el.addEventListener('mouseleave', () => cursor.classList.remove('cursor--link'));
   });
 
-  // Start hidden
   gsap.set(cursor, { opacity: 0 });
+}
+
+/* ═══════════════════════════════════════════════════════════
+   MOBILE NAV
+   Hamburger toggle — fullscreen overlay with all nav links.
+   Body scroll is locked while the menu is open.
+═══════════════════════════════════════════════════════════ */
+function setupMobileNav() {
+  const burger    = document.getElementById('navBurger');
+  const mobileNav = document.getElementById('navMobile');
+  if (!burger || !mobileNav) return;
+
+  const setOpen = (open) => {
+    burger.classList.toggle('is-open', open);
+    mobileNav.classList.toggle('is-open', open);
+    burger.setAttribute('aria-expanded', String(open));
+    mobileNav.setAttribute('aria-hidden',  String(!open));
+    // Prevent body scroll while overlay is open
+    document.body.style.overflow = open ? 'hidden' : '';
+  };
+
+  burger.addEventListener('click', () => {
+    setOpen(!burger.classList.contains('is-open'));
+  });
+
+  // Close on any link click, then scroll to anchor
+  mobileNav.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      setOpen(false);
+      const href = link.getAttribute('href');
+      if (href && href.startsWith('#') && window._lenis) {
+        const target = document.querySelector(href);
+        if (target) {
+          // Small delay so overlay opacity transition finishes first
+          setTimeout(() => {
+            window._lenis.scrollTo(target, { offset: -70, duration: 1.35 });
+          }, 60);
+        }
+      }
+    });
+  });
+
+  // Close on Escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && burger.classList.contains('is-open')) {
+      setOpen(false);
+    }
+  });
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -113,7 +180,7 @@ function setupNav() {
     onLeaveBack: () => nav.classList.remove('scrolled'),
   });
 
-  // Smooth scroll anchor links
+  // Smooth scroll anchor links (desktop nav)
   nav.querySelectorAll('a[href^="#"]').forEach((link) => {
     link.addEventListener('click', (e) => {
       const href = link.getAttribute('href');

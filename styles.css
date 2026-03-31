@@ -68,6 +68,18 @@ strong { font-weight: 600; }
 }
 
 /* ═══════════════════════════════════════════════════════════
+   JS LOADING SAFETY NET
+   If GSAP / Lenis never load (slow network, firewall, etc.)
+   scripts.js removes .js-loading once libs are ready.
+   The photo starts at opacity:0 via the rule below —
+   scripts.js transitions it to 1, or the timeout fallback
+   does it after 3s if libs never arrive.
+═══════════════════════════════════════════════════════════ */
+.js-loading .hero__photo {
+  transition: opacity 0.6s ease;
+}
+
+/* ═══════════════════════════════════════════════════════════
    VIDEO BACKGROUND
 ═══════════════════════════════════════════════════════════ */
 .video-bg {
@@ -75,6 +87,7 @@ strong { font-weight: 600; }
   inset: 0;
   z-index: -2;
   overflow: hidden;
+  background: var(--bg); /* fallback if video is blocked by browser/firewall */
 }
 
 .video-bg video {
@@ -85,18 +98,14 @@ strong { font-weight: 600; }
   min-height: 100%;
   width: auto;
   height: auto;
-  transform: translate(-50%, -50%);
   object-fit: cover;
-  /* Monochrome, blurred, atmospheric — not distracting */
   filter: grayscale(100%) brightness(0.5) contrast(1.15) blur(3px);
-  /* Single transform — scale up to hide blur edge bleed */
   transform: translate(-50%, -50%) scale(1.06);
 }
 
 .video-bg__overlay {
   position: absolute;
   inset: 0;
-  /* Dark vignette — heavier at edges so text stays readable */
   background:
     radial-gradient(ellipse at 50% 40%, rgba(10,10,10,0.45) 0%, rgba(10,10,10,0.82) 100%),
     linear-gradient(180deg, rgba(10,10,10,0.75) 0%, rgba(10,10,10,0.3) 40%, rgba(10,10,10,0.75) 100%);
@@ -189,8 +198,8 @@ strong { font-weight: 600; }
 
 .nav.scrolled {
   background: rgba(10,10,10,0.82);
-  backdrop-filter: blur(20px) saturate(1.3);
   -webkit-backdrop-filter: blur(20px) saturate(1.3);
+  backdrop-filter: blur(20px) saturate(1.3);
   border-color: var(--border);
 }
 
@@ -255,10 +264,98 @@ strong { font-weight: 600; }
   border-color: var(--fg);
 }
 
-/* Mobile nav */
+/* ── HAMBURGER BUTTON ── */
+.nav__burger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 6px;
+  background: none;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  z-index: 1002;
+  flex-shrink: 0;
+}
+
+@media (hover: none) { .nav__burger { cursor: auto; } }
+
+.nav__burger-line {
+  display: block;
+  width: 22px;
+  height: 1px;
+  background: var(--fg);
+  transition: transform 0.38s var(--ease-out-expo), opacity 0.25s;
+  transform-origin: center;
+}
+
+.nav__burger.is-open .nav__burger-line:first-child {
+  transform: translateY(3.5px) rotate(45deg);
+}
+.nav__burger.is-open .nav__burger-line:last-child {
+  transform: translateY(-3.5px) rotate(-45deg);
+}
+
+/* ── MOBILE NAV OVERLAY ── */
+.nav__mobile {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,10,10,0.97);
+  -webkit-backdrop-filter: blur(24px);
+  backdrop-filter: blur(24px);
+  z-index: 1001;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.38s var(--ease-out-expo);
+}
+
+.nav__mobile.is-open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.nav__mobile-link {
+  font-size: clamp(2rem, 10vw, 3.2rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--fg-2);
+  transition: color 0.2s;
+  position: relative;
+}
+.nav__mobile-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 100%; height: 1px;
+  background: var(--fg);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.35s var(--ease-out-quart);
+}
+.nav__mobile-link:hover { color: var(--fg); }
+.nav__mobile-link:hover::after { transform: scaleX(1); transform-origin: left; }
+
+.nav__mobile-link--resume {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  font-weight: 400;
+  color: var(--fg-3);
+  margin-top: 0.8rem;
+}
+.nav__mobile-link--resume::after { display: none; }
+.nav__mobile-link--resume:hover { color: var(--fg-2); }
+
+/* Mobile nav breakpoint */
 @media (max-width: 768px) {
-  .nav__links { display: none; }
-  .nav__resume { font-size: 0.66rem; padding: 6px 11px; }
+  .nav__links  { display: none; }
+  .nav__resume { display: none; }
+  .nav__burger { display: flex; }
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -451,6 +548,7 @@ strong { font-weight: 600; }
   overflow: hidden;
   padding: 13px 0;
   background: rgba(10,10,10,0.6);
+  -webkit-backdrop-filter: blur(8px);
   backdrop-filter: blur(8px);
 }
 
