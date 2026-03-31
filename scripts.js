@@ -1,5 +1,5 @@
 /* ═══════════════════════════════════════════════════════════
-   INIT — wait for GSAP + Lenis (deferred scripts)
+   INIT - wait for GSAP + Lenis (deferred scripts)
    Falls back gracefully after ~3s if CDNs are blocked.
 ═══════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     attempts++;
 
     if (typeof gsap !== 'undefined' && typeof Lenis !== 'undefined') {
-      // Libs loaded — remove loading class and run
+      // Libs loaded - remove loading class and run
       document.body.classList.remove('js-loading');
       fn();
     } else if (attempts > 180) {
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const photo = document.getElementById('heroPhoto');
       if (photo) photo.style.cssText = 'opacity:1;transition:opacity 0.6s ease';
       // chars never got translateY applied since setupHeroTitle() never ran
-      // so they're already visible — no action needed
+      // so they're already visible - no action needed
     } else {
       requestAnimationFrame(() => wait(fn));
     }
@@ -121,39 +121,98 @@ function setupCursor() {
 
 /* ═══════════════════════════════════════════════════════════
    MOBILE NAV
-   Hamburger toggle — fullscreen overlay with all nav links.
-   Body scroll is locked while the menu is open.
+   Hamburger toggle - fullscreen overlay with staggered link reveals.
+   Uses GSAP for smooth open/close. Body scroll locked while open.
 ═══════════════════════════════════════════════════════════ */
 function setupMobileNav() {
   const burger    = document.getElementById('navBurger');
   const mobileNav = document.getElementById('navMobile');
   if (!burger || !mobileNav) return;
 
-  const setOpen = (open) => {
-    burger.classList.toggle('is-open', open);
-    mobileNav.classList.toggle('is-open', open);
-    burger.setAttribute('aria-expanded', String(open));
-    mobileNav.setAttribute('aria-hidden',  String(!open));
-    // Prevent body scroll while overlay is open
-    document.body.style.overflow = open ? 'hidden' : '';
+  const links = Array.from(mobileNav.querySelectorAll('a'));
+
+  // Add decorative numbers to main nav links (not the resume one)
+  links.forEach((link, i) => {
+    if (!link.classList.contains('nav__mobile-link--resume')) {
+      const num = document.createElement('span');
+      num.className = 'nav__mobile-num';
+      num.textContent = `0${i + 1}`;
+      link.prepend(num);
+    }
+  });
+
+  // Initial hidden state - GSAP owns opacity + y so CSS stays clean
+  gsap.set(links, { y: 40, opacity: 0 });
+
+  let isOpen = false;
+  let tl     = null;
+
+  const openMenu = () => {
+    isOpen = true;
+    burger.classList.add('is-open');
+    mobileNav.classList.add('is-open');
+    burger.setAttribute('aria-expanded', 'true');
+    mobileNav.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+
+    if (tl) tl.kill();
+    tl = gsap.timeline();
+
+    // Links slide up with quick stagger after overlay fades in
+    tl.to(links, {
+      y: 0,
+      opacity: 1,
+      duration: 0.6,
+      ease: 'expo.out',
+      stagger: 0.065,
+      delay: 0.18,
+    });
+  };
+
+  const closeMenu = () => {
+    if (!isOpen) return;
+    isOpen = false;
+    burger.classList.remove('is-open');
+    burger.setAttribute('aria-expanded', 'false');
+
+    if (tl) tl.kill();
+    tl = gsap.timeline({
+      onComplete: () => {
+        mobileNav.classList.remove('is-open');
+        mobileNav.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        // Reset for next open
+        gsap.set(links, { y: 40, opacity: 0 });
+      },
+    });
+
+    // Links fly out upward in reverse stagger, then overlay fades
+    tl.to(links, {
+      y: -22,
+      opacity: 0,
+      duration: 0.28,
+      ease: 'expo.in',
+      stagger: { each: 0.045, from: 'end' },
+    });
   };
 
   burger.addEventListener('click', () => {
-    setOpen(!burger.classList.contains('is-open'));
+    if (isOpen) closeMenu();
+    else openMenu();
   });
 
   // Close on any link click, then scroll to anchor
-  mobileNav.querySelectorAll('a').forEach((link) => {
+  links.forEach((link) => {
     link.addEventListener('click', () => {
-      setOpen(false);
+      closeMenu();
       const href = link.getAttribute('href');
       if (href && href.startsWith('#') && window._lenis) {
         const target = document.querySelector(href);
         if (target) {
-          // Small delay so overlay opacity transition finishes first
+          // Wait for close animation to finish
           setTimeout(() => {
             window._lenis.scrollTo(target, { offset: -70, duration: 1.35 });
-          }, 60);
+          }, 380);
         }
       }
     });
@@ -161,9 +220,7 @@ function setupMobileNav() {
 
   // Close on Escape key
   document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && burger.classList.contains('is-open')) {
-      setOpen(false);
-    }
+    if (e.key === 'Escape' && isOpen) closeMenu();
   });
 }
 
@@ -195,7 +252,7 @@ function setupNav() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   HERO TITLE — character split + stagger
+   HERO TITLE - character split + stagger
 ═══════════════════════════════════════════════════════════ */
 function setupHeroTitle() {
   const lines = document.querySelectorAll('.hero__line[data-split]');
@@ -264,7 +321,7 @@ function setupHeroPhoto() {
    SCROLL REVEAL
 ═══════════════════════════════════════════════════════════ */
 function setupScrollReveal() {
-  // Section titles — slide up reveal
+  // Section titles - slide up reveal
   document.querySelectorAll('.section__title[data-split]').forEach((title) => {
     const text = title.textContent.trim();
     title.innerHTML = `<span style="display:block;overflow:hidden"><span style="display:block;transform:translateY(100%)">${text}</span></span>`;
@@ -281,7 +338,7 @@ function setupScrollReveal() {
     });
   });
 
-  // Contact CTA — two lines
+  // Contact CTA - two lines
   const contactCta = document.querySelector('.contact__cta[data-split]');
   if (contactCta) {
     const lines = contactCta.innerHTML.split('<br>');
@@ -400,7 +457,7 @@ function setupSkillBars() {
 }
 
 /* ═══════════════════════════════════════════════════════════
-   PROJECT HOVER — title nudge
+   PROJECT HOVER - title nudge
 ═══════════════════════════════════════════════════════════ */
 function setupProjectHover() {
   document.querySelectorAll('.project').forEach((project) => {
