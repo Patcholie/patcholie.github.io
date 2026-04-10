@@ -46,11 +46,11 @@ function init() {
 ═══════════════════════════════════════════════════════════ */
 function setupLenis() {
   const lenis = new Lenis({
-    duration: 1.15,
-    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    duration: 0.85,
+    easing: (t) => 1 - Math.pow(1 - t, 3), // ease-out cubic — snappy start, gentle stop
     smoothWheel: true,
-    wheelMultiplier: 0.88,
-    touchMultiplier: 1.8,
+    wheelMultiplier: 1.0,
+    touchMultiplier: 1.6,
   });
 
   lenis.on('scroll', ScrollTrigger.update);
@@ -211,7 +211,7 @@ function setupMobileNav() {
         if (target) {
           // Wait for close animation to finish
           setTimeout(() => {
-            window._lenis.scrollTo(target, { offset: -70, duration: 1.35 });
+            window._lenis.scrollTo(target, { offset: -72, duration: 1.4, easing: (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2 });
           }, 380);
         }
       }
@@ -245,7 +245,7 @@ function setupNav() {
       if (!target) return;
       e.preventDefault();
       if (window._lenis) {
-        window._lenis.scrollTo(target, { offset: -70, duration: 1.35 });
+        window._lenis.scrollTo(target, { offset: -72, duration: 1.4, easing: (t) => t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2 });
       }
     });
   });
